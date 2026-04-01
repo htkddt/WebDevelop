@@ -1,0 +1,29 @@
+# Vào thư mục project
+cd fe
+
+# Tạo khung dự án (Vite 2.9.0 = Node v14)
+npm init vite@2.9.0 . -- --template react
+
+# Cấu hình project để sinh ra file package.json
+npm init -y
+
+# Cài đặt các thư viện trong project để sinh ra file package-lock.json
+npm install react-router-dom@6.3.0 lucide-react@0.263.1
+
+# Cài đặt tailwind và các công cụ đi kèm (Tailwind CSS latest + Post CSS latest = Node v16 hoặc v18)
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+
+# Cài đặt tailwind và các công cụ đi kèm (Tailwind CSS 2.2.19 + Post CSS 8.3.11 = Node v14)
+npm install -D tailwindcss@2.2.19 postcss@8.3.11 autoprefixer@10.4.0
+
+# Lệnh này sinh ra file tailwind.config.js và postcss.config.js
+npx tailwindcss init -p
+
+# Khởi tạo project với template React bằng Vite bản 2
+npm init vite@2.9.0 . -- --template react
+
+# Kiểm tra các thư viện nào không dùng
+npx depcheck
+
+# Xoá các thư viện không cần thiết
+npm uninstall <tên-thư-viện-1> <tên-thư-viện-2>
