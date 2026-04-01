@@ -1,0 +1,12 @@
+# Python cache
+__pycache__/
+**/__pycache__/
+
+# Cache files
+*.cache
+
+# App files
+*.exe
+
+# Hex files
+*.spec
