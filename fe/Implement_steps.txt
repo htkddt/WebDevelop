@@ -2,28 +2,46 @@
 cd fe
 
 # Tạo khung dự án (Vite 2.9.0 = Node v14)
-npm init vite@2.9.0 . -- --template react
+  - Template: npm [init | create] vite@latest . -- --template react *** (Specific version: npm [init | create] vite@2.9.0 . -- --template react)
+  - Default: npm create vite@latest *** (Specific version: npm [init | create] vite@2.9.0)
+    + Name:
+    + Framework: React
+    + Variant: JavaScript + SWC
+  - Output:
+    + ./src
+    + .gitignore
+    + index.html
+    + package.json
+    + vite.config.js
 
-# Cấu hình project để sinh ra file package.json
-npm init -y
+# Cấu hình project để sinh ra file package.json (Nếu chưa tồn tại file trong project)
+  - npm init -y (Auto accept default)
+  - npm init (Name, Framework, Variant, ...)
 
-# Cài đặt các thư viện trong project để sinh ra file package-lock.json
-npm install react-router-dom@6.3.0 lucide-react@0.263.1
+# Tạo file package-lock.json
+  - npm install:
+    + Đọc package.json
+    + Cài dependencies
+    + Có thể cập nhật package-lock.json
+    + Nếu thiếu → cài thêm
+    + Nếu version mismatch → có thể resolve lại
+  - npm ci:
+    + Xóa sạch node_modules
+    + Cài đúng 100% theo package-lock.json
+    + KHÔNG update gì cả
+  - npm install react-router-dom@6.3.0 lucide-react@0.263.1: Cài các thư viện cụ thể với các version được chỉ định
 
 # Cài đặt tailwind và các công cụ đi kèm (Tailwind CSS latest + Post CSS latest = Node v16 hoặc v18)
-npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+  - npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
 
 # Cài đặt tailwind và các công cụ đi kèm (Tailwind CSS 2.2.19 + Post CSS 8.3.11 = Node v14)
-npm install -D tailwindcss@2.2.19 postcss@8.3.11 autoprefixer@10.4.0
+  - npm install -D tailwindcss@2.2.19 postcss@8.3.11 autoprefixer@10.4.0
 
 # Lệnh này sinh ra file tailwind.config.js và postcss.config.js
-npx tailwindcss init -p
-
-# Khởi tạo project với template React bằng Vite bản 2
-npm init vite@2.9.0 . -- --template react
+  - npx tailwindcss init -p
 
 # Kiểm tra các thư viện nào không dùng
-npx depcheck
+  - npx depcheck
 
 # Xoá các thư viện không cần thiết
-npm uninstall <tên-thư-viện-1> <tên-thư-viện-2>
+  - npm uninstall <tên-thư-viện-1> <tên-thư-viện-2>
