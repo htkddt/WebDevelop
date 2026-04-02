@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # 1. Elasticsearch: Bộ não lưu trữ Log & Geo-Atlas Audit
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: m4_elastic
+    environment:
+      - node.name=m4-node
+      - discovery.type=single-node
+      - xpack.security.enabled=false # Tắt SSL/Auth cho nhẹ máy
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g" # Giới hạn đúng 1GB RAM (Cực kỳ quan trọng trên M4 24GB)
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    networks:
+      - m4_net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -vq '\"status\":\"red\"'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Kibana: Dashboard soi lỗi "ngáo" của con Mắm
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    container_name: m4_kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - I18N_LOCALE=en # Để tiếng Anh cho nó chuẩn bài
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - m4_net
+
+networks:
+  m4_net:
+    driver: bridge
