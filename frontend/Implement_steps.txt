@@ -3,7 +3,7 @@ cd fe
 
 # Tạo khung dự án (Vite 2.9.0 = Node v14)
   - Template: npm [init | create] vite@latest . -- --template react *** (Specific version: npm [init | create] vite@2.9.0 . -- --template react)
-  - Default: npm create vite@latest *** (Specific version: npm [init | create] vite@2.9.0)
+  - Default: npm create vite@latest *** (Specific version: npm create vite@2.9.0)
     + Name:
     + Framework: React
     + Variant: JavaScript + SWC
