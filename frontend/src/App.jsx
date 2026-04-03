@@ -26,7 +26,10 @@ function App() {
       case 'Report':
         return <h1 style={{ fontSize: '5rem', color: '#ccc' }}>{activeTab}</h1>
       default:
-        return <LoginView />;
+        return (<div className="app-content">
+          <LoginView />
+        </div>
+        )
     }
   };
 
