@@ -15,7 +15,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    # 🔥 Chỉ chạy khi push branch (tránh duplicate khi tag)
+    # 🔥 Chỉ chạy khi push branch (git push origin <branch_name>)
     if: github.ref_type == 'branch'
 
     defaults:
@@ -79,12 +79,12 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-${{ steps.version.outputs.version }}
+          name: frontend-beta-${{ steps.version.outputs.version }}
           path: frontend/dist
   release:
     runs-on: ubuntu-latest
 
-    # 🔥 Chỉ chạy khi push tag
+    # 🔥 Chỉ chạy khi push tag (git push origin <branch_name> --tags)
     if: github.ref_type == 'tag'
 
     defaults:
@@ -148,5 +148,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-${{ steps.version.outputs.version }}
+          name: frontend-release-${{ steps.version.outputs.version }}
           path: frontend/dist
