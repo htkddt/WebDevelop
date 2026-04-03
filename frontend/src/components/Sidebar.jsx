@@ -3,6 +3,8 @@ import LogoImg from './../assets/Logo.png';
 import './../styles/Sidebar.css';
 import { LayoutDashboard, Users, LogOut, ShieldCheck, CalendarOff, FileChartColumn, Settings } from 'lucide-react';
 
+// Test source
+
 const menuData = [
   { id: 'Dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
   { id: 'Employees', label: 'Employees', icon: <Users size={20} /> },
