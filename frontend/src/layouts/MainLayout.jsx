@@ -1,7 +1,7 @@
 import React from 'react';
 import Leftbar from '../components/Leftbar';
 import Topbar from '../components/Topbar';
-import './../styles/App.css';
+import './../styles/MainLayout.css';
 
 export const MainLayout = ({ children, activeTab, onSelect }) => {
   return (
