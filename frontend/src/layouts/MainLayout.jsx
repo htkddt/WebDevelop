@@ -10,7 +10,7 @@ export const MainLayout = ({ children, activeTab, onSelect }) => {
         <div className="app-main">
           {/* Bên trái: Leftbar cố định */}
           <Leftbar activeTab={activeTab} onSelect={onSelect} />
-          <main className="main-content">
+          <main className="app-content">
             {/* Bên phải: Vùng trắng full màn hình còn lại */}
             {children}
           </main>

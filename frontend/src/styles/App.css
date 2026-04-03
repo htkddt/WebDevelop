@@ -6,6 +6,7 @@
 }
 
 .app-wrapper {
+  flex: 1; /* Tự động chiếm toàn bộ phần chiều rộng còn lại sau Sidebar */
   display: flex;
   width: 100vw;
   height: 100vh;
@@ -13,14 +14,12 @@
 }
 
 .app-main {
-  flex: 1; /* Tự động chiếm toàn bộ phần chiều rộng còn lại sau Sidebar */
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background-color: #f9fafb; /* Màu nền nhẹ cho phần nội dung */
+  flex: 1; /* Chiếm nốt phần chiều cao còn lại của màn hình */
+  display: flex; /* Xếp Sidebar và Content nằm cạnh nhau */
+  overflow: hidden;
 }
 
-.main-content {
+.app-content {
   flex: 1;
   background-color: #ffffff;
   height: 100%;
