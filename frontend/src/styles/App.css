@@ -5,10 +5,19 @@
   --text-gray: #a2a2c1;
 }
 
-.app-container {
+.app-wrapper {
   display: flex;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+}
+
+.app-main {
+  flex: 1; /* Tự động chiếm toàn bộ phần chiều rộng còn lại sau Sidebar */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f9fafb; /* Màu nền nhẹ cho phần nội dung */
 }
 
 .main-content {
@@ -19,4 +28,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 25px;
+  overflow-y: auto; /* Cho phép cuộn dọc nếu nội dung quá dài */
 }

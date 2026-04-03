@@ -1,0 +1,148 @@
+.topbar {
+  height: 70px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Chia 3 phần: Trái - Giữa - Phải */
+  padding: 0 30px;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+/* Phần trái: Logo */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar-logo {
+  height: 40px;
+  width: auto;
+}
+
+.topbar-brand {
+  font-size: 24px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+/* Phần giữa: Search Bar */
+.topbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px 10px 45px;
+  border: 1px solid #e0e0e0;
+  border-radius: 25px; /* Bo tròn giống hình */
+  background-color: #f8f9fa;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.search-input:focus {
+  border-color: #fca5a5; /* Màu đỏ nhạt cùng tông với sidebar */
+  background-color: #fff;
+}
+
+/* Phần phải: Action Icons */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon-btn {
+  background: none;
+  border: 1px solid #eee;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  color: #555;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: #ff4d4d;
+  border-radius: 50%;
+}
+
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid #eee;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.lang-select {
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+/* User Profile Section */
+.user-profile {
+  display: flex;
+  align-items: center;
+  background-color: #f1f3f5;
+  padding: 5px 15px;
+  border-radius: 12px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #444;
+}
+
+.user-avatar-wrapper {
+  position: relative;
+  background-color: #fff;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+}
+
+.online-status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #2ecc71;
+  border: 2px solid #f1f3f5;
+  border-radius: 50%;
+}

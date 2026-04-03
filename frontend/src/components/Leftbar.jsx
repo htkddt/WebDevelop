@@ -1,5 +1,5 @@
 import React from 'react';
-import LogoImg from './../assets/Logo.png';
+// import LogoImg from './../assets/Logo.png';
 import './../styles/Leftbar.css';
 import { LayoutDashboard, Users, LogOut, ShieldCheck, CalendarOff, FileChartColumn, Settings } from 'lucide-react';
 
@@ -14,10 +14,10 @@ const menuData = [
 export const Leftbar = ({ activeTab, onSelect }) => {
   return (
     <aside className="leftbar">
-      <div className="leftbar-header">
+      {/* <div className="leftbar-header">
         <img src={LogoImg} alt="Logo" className="leftbar-logo-img" />
         <span className="leftbar-brand-name">179FC</span>
-      </div>
+      </div> */}
       <nav style={{ flex: 1 }}>
         {menuData.map(item => (
           <div
