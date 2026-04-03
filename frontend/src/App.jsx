@@ -4,6 +4,9 @@ import MainLayout from './layouts/MainLayout';
 import LoginView from './views/LoginView';
 // import DashboardView from './views/DashboardView';
 // import EmployeesView from './views/EmployeesView';
+// import PermissionView from './views/PermissionView';
+// import LeaveView from './views/LeaveView';
+// import ReportView from './views/ReportView';
 
 function App() {
   // State quản lý việc tab nào đang được chọn
