@@ -45,3 +45,8 @@ cd fe
 
 # Xoá các thư viện không cần thiết
   - npm uninstall <tên-thư-viện-1> <tên-thư-viện-2>
+  
+# Start frontend khi không có node, npm, npx
+  - GitHub -> Repos -> Actions -> Click on a specific workflow -> Scroll down -> Download artifacts folder
+  - Unzip -> Copy to {project_path}/frontend/
+  - Run "python -m http.server 3000" -> Open browser -> Access "http://localhost:3000"
