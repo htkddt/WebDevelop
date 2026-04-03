@@ -1,7 +1,6 @@
 import React from 'react';
 import Leftbar from '../components/Leftbar';
 import Topbar from '../components/Topbar';
-import './../styles/App.css';
 
 export const MainLayout = ({ children, activeTab, onSelect }) => {
   return (
@@ -9,8 +8,10 @@ export const MainLayout = ({ children, activeTab, onSelect }) => {
       {/* Bên trên: Topbar cố định */}
         <Topbar activeTab={activeTab} onSelect={onSelect} />
         <div className="app-main">
-          {/* Bên trái: Leftbar cố định */}
+          <aside className="leftbar"> 
+            {/* Bên trái: Leftbar cố định */}
             <Leftbar activeTab={activeTab} onSelect={onSelect} />
+          </aside>
           <main className="app-content">
             {/* Bên phải: Vùng trắng full màn hình còn lại */}
               {children}
