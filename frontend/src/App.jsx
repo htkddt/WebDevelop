@@ -9,7 +9,6 @@ import LoginView from './views/LoginView';
 // import ReportView from './views/ReportView';
 
 function App() {
-  // State quản lý việc tab nào đang được chọn
   const [activeTab, setActiveTab] = useState(null);
 
   // Hàm render nội dung linh hoạt

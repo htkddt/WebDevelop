@@ -7,14 +7,14 @@
 }
 
 .layout-body {
-  display: flex; /* Xếp Leftbar và Content nằm cạnh nhau theo chiều ngang */
-  flex: 1;       /* Chiếm toàn bộ phần chiều cao còn lại sau khi trừ Topbar */
+  display: flex;
+  flex: 1;
   overflow: hidden;
 }
 
 .layout-content {
-  flex: 1;       /* Chiếm toàn bộ chiều rộng còn lại bên phải Leftbar */
-  overflow-y: auto; /* Chỉ cho phép cuộn nội dung ở đây */
+  flex: 1;
+  overflow-y: auto;
   padding: 25px;
   background-color: #ffffff;
   align-items: center;
