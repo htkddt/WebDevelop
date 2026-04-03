@@ -1,5 +1,5 @@
 .topbar {
-  height: 70px;
+  height: 80px;
   width: 100%;
   background-color: #ffffff;
   display: flex;
@@ -20,7 +20,8 @@
 .topbar-logo {
   width: 100px;
   height: auto;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .topbar-brand {
