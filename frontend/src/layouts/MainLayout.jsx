@@ -5,15 +5,13 @@ import Topbar from '../components/Topbar';
 export const MainLayout = ({ children, activeTab, onSelect }) => {
   return (
     <div className="app-wrapper">
-      {/* Bên trái: Leftbar cố định */}
-      <Leftbar activeTab={activeTab} onSelect={onSelect} />
-
-        <div className="app-main">
-        {/* Bên trên: Topbar cố định */}
+      {/* Bên trên: Topbar cố định */}
         <Topbar activeTab={activeTab} onSelect={onSelect} />
-
-          {/* Bên phải: Vùng trắng full màn hình còn lại */}
+        <div className="app-main">
+          {/* Bên trái: Leftbar cố định */}
+          <Leftbar activeTab={activeTab} onSelect={onSelect} />
           <main className="main-content">
+            {/* Bên phải: Vùng trắng full màn hình còn lại */}
             {children}
           </main>
         </div>

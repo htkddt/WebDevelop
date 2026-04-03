@@ -15,7 +15,7 @@ const Topbar = () => {
       {/* PHẦN GIỮA: Thanh tìm kiếm */}
       <div className="topbar-center">
         <div className="search-wrapper">
-          <Search size={18} className="search-icon" />
+          <Search size={20} className="search-icon" />
           <input type="text" placeholder="Search something..." className="search-input" />
         </div>
       </div>
@@ -28,7 +28,7 @@ const Topbar = () => {
         </button>
 
         <div className="language-selector">
-          <Globe size={18} />
+          <Globe size={20} />
           <select className="lang-select">
             <option value="en">EN</option>
             <option value="vi">VI</option>
@@ -37,7 +37,7 @@ const Topbar = () => {
 
         <div className="user-profile">
           <div className="user-info">
-            <span className="user-name">TERRALOGIC</span>
+            <span className="user-name">Login</span>
             <div className="user-avatar-wrapper">
                <User size={20} />
                <span className="online-status"></span>

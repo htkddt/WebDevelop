@@ -17,8 +17,9 @@
 }
 
 .topbar-logo {
-  height: 40px;
-  width: auto;
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
 }
 
 .topbar-brand {
