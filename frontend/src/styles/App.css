@@ -14,8 +14,8 @@
 }
 
 .app-main {
-  flex: 1; /* Chiếm nốt phần chiều cao còn lại của màn hình */
   display: flex; /* Xếp Sidebar và Content nằm cạnh nhau */
+  flex: 1; /* Chiếm nốt phần chiều cao còn lại của màn hình */
   overflow: hidden;
 }
 
