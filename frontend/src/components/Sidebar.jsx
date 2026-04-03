@@ -1,5 +1,5 @@
 import React from 'react';
-import LogoImg from './../assets/logo.png';
+import LogoImg from './../assets/Logo.png';
 import './../styles/Sidebar.css';
 import { LayoutDashboard, Users, LogOut, ShieldCheck, CalendarOff, FileChartColumn, Settings } from 'lucide-react';
 
