@@ -1,9 +1,7 @@
 import React from 'react';
 import LogoImg from './../assets/Logo.png';
-import './../styles/Sidebar.css';
+import './../styles/Leftbar.css';
 import { LayoutDashboard, Users, LogOut, ShieldCheck, CalendarOff, FileChartColumn, Settings } from 'lucide-react';
-
-// Test source
 
 const menuData = [
   { id: 'Dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
@@ -13,32 +11,32 @@ const menuData = [
   { id: 'Report', label: 'Report', icon: <FileChartColumn size={20} /> },
 ];
 
-export const Sidebar = ({ activeTab, onSelect }) => {
+export const Leftbar = ({ activeTab, onSelect }) => {
   return (
-    <aside className="sidebar">
-      <div className="sidebar-header">
-        <img src={LogoImg} alt="Logo" className="sidebar-logo-img" />
-        <span className="sidebar-brand-name">179FC</span>
+    <aside className="leftbar">
+      <div className="leftbar-header">
+        <img src={LogoImg} alt="Logo" className="leftbar-logo-img" />
+        <span className="leftbar-brand-name">179FC</span>
       </div>
       <nav style={{ flex: 1 }}>
         {menuData.map(item => (
           <div
             key={item.id}
-            className={`sidebar-item ${activeTab === item.id ? 'active' : ''}`}
+            className={`leftbar-item ${activeTab === item.id ? 'active' : ''}`}
             onClick={() => onSelect(item.id)}
           >
             {item.icon} {item.label}
           </div>
         ))}
       </nav>
-      <div className="sidebar-item" onClick={() => onSelect(null)}>
+      <div className="leftbar-item" onClick={() => onSelect(null)}>
         <Settings size={20} /> Setting
       </div>
-      <div className="sidebar-item" onClick={() => onSelect(null)}>
+      <div className="leftbar-item" onClick={() => onSelect(null)}>
         <LogOut size={20} /> Logout
       </div>
     </aside>
   );
 };
 
-export default Sidebar;
+export default Leftbar;

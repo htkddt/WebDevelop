@@ -1,4 +1,4 @@
-.sidebar {
+.leftbar {
   width: 260px;
   background-color: #ffd0d0;
   height: 100%;
@@ -8,26 +8,26 @@
   flex-direction: column;
 }
 
-.sidebar-header {
+.leftbar-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 40px;
 }
 
-.sidebar-logo-img {
+.leftbar-logo-img {
   width: 100px;
   height: auto;
   margin-bottom: 10px;
 }
 
-.sidebar-brand-name {
+.leftbar-brand-name {
   font-size: 32px;
   font-weight: bold;
   letter-spacing: 1px;
 }
 
-.sidebar-item {
+.leftbar-item {
   padding: 12px 15px;
   margin: 5px 0;
   border-radius: 10px;
@@ -39,8 +39,8 @@
   transition: 0.3s;
 }
 
-.sidebar-item:hover,
-.sidebar-item.active {
+.leftbar-item:hover,
+.leftbar-item.active {
   background: rgba(231, 57, 57, 0.1);
   color: black;
 }

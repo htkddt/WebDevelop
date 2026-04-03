@@ -1,11 +1,11 @@
 import React from 'react';
-import Sidebar from '../components/Sidebar';
+import Leftbar from '../components/Leftbar';
 
 export const MainLayout = ({ children, activeTab, onSelect }) => {
   return (
     <div className="app-container">
-      {/* Bên trái: Sidebar cố định */}
-      <Sidebar activeTab={activeTab} onSelect={onSelect} />
+      {/* Bên trái: Leftbar cố định */}
+      <Leftbar activeTab={activeTab} onSelect={onSelect} />
 
       {/* Bên phải: Vùng trắng full màn hình còn lại */}
       <main className="main-content">
