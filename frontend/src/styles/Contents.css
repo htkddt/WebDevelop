@@ -1,0 +1,17 @@
+:root {
+  --sidebar-bg: #1e1e2d;
+  --main-bg: #f4f5f7;
+  --primary: #4f46e5;
+  --text-gray: #a2a2c1;
+}
+
+.app-content {
+  flex: 1;
+  background-color: #ffffff;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+}

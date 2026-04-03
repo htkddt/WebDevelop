@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './styles/App.css';
+import './styles/Contents.css';
 import MainLayout from './layouts/MainLayout';
 import LoginView from './views/LoginView';
 // import DashboardView from './views/DashboardView';

@@ -8,19 +8,6 @@
   flex-direction: column;
 }
 
-/* .leftbar-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 40px;
-} */
-
-/* .leftbar-logo-img {
-  width: 100px;
-  height: auto;
-  margin-bottom: 10px;
-} */
-
 .leftbar-brand-name {
   font-size: 32px;
   font-weight: bold;
