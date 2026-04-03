@@ -24,4 +24,5 @@ dist-ssr
 *.sw?
 
 # Build folder
-frontend-build
+frontend-*
+release/
