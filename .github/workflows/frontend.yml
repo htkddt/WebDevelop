@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     # 🔥 Chỉ chạy khi push branch (git push origin <branch_name>)
+    if: github.ref_type == 'branch'
 
     defaults:
       run:
