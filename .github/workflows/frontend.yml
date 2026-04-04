@@ -48,7 +48,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
-    # 🔥 Chỉ chạy khi push tag (git push origin <branch_name> --tags)
+    # 🔥 Chỉ chạy khi push tag (git push origin <tag_name>)
     if: github.ref_type == 'tag'
 
     defaults:

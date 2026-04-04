@@ -51,3 +51,9 @@ cd fe
   - Unzip -> Copy to {project_path}/frontend/
   - Access to build folder (./frontend/<build_folder>)
   - Run "python -m http.server 3000" -> Open browser -> Access "http://localhost:3000"
+  
+# Best practice of the workflow:
+  - Build: git push origin master
+  - Release:
+	+ git tag v1.0.0
+	+ git push origin v1.0.0
