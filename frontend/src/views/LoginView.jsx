@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './../styles/Login.css';
 import { Eye, EyeOff } from 'lucide-react';
 
-// Icon mắt (Mô phỏng đơn giản)
 const EyeIcon = ({ show }) => (
   <span style={{ fontSize: '1.2rem', color: '#9ca3af', cursor: 'pointer' }}>
     {show ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -14,18 +13,12 @@ export const LoginView = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  // Hàm đảo ngược trạng thái ẩn/hiện
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <div className="login-page-wrapper">
       <div className="login-card">
         <h2 className="login-title">Login to your account</h2>
 
         <form className="login-form">
-          {/* Email field */}
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -39,7 +32,6 @@ export const LoginView = () => {
             />
           </div>
 
-          {/* Password field */}
           <div className="form-group">
             <div className="password-label-wrapper">
               <label htmlFor="password">Password</label>
@@ -65,13 +57,11 @@ export const LoginView = () => {
             </div>
           </div>
 
-          {/* Submit button */}
           <button type="submit" className="login-submit-btn">
             Login now
           </button>
         </form>
 
-        {/* Signup link */}
         <p className="signup-text">
           Don't Have An Account ? <a href="#" className="signup-link">Sign Up</a>
         </p>

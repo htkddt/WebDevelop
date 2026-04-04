@@ -1,18 +1,18 @@
 import React from 'react';
-import { Search, Bell, Globe, User, LogIn } from 'lucide-react';
+import { Search, Bell, Globe, User } from 'lucide-react';
 import './../styles/Topbar.css';
+import './../styles/Users.css';
+import './../styles/Search.css';
 import LogoImg from './../assets/Logo.png';
 
 const Topbar = () => {
   return (
     <header className="topbar">
-      {/* PHẦN TRÁI: Logo */}
       <div className="topbar-left">
         <img src={LogoImg} alt="179FC Logo" className="topbar-logo" />
         <span className="topbar-brand">179FC</span>
       </div>
 
-      {/* PHẦN GIỮA: Thanh tìm kiếm */}
       <div className="topbar-center">
         <div className="search-wrapper">
           <Search size={20} className="search-icon" />
@@ -20,7 +20,6 @@ const Topbar = () => {
         </div>
       </div>
 
-      {/* PHẦN PHẢI: Icons, Ngôn ngữ, Login */}
       <div className="topbar-right">
         <button className="icon-btn">
           <Bell size={20} />
@@ -29,7 +28,7 @@ const Topbar = () => {
 
         <div className="language-selector">
           <Globe size={20} />
-          <select className="lang-select">
+          <select className="language-select">
             <option value="en">EN</option>
             <option value="vi">VI</option>
           </select>
@@ -39,8 +38,8 @@ const Topbar = () => {
           <div className="user-info">
             <span className="user-name">Login</span>
             <div className="user-avatar-wrapper">
-               <User size={20} />
-               <span className="online-status"></span>
+              <User size={20} />
+              <span className="online-status"></span>
             </div>
           </div>
         </div>

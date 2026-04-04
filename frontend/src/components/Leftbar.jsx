@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './../styles/Leftbar.css';
-import { LayoutDashboard, Users, LogOut, ShieldCheck, CalendarOff, FileChartColumn, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, LogOut, ShieldCheck, CalendarOff, FileChartColumn, Settings, Menu, X } from 'lucide-react';
 
 const menuData = [
   { id: 'Dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
@@ -11,8 +11,17 @@ const menuData = [
 ];
 
 export const Leftbar = ({ activeTab, onSelect }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <aside className="leftbar">
+    <aside className={`leftbar ${isExpanded ? 'expanded' : 'collapsed'}`}>
+      <div className="leftbar-toggle-btn" onClick={toggleSidebar}>
+        {isExpanded ? <X size={24} /> : <Menu size={24} />}
+      </div>
       <nav style={{ flex: 1 }}>
         {menuData.map(item => (
           <div
@@ -20,15 +29,18 @@ export const Leftbar = ({ activeTab, onSelect }) => {
             className={`leftbar-item ${activeTab === item.id ? 'active' : ''}`}
             onClick={() => onSelect(item.id)}
           >
-            {item.icon} {item.label}
+            {item.icon}
+            {isExpanded && <span className="leftbar-label">{item.label}</span>}
           </div>
         ))}
       </nav>
       <div className="leftbar-item" onClick={() => onSelect(null)}>
-        <Settings size={20} /> Setting
+        <Settings size={20} />
+        {isExpanded && <span className="leftbar-label">Setting</span>}
       </div>
       <div className="leftbar-item" onClick={() => onSelect(null)}>
-        <LogOut size={20} /> Logout
+        <LogOut size={20} />
+        {isExpanded && <span className="leftbar-label">Logout</span>}
       </div>
     </aside>
   );

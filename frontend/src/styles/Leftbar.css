@@ -1,11 +1,37 @@
 .leftbar {
-  width: 260px;
-  background-color: #ffd0d0;
+  background-color: white;
   height: 100%;
   color: black;
   padding: 20px;
   display: flex;
   flex-direction: column;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.leftbar.expanded {
+  width: 260px;
+  padding: 20px;
+}
+
+.leftbar.collapsed {
+  width: 100px;
+  padding: 20px 10px;
+  align-items: center;
+}
+
+.leftbar-toggle-btn {
+  cursor: pointer;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  color: #333;
+}
+
+.leftbar.collapsed .leftbar-toggle-btn {
+  justify-content: center;
 }
 
 .leftbar-brand-name {
@@ -23,11 +49,23 @@
   align-items: center;
   gap: 12px;
   color: black;
+  white-space: nowrap;
   transition: 0.3s;
+}
+
+.leftbar.collapsed .leftbar-item {
+  justify-content: center;
+  padding: 12px 15px;
+  gap: 0;
+}
+
+.leftbar-label {
+  font-weight: 500;
+  animation: fadeIn 0.3s;
 }
 
 .leftbar-item:hover,
 .leftbar-item.active {
-  background: rgba(231, 57, 57, 0.1);
+  background-color: rgb(255, 120, 120);
   color: black;
 }

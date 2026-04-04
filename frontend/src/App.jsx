@@ -11,7 +11,6 @@ import LoginView from './views/LoginView';
 function App() {
   const [activeTab, setActiveTab] = useState(null);
 
-  // Hàm render nội dung linh hoạt
   const renderView = () => {
     switch (activeTab) {
       case 'Dashboard':
