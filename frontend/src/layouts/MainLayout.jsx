@@ -1,16 +1,17 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Leftbar from '../components/Leftbar';
 import Topbar from '../components/Topbar';
 import './../styles/Frames.css';
 
-export const MainLayout = ({ children, activeTab, onSelect }) => {
+export const MainLayout = () => {
   return (
     <div className="layout-container">
-      <Topbar activeTab={activeTab} onSelect={onSelect} />
+      <Topbar />
       <div className="layout-body">
-        <Leftbar activeTab={activeTab} onSelect={onSelect} />
+        <Leftbar />
         <main className="layout-content">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>

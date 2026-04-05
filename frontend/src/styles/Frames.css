@@ -15,7 +15,6 @@
 .layout-content {
   flex: 1;
   overflow-y: auto;
-  padding: 25px;
   background-color: #ffffffee;
   align-items: center;
   justify-content: center;

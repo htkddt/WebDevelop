@@ -50,6 +50,30 @@ body {
   gap: 1.5rem;
 }
 
+.login-submit-btn {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background-color: #1d4ed8;
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: 2px solid transparent;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.login-submit-btn:hover {
+  background-color: #1e40af;
+}
+
+.login-submit-btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.5);
+}
+
 .form-group label {
   display: block;
   font-size: 0.875rem;
@@ -78,12 +102,6 @@ body {
   box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.5);
 }
 
-.password-label-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .forgot-link {
   font-size: 0.875rem;
   font-weight: 600;
@@ -99,11 +117,17 @@ body {
   position: relative;
 }
 
+.password-label-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .password-input {
   padding-right: 3rem;
 }
 
-.toggle-password-btn {
+.password-toggle-btn {
   position: absolute;
   top: 50%;
   right: 1rem;
@@ -115,30 +139,6 @@ body {
 
 input::-ms-reveal {
   display: none;
-}
-
-.login-submit-btn {
-  width: 100%;
-  padding: 1rem 1.5rem;
-  background-color: #1d4ed8;
-  color: #ffffff;
-  font-size: 1.125rem;
-  font-weight: 700;
-  border: 2px solid transparent;
-  border-radius: 0.75rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.login-submit-btn:hover {
-  background-color: #1e40af;
-}
-
-.login-submit-btn:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.5);
 }
 
 .signup-text {

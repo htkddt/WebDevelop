@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import './../styles/Leftbar.css';
+import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, Users, LogOut, ShieldCheck, CalendarOff, FileChartColumn, Settings, Menu, X } from 'lucide-react';
+import './../styles/Leftbar.css';
 
-const menuData = [
-  { id: 'Dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-  { id: 'Employees', label: 'Employees', icon: <Users size={20} /> },
-  { id: 'Permission', label: 'Permissions', icon: <ShieldCheck size={20} /> },
-  { id: 'Leave', label: 'Leave', icon: <CalendarOff size={20} /> },
-  { id: 'Report', label: 'Report', icon: <FileChartColumn size={20} /> },
+const menuData = [,
+  { id: 'Dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
+  { id: 'Employees', label: 'Employees', icon: <Users size={20} />, path: '/employees' },
+  { id: 'Permission', label: 'Permissions', icon: <ShieldCheck size={20} />, path: '/permissions' },
+  { id: 'Leave', label: 'Leave', icon: <CalendarOff size={20} />, path: '/leave' },
+  { id: 'Report', label: 'Report', icon: <FileChartColumn size={20} />, path: '/report' },
 ];
 
-export const Leftbar = ({ activeTab, onSelect }) => {
+export const Leftbar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleSidebar = () => {
@@ -24,24 +25,30 @@ export const Leftbar = ({ activeTab, onSelect }) => {
       </div>
       <nav style={{ flex: 1 }}>
         {menuData.map(item => (
-          <div
+          <NavLink
             key={item.id}
-            className={`leftbar-item ${activeTab === item.id ? 'active' : ''}`}
-            onClick={() => onSelect(item.id)}
+            to={item.path}
+            className={({ isActive }) => `leftbar-item ${isActive ? 'active' : ''}`}
           >
             {item.icon}
             {isExpanded && <span className="leftbar-label">{item.label}</span>}
-          </div>
+          </NavLink>
         ))}
       </nav>
-      <div className="leftbar-item" onClick={() => onSelect(null)}>
+      <NavLink
+        to="/settings"
+        className={({ isActive }) => `leftbar-item ${isActive ? 'active' : ''}`}
+      >
         <Settings size={20} />
         {isExpanded && <span className="leftbar-label">Setting</span>}
-      </div>
-      <div className="leftbar-item" onClick={() => onSelect(null)}>
+      </NavLink>
+      <NavLink
+        to="/login"
+        className={({ isActive }) => `leftbar-item ${isActive ? 'active' : ''}`}
+      >
         <LogOut size={20} />
         {isExpanded && <span className="leftbar-label">Logout</span>}
-      </div>
+      </NavLink>
     </aside>
   );
 };

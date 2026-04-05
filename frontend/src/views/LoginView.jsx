@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './../styles/Login.css';
+import '../styles/Login.css';
 import { Eye, EyeOff } from 'lucide-react';
 
 const EyeIcon = ({ show }) => (
@@ -49,7 +49,7 @@ export const LoginView = () => {
               />
               <button
                 type="button"
-                className="toggle-password-btn"
+                className="password-toggle-btn"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 <EyeIcon show={showPassword} />
