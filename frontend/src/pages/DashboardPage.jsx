@@ -1,4 +1,3 @@
-import React from 'react';
 import DashboardView from '../views/DashboardView';
 
 const DashboardPage = () => {

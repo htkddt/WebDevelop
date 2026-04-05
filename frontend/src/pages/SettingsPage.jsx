@@ -1,4 +1,3 @@
-import React from 'react';
 import SettingsView from '../views/SettingsView';
 
 const SettingsPage = () => {

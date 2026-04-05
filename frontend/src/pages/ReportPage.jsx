@@ -1,4 +1,3 @@
-import React from 'react';
 import ReportView from '../views/ReportView';
 
 const ReportPage = () => {

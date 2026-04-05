@@ -1,4 +1,3 @@
-import React from 'react';
 import { Search, Bell, Globe, User } from 'lucide-react';
 import './../styles/Topbar.css';
 import './../styles/Users.css';

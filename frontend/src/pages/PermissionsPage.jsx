@@ -1,4 +1,3 @@
-import React from 'react';
 import PermissionsView from '../views/PermissionsView';
 
 const PermissionsPage = () => {

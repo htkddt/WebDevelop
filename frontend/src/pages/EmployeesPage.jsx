@@ -1,4 +1,3 @@
-import React from 'react';
 import EmployeesView from '../views/EmployeesView';
 
 const EmployeesPage = () => {

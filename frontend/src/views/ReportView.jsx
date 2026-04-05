@@ -1,4 +1,3 @@
-import React from 'react';
 import '../styles/Contents.css';
 // import '../styles/Report.css';
 

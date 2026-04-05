@@ -1,4 +1,3 @@
-import React from 'react';
 import LoginView from '../views/LoginView';
 import './../styles/Login.css';
 

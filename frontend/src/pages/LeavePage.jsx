@@ -1,4 +1,3 @@
-import React from 'react';
 import LeaveView from '../views/LeaveView';
 
 const LeavePage = () => {
