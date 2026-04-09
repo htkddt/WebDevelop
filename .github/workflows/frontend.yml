@@ -3,24 +3,40 @@ name: Build Frontend
 on:
   push:
     branches: [main, master]
-    paths:
-      - 'frontend/**'
-    tags:
-      - 'v*'
-  pull_request:
-    paths:
-      - 'frontend/**'
+    tags: ['v*']
+    paths: ['frontend/**']
+  # pull_request:
+  #   paths: ['frontend/**']
+
+permissions: 
+  contents: read
+
+concurrency: 
+  group: frontend-${{ github.ref }} 
+  cancel-in-progress: true
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     include:
+    #       - os: ubuntu-latest
+    #         label: linux-amd64
+    #       - os: ubuntu-24.04-arm
+    #         label: linux-arm64
+    #       - os: macos-14
+    #         label: darwin-arm64
+    # runs-on: ${{ matrix.os }}
 
     # 🔥 Chỉ chạy khi push branch (git push origin <branch_name>)
-    if: github.ref_type == 'branch'
+    # if: github.ref_type == 'branch'
 
-    defaults:
-      run:
-        working-directory: frontend
+    # defaults:
+    #   run:
+    #     working-directory: frontend
+
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -45,72 +61,121 @@ jobs:
           name: frontend-build
           path: frontend/dist
 
-  release:
+  auto-tag:
+    needs: build
     runs-on: ubuntu-latest
 
-    # 🔥 Chỉ chạy khi push tag (git push origin <tag_name>)
-    if: github.ref_type == 'tag'
+    # 🔥 Chỉ chạy khi push branch
+    # if: github.ref_type == 'branch' && github.event_name == 'push'
 
-    defaults:
-      run:
-        working-directory: frontend
+    permissions:
+      contents: write
+
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      created: ${{ steps.tag.outputs.created }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # Cần để lấy tag
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 14
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Generate version
-        id: version
-        shell: bash
+          fetch-depth: 0
+      
+      - id: tag
         run: |
           echo "🔍 Detecting version..."
+          git fetch --tags
 
-          # Nếu commit có tag
+          # 🔥 Nếu dev push tag v1.1.0 → convert thành beta
           if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-            VERSION="${GITHUB_REF#refs/tags/v}"
-            echo "✅ Found tag: $VERSION"
+            BASE="${GITHUB_REF#refs/tags/v}"
           else
             # Lấy tag gần nhất
-            LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+            LAST=$(git tag -l "v*" | sort -V | tail -1)
 
-            if [[ -z "$LAST_TAG" ]]; then
-              VERSION="0.1.0-beta.1"
-              echo "⚠️ No tag found → $VERSION"
+            if [[ -z "$LAST" ]]; then
+              BASE="0.1.0"
             else
-              BASE="${LAST_TAG#v}"
-
-              if [[ "$BASE" == *-beta.* ]]; then
-                PREFIX="${BASE%-beta.*}"
-                NUM="${BASE##*-beta.}"
-                NEXT=$((NUM + 1))
-                VERSION="${PREFIX}-beta.${NEXT}"
-              else
-                VERSION="${BASE}-beta.1"
-              fi
-
-              echo "📦 From last tag $LAST_TAG → $VERSION"
+              BASE="${LAST#v}"
             fi
           fi
 
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          # 🔥 Strip beta nếu có
+          if [[ "$BASE" == *-beta.* ]]; then
+            PREFIX="${BASE%-beta.*}"
+          else
+            PREFIX="$BASE"
+          fi
 
-      - name: Install dependencies
-        run: npm ci
+          PREFIX="${PREFIX}-beta"
 
-      - name: Build
-        run: npm run build
+          # 🔥 Tìm số beta lớn nhất
+          HIGHEST=$(git tag -l "v${PREFIX}.*" | sed "s/^v${PREFIX}\.//" | sort -n | tail -1)
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+          if [[ -z "$HIGHEST" ]]; then
+            NEXT=1
+          else
+            NEXT=$((HIGHEST + 1))
+          fi
+
+          TAG="v${PREFIX}.${NEXT}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git tag "$TAG"
+          git push origin "$TAG"
+
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "created=true" >> $GITHUB_OUTPUT
+
+  release:
+    needs: [build, auto-tag]
+    runs-on: ubuntu-latest
+
+    # 🔥 Chỉ chạy khi push tag (git push origin <tag_name>)
+    # if: github.ref_type == 'tag'
+
+    # 🔥 Chạy khi:
+    # git push origin <tag_name>
+    # auto-tag done
+    if: startsWith(github.ref, 'refs/tags/v') || needs.auto-tag.outputs.created == 'true'
+
+    permissions:
+      contents: write
+
+    # defaults:
+    #   run:
+    #     working-directory: frontend
+
+    steps:
+      - uses: actions/download-artifact@v4
         with:
-          name: frontend-release-${{ steps.version.outputs.version }}
-          path: frontend/dist
+          path: dist
+          pattern: frontend-build-${{ github.run_id }}
+          merge-multiple: true
+
+      - name: Resolve tag
+        id: tag
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            TAG="${GITHUB_REF_NAME}"
+          else
+            TAG="${{ needs.auto-tag.outputs.tag }}"
+          fi
+
+          VER="${TAG#v}"
+
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VER" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          files: dist/**
+
+          # 🔥 Beta nếu có dấu "-"
+          prerelease: ${{ contains(steps.tag.outputs.version, '-') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
