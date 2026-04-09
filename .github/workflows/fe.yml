@@ -1,0 +1,42 @@
+name: Build Fe
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*']
+    paths: ['fe/**', '.github/workflows/fe.yml']
+  # pull_request:
+  #   paths: ['frontend/**']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Matrix: Test trên nhiều version Node.js
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x, 24.x]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: fe/package-lock.json
+
+      - name: Install dependencies
+        run: cd fe && npm ci
+
+      - name: Build
+        run: cd fe && npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fe-build
+          path: fe/dist
+
