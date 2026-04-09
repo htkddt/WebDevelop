@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import PermissionsView from '../views/PermissionsView';
 
 const PermissionsPage = () => {
@@ -6,9 +7,24 @@ const PermissionsPage = () => {
   //   console.log("Login data:", data);
   // };
 
-  return (<div className="app-content">
-    <PermissionsView />
-  </div>
+  const [roles, setRoles] = useState([]);
+  const [loading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Call API
+    fetch('http://localhost:5000/api/permissions')
+      .then(res => res.json())
+      .then(data => {
+        setRoles(data);
+        setIsLoading(false);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  return (
+    <div className="app-content">
+      <PermissionsView roles={roles} loading={loading} />
+    </div>
   );
 };
 

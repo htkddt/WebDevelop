@@ -29,14 +29,52 @@
 }
 
 .topbar-logo {
-  width: 100px;
+  width: 80px;
   height: auto;
   margin-bottom: 5px;
   margin-top: 5px;
 }
 
 .topbar-brand {
-  font-size: 24px;
+  font-size: 36px;
   font-weight: 800;
   color: #1a1a1a;
+}
+
+.topbar-icon-btn {
+  background: none;
+  border: 1px solid #eee;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  color: #555;
+}
+
+.topbar-notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: #ff4d4d;
+  border-radius: 50%;
+}
+
+
+.topbar-language-selector {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid #eee;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.topbar-language-select {
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
 }

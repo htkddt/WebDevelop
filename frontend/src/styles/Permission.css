@@ -1,0 +1,30 @@
+.permissions-container {
+  padding: 20px;
+}
+
+.permissions-role-list {
+  margin-top: 20px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.permissions-role-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.permissions-role-dot {
+  width: 10px;
+  height: 10px;
+  background: #ff4d4f;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.permissions-role-name {
+  font-weight: 500;
+  color: #333;
+}

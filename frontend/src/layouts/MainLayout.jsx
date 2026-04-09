@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Leftbar from '../components/Leftbar';
 import Topbar from '../components/Topbar';
+import ChatWidget from '../components/ChatWidget';
 import './../styles/Frames.css';
 
 export const MainLayout = () => {
@@ -12,6 +13,7 @@ export const MainLayout = () => {
         <main className="layout-content">
           <Outlet />
         </main>
+        <ChatWidget />
       </div>
     </div>
   );

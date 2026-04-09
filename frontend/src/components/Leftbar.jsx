@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, LogOut, ShieldCheck, CalendarOff, FileChartColumn, Settings, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, HelpCircle, ShieldCheck, CalendarOff, FileChartColumn, Menu, X } from 'lucide-react';
 import './../styles/Leftbar.css';
 
 const menuData = [,
@@ -36,19 +36,19 @@ export const Leftbar = () => {
         ))}
       </nav>
       <NavLink
-        to="/settings"
+        to="/help"
         className={({ isActive }) => `leftbar-item ${isActive ? 'active' : ''}`}
       >
-        <Settings size={20} />
-        {isExpanded && <span className="leftbar-label">Setting</span>}
+        <HelpCircle size={20} />
+        {isExpanded && <span className="leftbar-label">Help</span>}
       </NavLink>
-      <NavLink
+      {/* <NavLink
         to="/login"
         className={({ isActive }) => `leftbar-item ${isActive ? 'active' : ''}`}
       >
         <LogOut size={20} />
         {isExpanded && <span className="leftbar-label">Logout</span>}
-      </NavLink>
+      </NavLink> */}
     </aside>
   );
 };

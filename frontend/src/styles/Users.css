@@ -1,15 +1,25 @@
-.user-profile {
+.user-profile-container {
+  position: relative;
   display: flex;
   align-items: center;
-  background-color: #f1f3f5;
-  padding: 5px 15px;
-  border-radius: 12px;
 }
 
-.user-info {
+.user-profile-trigger {
   display: flex;
   align-items: center;
   gap: 12px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  background-color: #fcfcfc;
+}
+
+.user-trigger-custom-logo {
+  height: 50px;
+  width: 50px;
+  object-fit: contain;
+  display: block;
 }
 
 .user-name {
@@ -26,7 +36,7 @@
   display: flex;
 }
 
-.online-status {
+.user-profile-online-status {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -37,39 +47,91 @@
   border-radius: 50%;
 }
 
-.icon-btn {
-  background: none;
-  border: 1px solid #eee;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  position: relative;
-  color: #555;
-}
-
-.notification-badge {
+.user-profile-popup {
   position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 8px;
-  height: 8px;
-  background-color: #ff4d4d;
-  border-radius: 50%;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 280px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid #eee;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
 }
 
-.language-selector {
+.user-profile-popup-header {
   display: flex;
   align-items: center;
-  gap: 5px;
-  border: 1px solid #eee;
-  padding: 5px 10px;
-  border-radius: 8px;
+  padding: 16px 20px;
+  gap: 12px;
 }
 
-.language-select {
-  border: none;
-  background: transparent;
+.user-profile-popup-avatar {
+  width: 45px;
+  height: 45px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info h4 {
+  margin: 0;
+  font-size: 15px;
   font-weight: 600;
-  outline: none;
+}
+
+.user-info p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #777;
+}
+
+.user-popup-divider {
+  height: 1px;
+  background: #f0f0f0;
+}
+
+.user-popup-item.logout {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.user-popup-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  font-size: 14px;
+  color: #444;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.user-popup-item:hover {
+  background-color: #f8f9fa;
+}
+
+.user-profile-trigger:hover {
+  background-color: #f0f0f0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

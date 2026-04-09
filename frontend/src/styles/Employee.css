@@ -1,0 +1,26 @@
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.employee-table-th {
+  background-color: #f8f9fa;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #eee;
+}
+
+.employee-table-td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.employee-status-badge.active {
+  color: green;
+  background: #e6ffed;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
