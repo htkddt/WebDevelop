@@ -39,5 +39,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: fe-build
-          path: fe/dist
+          path: fe/dist/*
 
