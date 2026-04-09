@@ -55,6 +55,10 @@ cd fe
 # Start backend với python_ai thì chỉ cần run app.py
   - python python_ai/server/app.py
   
+# Backend NodeJS không thể chạy như Frontend (Nó cần server để chạy realtime và nhận request từ Frontend)
+  - cd backend/
+  - npm run dev (Run with Nodemon)
+  
 # Best practice of the workflow:
   - Build: git push origin master
   - Release:
