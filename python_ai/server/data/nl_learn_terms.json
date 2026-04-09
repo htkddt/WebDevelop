@@ -1,0 +1,10 @@
+{
+  "schema": "nl_learn_terms_v2",
+  "terms": {
+    "today": {
+      "map": {
+        "ELK_ANALYTICS": 2
+      }
+    }
+  }
+}

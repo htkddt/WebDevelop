@@ -1,0 +1,2 @@
+# Optional: Mongo verification in tests/test_server.py (when stats.mongo_connected is true)
+pymongo>=4.6

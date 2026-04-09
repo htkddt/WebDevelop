@@ -1,0 +1,44 @@
+{
+    "schema": "nl_cue_v1",
+    "terms": {
+        "how many": {
+            "map": {
+                "ELK_ANALYTICS": 3,
+                "ELK_SEARCH": 0,
+                "RAG_VECTOR": 0,
+                "CHAT": 0
+            },
+            "tail_content": {
+                "*.products": {
+                    "count": 1,
+                    "shared_collection": "products",
+                    "ableMap": {
+                        
+                    }
+                },
+                "*.orders": {
+                    "count": 1
+                }
+            },
+            "tail_place": {
+                "country": "Vietnam",
+                "state": "California",
+                "city": "San Francisco",
+                "zip": "10001",
+                "my store": 1
+            },
+            "tail_time": {
+                "this year": 1,
+                "last year": 1,
+                "this month": 1,
+                "last month": 1,
+                "this week": 1,
+                "last week": 1,
+                "today": 1,
+                "yesterday": 1,
+                "fromDate": "2025-01-01",
+                "toDate": "2025-12-31"
+            }
+        }
+    }
+}

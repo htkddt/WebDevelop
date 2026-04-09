@@ -1,0 +1,22 @@
+# =============================================================================
+# Engine (libm4engine): prefer pip from git — small package that ships native/*.dylib or *.so.
+#
+#   pip install "m4engine-binary @ git+https://github.com/OWNER/REPO.git@TAG#subdirectory=python_ai/m4engine_binary_dist"
+#
+# Standalone binary-only repo (no subdirectory):
+#   pip install "m4engine-binary @ git+https://github.com/OWNER/m4engine-binary.git@v0.1.0"
+#
+# Local tree (after placing libm4engine.* in m4engine_binary_dist/m4engine_binary/native/):
+#   pip install ./m4engine_binary_dist
+#
+# Alternative: copy the .dylib/.so into python_ai/lib/ or libs/ (no pip).
+# Optional: make fetch-engine-lib — scripts/fetch_m4engine_lib.py
+#
+# Verify from python_ai/:  make check-engine-lib   or   make doctor
+# =============================================================================
+
+flask>=3.0.0
+flask-cors>=4.0.0
+PyJWT>=2.8.0
+pymongo>=4.6.0
+python-dotenv>=1.0.0
