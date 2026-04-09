@@ -98,7 +98,7 @@ jobs:
             LAST=$(git tag -l "v*" | sort -V | tail -1)
             echo "→ Push branch detected → finding latest beta tag"
             if [[ -z "$LAST" ]]; then
-              BASE="0.1.0"
+              BASE="1.0.0"
             else
               BASE="${LAST#v}"
             fi
