@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, master]
     tags: ['v*']
-    paths: ['frontend/**']
+    paths: ['frontend/**', '.github/workflows/frontend.yml']
   # pull_request:
   #   paths: ['frontend/**']
 
@@ -32,9 +32,10 @@ jobs:
     # 🔥 Chỉ chạy khi push branch (git push origin <branch_name>)
     # if: github.ref_type == 'branch'
 
-    defaults:
-      run:
-        working-directory: frontend
+    # Nếu không set default thì cần cd frontend kèm với các comment setup environment (cd frontend && npm ci)
+    # defaults:
+    #   run:
+    #     working-directory: frontend
 
     runs-on: ubuntu-latest
 
@@ -50,10 +51,10 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: cd frontend && npm ci
 
       - name: Build
-        run: npm run build
+        run: cd frontend && npm run build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -144,6 +145,7 @@ jobs:
     permissions:
       contents: write
 
+    # Không cần set default và không cần kèm cd frontend command vì release work trên artifact được tạo ra từ job build
     # defaults:
     #   run:
     #     working-directory: frontend
