@@ -8,3 +8,5 @@
 
 # Build folder
 python_ai-build/*
+__pycache__/
+*/__pycache__/
