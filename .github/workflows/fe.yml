@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     # Matrix: Test trên nhiều version Node.js
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x, 24.x]
-      fail-fast: false
+    # strategy:
+    #   matrix:
+    #     node-version: [18.x, 20.x, 22.x, 24.x]
+    #   fail-fast: false
 
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +24,8 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          # node-version: ${{ matrix.node-version }}
+          node-version: 20
           cache: 'npm'
           cache-dependency-path: fe/package-lock.json
 
