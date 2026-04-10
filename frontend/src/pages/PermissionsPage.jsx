@@ -7,18 +7,21 @@ const PermissionsPage = () => {
   //   console.log("Login data:", data);
   // };
 
-  const MOCK_DATA = ['Admin', 'Editor', 'Viewer'];
+  const MOCK_DATA = ['Null', 'Null', 'Null'];
 
   const [roles, setRoles] = useState([]);
-  const [loading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Call API
     fetch('http://localhost:5000/api/permissions')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Backend die rồi");
+        return res.json();
+      })
       .then(data => {
         setRoles(data);
-        setIsLoading(false);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Connection error Backend:", err);

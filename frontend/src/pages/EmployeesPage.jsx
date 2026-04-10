@@ -17,7 +17,10 @@ const EmployeesPage = () => {
   useEffect(() => {
     // Call API
     fetch('http://localhost:5000/api/employees')
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Backend die rồi");
+        return res.json();
+      })
       .then((data) => {
         setEmployees(data);
         setLoading(false);

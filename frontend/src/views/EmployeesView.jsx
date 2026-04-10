@@ -31,7 +31,7 @@ export const EmployeesView = ({ data, loading }) => {
               <td className="employee-table-td"><strong>{emp.name}</strong></td>
               <td className="employee-table-td">{emp.position}</td>
               <td className="employee-table-td">
-                <span className={`employee-status-badge ${emp.status.toLowerCase()}`}>
+                <span className={`employee-status-badge ${emp?.status?.toLowerCase() || "Null"}`}>
                   {emp.status}
                 </span>
               </td>

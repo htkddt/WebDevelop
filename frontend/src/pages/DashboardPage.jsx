@@ -16,19 +16,22 @@ const DashboardPage = () => {
   ];
 
   const [stats, setStats] = useState({});
-  const [loading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Call API
     fetch('http://localhost:5000/api/dashboard')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Backend die rồi");
+        return res.json();
+      })
       .then(data => {
         setStats(data);
-        setIsLoading(false);
+        setLoading(false);
       })
       .catch(err => {
         console.error("Connection error Backend:", err);
-        setPermissionData(MOCK_DATA);
+        setStats(MOCK_DATA);
         setLoading(false);
       });
   }, []);
