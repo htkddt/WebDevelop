@@ -1,0 +1,122 @@
+{
+  "collections": [
+    {
+      "collection": "products",
+      "alias": "store_products",
+      "public": [
+        "sku",
+        "name",
+        "price",
+        "quantity_available",
+        "category",
+        "image_url",
+        "published"
+      ],
+      "sensitive": [],
+      "metadata": {
+        "description": "Published catalog SKUs: pricing, stock, and category code for storefront and admin storage.",
+        "allow_prompt": true,
+        "field_hints": {
+          "sku": "Stable product code (unique).",
+          "category": "Category code; aligns with product_categories.code and distinct product.category.",
+          "quantity_available": "Stock on hand; guest checkout validates against this.",
+          "published": "If false, item is hidden from GET /api/store/products."
+        },
+        "sample_injection": 0
+      },
+      "elk": {
+        "allow": true,
+        "index": "",
+        "transform": false
+      },
+      "vector_engine": {
+        "allow": false,
+        "source_fields": [
+          "name",
+          "sku",
+          "category"
+        ],
+        "dim": 0,
+        "metric": "cosine",
+        "l1_cache": false,
+        "fallback_only": false
+      }
+    },
+    {
+      "collection": "carts",
+      "alias": "shopping_carts",
+      "public": [
+        "cart_key",
+        "lines",
+        "updated_at"
+      ],
+      "sensitive": [],
+      "metadata": {
+        "description": "Guest or user cart: resolved line items with sku, name, qty, unit_price.",
+        "allow_prompt": true,
+        "field_hints": {
+          "cart_key": "Stable cart id (guest header or user-derived key).",
+          "lines": "Array of {product_id, sku, name, qty, unit_price} after server validation.",
+          "updated_at": "Last save time (UTC)."
+        },
+        "sample_injection": 0
+      },
+      "elk": {
+        "allow": true,
+        "index": "",
+        "transform": false
+      },
+      "vector_engine": {
+        "allow": false,
+        "source_fields": [],
+        "dim": 0,
+        "metric": "cosine",
+        "l1_cache": false,
+        "fallback_only": false
+      },
+      "joins": [
+        {
+          "from": "lines.product_id",
+          "to_collection": "products",
+          "to_field": "_id",
+          "note": "Line items reference catalog documents by ObjectId string."
+        }
+      ]
+    },
+    {
+      "collection": "product_categories",
+      "alias": "product_categories",
+      "public": [
+        "code",
+        "name",
+        "active"
+      ],
+      "sensitive": [],
+      "metadata": {
+        "description": "Registry of catalog category codes (merged with distinct product.category in APIs).",
+        "allow_prompt": true,
+        "field_hints": {
+          "code": "Lowercase slug used on products.category.",
+          "active": "Inactive categories may still appear on old products; UI typically filters."
+        },
+        "sample_injection": 0
+      },
+      "elk": {
+        "allow": true,
+        "index": "",
+        "transform": false
+      },
+      "vector_engine": {
+        "allow": false,
+        "source_fields": [
+          "name",
+          "code"
+        ],
+        "dim": 0,
+        "metric": "cosine",
+        "l1_cache": false,
+        "fallback_only": false
+      }
+    }
+  ]
+}

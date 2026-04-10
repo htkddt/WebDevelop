@@ -52,6 +52,14 @@ cd fe
   - Access to build folder (./frontend/<build_folder>)
   - Run "python -m http.server 3000" -> Open browser -> Access "http://localhost:3000"
   
+# Setup environment for backend
+  - Read Makefile to know each step what them doing
+  - Cmd: 
+    + cd <backend_folder>/
+	+ make clean
+	+ make setup
+  - With Java or NestJS, the steps are the same as above  
+  
 # Start backend với python_ai thì chỉ cần run app.py
   - python python_ai/server/app.py
   
