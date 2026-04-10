@@ -1,5 +1,3 @@
 .env
 .env.*
 .venv/
-# Generated SharedCollection registry for c-lib (see shared_collection_catalog.ensure_shared_collection_registry_json_file)
-data/shared_collection_registry.json

@@ -61,7 +61,9 @@ cd fe
   - With Java or NestJS, the steps are the same as above  
   
 # Start backend với python_ai thì chỉ cần run app.py
-  - python python_ai/server/app.py
+  - cd python_ai/server/
+  - pip install -r requirements.txt
+  - python app.py
   
 # Backend NodeJS không thể chạy như Frontend (Nó cần server để chạy realtime và nhận request từ Frontend)
   - cd backend/
