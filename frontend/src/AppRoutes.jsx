@@ -12,10 +12,10 @@ import LoginPage from './pages/LoginPage';
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<Navigate to="/login" replace />} />
+    <Routes>      
       <Route element={<MainLayout />}>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/employees" element={<EmployeesPage />} />
         <Route path="/permissions" element={<PermissionsPage />} />
@@ -24,8 +24,8 @@ const AppRoutes = () => {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/assets" element={<AssetsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Route>
-      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };

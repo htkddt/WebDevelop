@@ -5,9 +5,10 @@ import './styles/Contents.css';
 
 function App() {
   return (
-    <Router>
-      <AppRoutes />
-    </Router>
+    // <Router>
+    //   <AppRoutes />
+    // </Router>
+    <AppRoutes />
   );
 }
 
