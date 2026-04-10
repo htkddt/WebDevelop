@@ -223,3 +223,6 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+
+      - name: Show deployed URL 
+        run: echo "🚀 Site URL: ${{ steps.deployment.outputs.page_url }}"
