@@ -37,5 +37,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: references-build
-          path: references/dist/*
+          path: references/fe/dist/*
 
