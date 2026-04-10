@@ -39,7 +39,6 @@ venv:
 
 install-py-deps: venv
 	$(PIP) install -r server/requirements.txt
-	$(PIP) install -r requirements-dev.txt
 
 check-engine-lib:
 	@if test -f lib/$(LIB_NAME) || test -f libs/$(LIB_NAME); then \
