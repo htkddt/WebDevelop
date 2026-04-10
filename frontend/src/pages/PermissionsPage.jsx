@@ -7,6 +7,8 @@ const PermissionsPage = () => {
   //   console.log("Login data:", data);
   // };
 
+  const MOCK_DATA = ['Admin', 'Editor', 'Viewer'];
+
   const [roles, setRoles] = useState([]);
   const [loading, setIsLoading] = useState(true);
 
@@ -18,7 +20,11 @@ const PermissionsPage = () => {
         setRoles(data);
         setIsLoading(false);
       })
-      .catch(err => console.error(err));
+      .catch((err) => {
+        console.error("Connection error Backend:", err);
+        setRoles(MOCK_DATA);
+        setLoading(false);
+      });
   }, []);
 
   return (

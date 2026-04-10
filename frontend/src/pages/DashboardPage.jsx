@@ -7,6 +7,14 @@ const DashboardPage = () => {
   //   console.log("Login data:", data);
   // };
 
+  const MOCK_DATA = [
+    {
+      "totalEmployees": -1,
+      "pendingLeave": -1,
+      "activeProjects": -1
+    }
+  ];
+
   const [stats, setStats] = useState({});
   const [loading, setIsLoading] = useState(true);
 
@@ -18,7 +26,11 @@ const DashboardPage = () => {
         setStats(data);
         setIsLoading(false);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error("Connection error Backend:", err);
+        setPermissionData(MOCK_DATA);
+        setLoading(false);
+      });
   }, []);
 
   return (

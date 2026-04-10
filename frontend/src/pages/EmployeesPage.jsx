@@ -7,6 +7,10 @@ const EmployeesPage = () => {
   //   console.log("Login data:", data);
   // };
 
+  const MOCK_DATA = [
+    { id: -1, name: "Null", role: "Null", email: "Null" }
+  ];
+
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,6 +24,7 @@ const EmployeesPage = () => {
       })
       .catch((err) => {
         console.error("Connection error Backend:", err);
+        setEmployees(MOCK_DATA);
         setLoading(false);
       });
   }, []);
