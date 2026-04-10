@@ -6,9 +6,10 @@ import App from './App'
 
 ReactDOM.render(
   <React.StrictMode>
-    <HashRouter> 
+    {/* <HashRouter> 
       <App /> 
-    </HashRouter>
+    </HashRouter> */}
+    <div>Test</div>
   </React.StrictMode>,
   document.getElementById('root')
 )
