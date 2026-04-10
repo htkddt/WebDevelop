@@ -7,7 +7,7 @@ export default defineConfig({
   base: '/WebDevelop/',
   server: {
     watch: {
-      usePolling: true, // Ép Vite kiểm tra file thay đổi liên tục
+      usePolling: true,
     },
     port: 3000,
   },
