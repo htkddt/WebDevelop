@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, Users, HelpCircle, ShieldCheck, CalendarOff, FileChartColumn, Menu, X } from 'lucide-react';
 import './../styles/Leftbar.css';
 
-const menuData = [,
+const menuData = [
   { id: 'Dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
   { id: 'Employees', label: 'Employees', icon: <Users size={20} />, path: '/employees' },
   { id: 'Permission', label: 'Permissions', icon: <ShieldCheck size={20} />, path: '/permissions' },

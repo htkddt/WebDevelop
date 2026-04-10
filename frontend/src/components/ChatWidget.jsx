@@ -33,7 +33,7 @@ const ChatWidget = () => {
     setTimeout(() => {
       const botReply = {
         id: Date.now() + 1,
-        text: 'Lêu lêu ní anh Klose bị dụ rồi, tui có dữ liệu đâu mà trả lời >..<',
+        text: 'Lêu lêu ní anh Klose bị dụ rồi, tui chưa có data ní ơi >..<',
         sender: 'bot'
       };
       setChatLog((prev) => [...prev, botReply]);
