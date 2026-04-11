@@ -4,6 +4,7 @@ import './../styles/ChatWidget.css';
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [message, setMessage] = useState('');
   const [chatLog, setChatLog] = useState([
     { id: 'welcome', text: 'Sao đấy ní, cần tui giúp gì à?', sender: 'bot' }
@@ -31,6 +32,7 @@ const ChatWidget = () => {
 
     setChatLog((prev) => [...prev, userMsg]);
     setMessage('');
+    setIsTyping(true);
 
     try {
       const response = await fetch(API_URL, {
@@ -58,6 +60,8 @@ const ChatWidget = () => {
         };
         setChatLog((prev) => [...prev, botReply]);
       }, 1000);
+    } finally {
+      setIsTyping(false);
     }
   };
 
@@ -76,6 +80,13 @@ const ChatWidget = () => {
               </div>
             </div>
           ))}
+          {isTyping && (
+            <div className="chat-message-row bot chat-typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          )}
         </div>
 
         <div className="chat-footer">

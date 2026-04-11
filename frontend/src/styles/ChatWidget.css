@@ -143,11 +143,11 @@
   box-shadow: 0 4px 15px rgba(255, 82, 82, 0.4);
   position: relative;
   float: right;
-  animation: pulse-animation 2s infinite;
+  animation: chat-fab-animation 2s infinite;
 }
 
 .chat-fab:hover {
-  animation: bounce 0.5s ease;
+  animation: chat-fab-bounce 0.5s ease;
   background-color: #e04141;
 }
 
@@ -163,7 +163,7 @@
   display: block;
 }
 
-@keyframes pulse-animation {
+@keyframes chat-fab-animation {
   0% {
     transform: scale(1);
     box-shadow: 0 4px 15px rgba(255, 82, 82, 0.4);
@@ -180,7 +180,7 @@
   }
 }
 
-@keyframes bounce {
+@keyframes chat-fab-bounce {
 
   0%,
   100% {
@@ -189,5 +189,46 @@
 
   50% {
     transform: translateY(-10px);
+  }
+}
+
+/* Container cho dấu chấm nhấp nháy */
+.chat-typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px !important;
+  /* Đè lại padding của bubble */
+  min-width: 50px;
+}
+
+.chat-typing-indicator span {
+  width: 6px;
+  height: 6px;
+  background-color: #90a4ae;
+  border-radius: 50%;
+  display: inline-block;
+  animation: chat-thinking-bounce 1.3s infinite ease-in-out;
+}
+
+/* Tạo độ trễ cho từng dấu chấm để tạo hiệu ứng sóng */
+.chat-typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.chat-typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes chat-thinking-bounce {
+
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1.0);
   }
 }
