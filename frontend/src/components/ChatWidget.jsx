@@ -8,6 +8,8 @@ const ChatWidget = () => {
   const [chatLog, setChatLog] = useState([
     { id: 'welcome', text: 'Sao đấy ní, cần tui giúp gì à?', sender: 'bot' }
   ]);
+  const API_URL = "https://webdevelop-gnyi.onrender.com/api/chat";
+  const API_LOCAL = "http://localhost:5000/api/dashboard";
   const chatBodyRef = useRef(null);
   useEffect(() => {
     if (chatBodyRef.current) {
@@ -30,7 +32,7 @@ const ChatWidget = () => {
     setMessage('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat', {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'type': 'json' },
         body: JSON.stringify({ contents: message }),
