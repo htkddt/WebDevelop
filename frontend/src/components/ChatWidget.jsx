@@ -45,7 +45,7 @@ const ChatWidget = () => {
       setChatLog((prev) => [...prev, botReply]);
 
     } catch (error) {
-      console.error("Connection error Backend:", err);
+      console.error("Connection error Backend:", error);
       // Set timeout response after 1 second
       setTimeout(() => {
         const botReply = {
