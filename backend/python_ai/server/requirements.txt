@@ -1,6 +1,6 @@
-Flask==3.1.3
-flask_cors==6.0.2
-protobuf==7.34.1
-python-dotenv==1.2.2
-google-generativeai==0.8.6
-gunicorn==25.3.0
+Flask
+flask_cors
+protobuf
+python-dotenv
+google-generativeai
+gunicorn
