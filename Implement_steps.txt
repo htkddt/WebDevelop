@@ -83,3 +83,10 @@ cd fe
 	+ Khai báo base cho vite.config.js trong hàm defineConfig({...}) phía dưới plugins ### (base: '/WebDevelop/',) ### Dùng repo_name, không dùng folder_name
 	+ Khai báo homepage cho package.json dưới version ### ("homepage": "https://htkddt.github.io/WebDevelop/") ### Định dạng url mặc định (https://.../repo_name/#/..) ### React sẽ route các url từ sau dấu '#'
 	+ Thêm phần xử lý trả mock data khi backend không có hoặc mất kết nối trong catch((err) => {...}) của mỗi useEffect(() => {...})
+
+# Create API_KEY for gemini model
+  - Access: aistudio.google.com
+  - Login
+  - In left bar, choose "Get API key"
+  - In top right, choose "Create API key"
+  - Typing name, keep "Default Gemini Project"

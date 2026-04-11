@@ -39,7 +39,7 @@ const ChatWidget = () => {
       const data = await response.json();
       const botReply = {
         id: Date.now() + 1,
-        text: data.reply,
+        text: data.header + data.reply,
         sender: 'bot'
       };
       setChatLog((prev) => [...prev, botReply]);

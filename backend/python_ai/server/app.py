@@ -1,9 +1,21 @@
+import os
+import google.generativeai as genai
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+_API_KEY_FILE_PATH = os.path.join(_BASE_DIR, "API_KEY_LOCAL.txt")
 
 # Allow Frontend (port 3000) call data from Backend (port 5000)
 app = Flask(__name__)
 CORS(app)
+# CORS(app, origins=["https://ten-cua-ni.github.io"])
+
+# Create gemini model
+with open(_API_KEY_FILE_PATH, "r", encoding="utf-8") as f:
+    API_KEY = f.readline().strip()
+genai.configure(api_key=API_KEY)
+model = genai.GenerativeModel('gemini-flash-latest')
 
 # --- Mock Data ---
 employees_data = [
@@ -22,11 +34,21 @@ dashboard_stats = {
 @app.route('/api/chat', methods=['POST'])
 def chat():
     header = request.headers.get("type")
-    data = request.json
+    data = request.get_json(force=True)
     msg = data.get("contents")
-    # Xử lý logic AI của ní ở đây...
-    return jsonify({"reply": "Tui đã nhận được message của ní rồi nhennn:\n "
-                    f"\t- type:\"{header}\"\n\t- contents:\"{msg}\""})
+    
+    try:
+        response = model.generate_content(str(msg))
+        reply = response.text
+    except Exception as e:
+        reply = f"Gemini model error: {e}"
+        
+    return jsonify({"header": "-----\nTui đã nhận được message của ní rồi nhennn:\n "
+        f" *** type:\"{header}\"\n  *** contents:\"{msg}\"\n-----\n",
+                    "reply": reply})
+
+    # return jsonify({"reply": "Tui đã nhận được message của ní rồi nhennn:\n "
+    #                 f"\t- type:\"{header}\"\n\t- contents:\"{msg}\""})
 
 # ------------------------------ GET ------------------------------
 @app.route('/api/dashboard', methods=['GET'])
