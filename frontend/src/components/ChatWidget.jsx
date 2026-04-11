@@ -9,10 +9,25 @@ const ChatWidget = () => {
   const [chatLog, setChatLog] = useState([
     { id: 'welcome', text: 'Sao đấy ní, cần tui giúp gì à?', sender: 'bot' }
   ]);
+
+  const textareaRef = useRef(null);
+  const chatBodyRef = useRef(null);
+
   const API_URL = window.location.hostname === "localhost"
     ? "http://localhost:5000/api/chat"
     : "https://webdevelop-gnyi.onrender.com/api/chat";
-  const chatBodyRef = useRef(null);
+
+  // Hàm tự động điều chỉnh chiều cao
+  const handleTextareaChange = (e) => {
+    const textarea = e.target;
+    setMessage(textarea.value);
+
+    // Reset height về auto để tính toán lại chính xác
+    textarea.style.height = 'auto';
+    // Gán chiều cao mới dựa trên scrollHeight (tối đa do CSS quy định)
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  };
+
   useEffect(() => {
     if (chatBodyRef.current) {
       chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
@@ -33,6 +48,9 @@ const ChatWidget = () => {
     setChatLog((prev) => [...prev, userMsg]);
     setMessage('');
     setIsTyping(true);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'; // Reset chiều cao về ban đầu
+    }
 
     try {
       const response = await fetch(API_URL, {
@@ -91,11 +109,19 @@ const ChatWidget = () => {
 
         <div className="chat-footer">
           <form className="chat-input-area" onSubmit={handleSendMessage}>
-            <input
+            <textarea
+              ref={textareaRef}
               type="text"
               placeholder="Ask Klose"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              rows="1"
+              onChange={handleTextareaChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSendMessage();
+                }
+              }}
             />
             <button type="submit" className="chat-send-btn">
               <Send size={18} />

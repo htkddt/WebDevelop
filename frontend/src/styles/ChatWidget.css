@@ -97,22 +97,48 @@
 }
 
 .chat-footer {
-  padding: 10px;
-  border-top: 1px solid #eee;
+  padding: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 .chat-input-area {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
+  background: #f0f2f5;
+  padding: 8px 12px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
 }
 
-.chat-input-area input {
+.chat-input-area textarea {
   flex: 1;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  padding: 8px 15px;
+  border: none;
+  background: transparent;
+  padding: 4px 0;
   outline: none;
+  resize: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  max-height: 120px;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+}
+
+.chat-input-area textarea::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-input-area textarea::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
 }
 
 .chat-send-btn {
@@ -192,13 +218,11 @@
   }
 }
 
-/* Container cho dấu chấm nhấp nháy */
 .chat-typing-indicator {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 12px 16px !important;
-  /* Đè lại padding của bubble */
   min-width: 50px;
 }
 
@@ -211,7 +235,6 @@
   animation: chat-thinking-bounce 1.3s infinite ease-in-out;
 }
 
-/* Tạo độ trễ cho từng dấu chấm để tạo hiệu ứng sóng */
 .chat-typing-indicator span:nth-child(2) {
   animation-delay: 0.2s;
 }
