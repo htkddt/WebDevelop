@@ -1,10 +1,11 @@
 import os
 import google.generativeai as genai
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-_API_KEY_FILE_PATH = os.path.join(_BASE_DIR, "API_KEY_LOCAL.txt")
+load_dotenv()
+GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 
 # Allow Frontend (port 3000) call data from Backend (port 5000)
 app = Flask(__name__)
@@ -12,9 +13,11 @@ CORS(app)
 # CORS(app, origins=["https://ten-cua-ni.github.io"])
 
 # Create gemini model
-with open(_API_KEY_FILE_PATH, "r", encoding="utf-8") as f:
-    API_KEY = f.readline().strip()
-genai.configure(api_key=API_KEY)
+# _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# _API_KEY_FILE_PATH = os.path.join(_BASE_DIR, "API_KEY_LOCAL.txt")
+# with open(_API_KEY_FILE_PATH, "r", encoding="utf-8") as f:
+#     API_KEY = f.readline().strip()
+genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-flash-latest')
 
 # --- Mock Data ---
@@ -64,4 +67,6 @@ def get_permissions_list():
     return jsonify(['Admin', 'Editor', 'Viewer'])
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    local = not os.environ.get("RENDER")
+    app.run(host='0.0.0.0', port=port, debug=local)
