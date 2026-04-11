@@ -15,13 +15,17 @@ const DashboardPage = () => {
     }
   ];
 
+  const API_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000/api/dashboard"
+    : "https://webdevelop-gnyi.onrender.com/api/dashboard";
+
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [connected, setConnected] = useState(true);
 
   useEffect(() => {
     // Call API
-    fetch('http://localhost:5000/api/dashboard')
+    fetch(API_URL)
       .then(res => {
         if (!res.ok) throw new Error("Connection error Backend");
         return res.json();

@@ -11,13 +11,17 @@ const EmployeesPage = () => {
     { id: -1, name: "Null", role: "Null", email: "Null" }
   ];
 
+  const API_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000/api/employees"
+    : "https://webdevelop-gnyi.onrender.com/api/employees";
+
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [connected, setConnected] = useState(true);
 
   useEffect(() => {
     // Call API
-    fetch('http://localhost:5000/api/employees')
+    fetch(API_URL)
       .then((res) => {
         if (!res.ok) throw new Error("Connection error Backend");
         return res.json();

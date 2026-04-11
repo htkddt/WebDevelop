@@ -9,13 +9,17 @@ const PermissionsPage = () => {
 
   const MOCK_DATA = ['Null', 'Null', 'Null'];
 
+  const API_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000/api/permissions"
+    : "https://webdevelop-gnyi.onrender.com/api/permissions";
+
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [connected, setConnected] = useState(true);
 
   useEffect(() => {
     // Call API
-    fetch('http://localhost:5000/api/permissions')
+    fetch(API_URL)
       .then(res => {
         if (!res.ok) throw new Error("Connection error Backend");
         return res.json();

@@ -8,8 +8,9 @@ const ChatWidget = () => {
   const [chatLog, setChatLog] = useState([
     { id: 'welcome', text: 'Sao đấy ní, cần tui giúp gì à?', sender: 'bot' }
   ]);
-  const API_URL = "https://webdevelop-gnyi.onrender.com/api/chat";
-  const API_LOCAL = "http://localhost:5000/api/dashboard";
+  const API_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000/api/chat"
+    : "https://webdevelop-gnyi.onrender.com/api/chat";
   const chatBodyRef = useRef(null);
   useEffect(() => {
     if (chatBodyRef.current) {

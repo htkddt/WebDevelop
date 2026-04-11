@@ -33,18 +33,16 @@ dashboard_stats = {
     "activeProjects": 12
 }
 
-my = "Tôi là Klose, một Software Engineer ở công ty TerraLogic. Tôi là người đam mê công nghệ, đặc biệt là việc phát triển hệ thống chatbot tích hợp trong bất cứ ngữ cảnh và ngành nghê nào. Tôi đang trong quá trình xây dựng một library có thể tích hợp cho mọi ứng dụng từ Web đến Mobile App đến cả Desktop App.\n"
-
 # ------------------------------ POST ------------------------------
 @app.route('/api/chat', methods=['POST'])
 def chat():
     header = request.headers.get("type")
     data = request.get_json(force=True)
     msg = data.get("contents")
-    prompt = my + f"Bạn là 1 trợ lý ảo của anh Klose, hãy phản hồi đoạn message sau \"{msg}\" một cách rõ ràng, cụ thể, không dài dòng và tự nhiên đời thường."
+    # prompt = f"Bạn là 1 trợ lý ảo của anh Klose, hãy phản hồi đoạn message sau \"{msg}\" một cách rõ ràng, cụ thể, không dài dòng và tự nhiên đời thường."
     
     try:
-        response = model.generate_content(str(prompt))
+        response = model.generate_content(str(msg))
         reply = response.text
     except Exception as e:
         reply = f"Gemini model error: {e}"
