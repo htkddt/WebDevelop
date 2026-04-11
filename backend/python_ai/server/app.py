@@ -9,8 +9,8 @@ GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 
 # Allow Frontend (port 3000) call data from Backend (port 5000)
 app = Flask(__name__)
-CORS(app)
-# CORS(app, origins=["https://ten-cua-ni.github.io"])
+# CORS(app)
+CORS(app, origins=["https://htkddt.github.io/"])
 
 # Create gemini model
 # _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
