@@ -2,11 +2,35 @@
   padding: 20px;
 }
 
+.permissions-header {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.permissions-header h1 {
+  color: #ccc;
+  font-size: 5rem;
+  margin: 0;
+}
+
+.permissions-header h2 {
+  color: #ccc;
+  font-size: 2rem;
+  margin: 0;
+}
+
 .permissions-role-list {
   margin-top: 20px;
   background: white;
   border-radius: 8px;
   overflow: hidden;
+  max-width: 300px;
+  margin: 20px auto;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  background: white;
 }
 
 .permissions-role-item {
@@ -19,7 +43,7 @@
 .permissions-role-dot {
   width: 10px;
   height: 10px;
-  background: #ff4d4f;
+  background: #594dff;
   border-radius: 50%;
   margin-right: 15px;
 }

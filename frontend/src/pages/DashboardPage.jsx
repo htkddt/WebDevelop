@@ -17,12 +17,13 @@ const DashboardPage = () => {
 
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
+  const [connected, setConnected] = useState(true);
 
   useEffect(() => {
     // Call API
     fetch('http://localhost:5000/api/dashboard')
       .then(res => {
-        if (!res.ok) throw new Error("Backend die rồi");
+        if (!res.ok) throw new Error("Connection error Backend");
         return res.json();
       })
       .then(data => {
@@ -33,12 +34,13 @@ const DashboardPage = () => {
         console.error("Connection error Backend:", err);
         setStats(MOCK_DATA);
         setLoading(false);
+        setConnected(false);
       });
   }, []);
 
   return (
     <div className="app-content">
-      <DashboardView stats={stats} loading={loading} />;
+      <DashboardView stats={stats} loading={loading} connected={connected} />;
     </div>
   );
 };

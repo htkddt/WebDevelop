@@ -6,6 +6,24 @@
   overflow: hidden;
 }
 
+.employee-header {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.employee-header h1 {
+  color: #ccc;
+  font-size: 5rem;
+  margin: 0;
+}
+
+.employee-header h2 {
+  color: #ccc;
+  font-size: 2rem;
+  margin: 0;
+}
+
 .employee-table-th {
   background-color: #f8f9fa;
   padding: 12px;
