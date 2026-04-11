@@ -15,7 +15,7 @@ const ChatWidget = () => {
     }
   }, [chatLog, isOpen]);
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     if (e) e.preventDefault();
     if (message.trim() === '') return;
 
@@ -29,15 +29,33 @@ const ChatWidget = () => {
     setChatLog((prev) => [...prev, userMsg]);
     setMessage('');
 
-    // Set timeout response after 1 second
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:5000/api/chat', {
+        method: 'POST',
+        headers: { 'type': 'json' },
+        body: JSON.stringify({ contents: message }),
+      });
+      if (!response.ok) throw new Error("Connection error Backend");
+      const data = await response.json();
       const botReply = {
         id: Date.now() + 1,
-        text: 'Lêu lêu ní bị anh Klose dụ rồi, tui chưa có data ní ơi >..<',
+        text: data.reply,
         sender: 'bot'
       };
       setChatLog((prev) => [...prev, botReply]);
-    }, 1000);
+
+    } catch (error) {
+      console.error("Connection error Backend:", err);
+      // Set timeout response after 1 second
+      setTimeout(() => {
+        const botReply = {
+          id: Date.now() + 1,
+          text: 'Lêu lêu ní bị anh Klose dụ rồi, tui chưa có data ní ơi >..<',
+          sender: 'bot'
+        };
+        setChatLog((prev) => [...prev, botReply]);
+      }, 1000);
+    }
   };
 
   return (

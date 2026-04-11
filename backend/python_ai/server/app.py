@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 # Allow Frontend (port 3000) call data from Backend (port 5000)
@@ -18,7 +18,17 @@ dashboard_stats = {
     "activeProjects": 12
 }
 
-# --- Endpoints ---
+# ------------------------------ POST ------------------------------
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    header = request.headers.get("type")
+    data = request.json
+    msg = data.get("contents")
+    # Xử lý logic AI của ní ở đây...
+    return jsonify({"reply": "Tui đã nhận được message của ní rồi nhennn:\n "
+                    f"\t- type:\"{header}\"\n\t- contents:\"{msg}\""})
+
+# ------------------------------ GET ------------------------------
 @app.route('/api/dashboard', methods=['GET'])
 def get_dashboard():
     return jsonify(dashboard_stats)
