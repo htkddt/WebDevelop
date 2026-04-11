@@ -1,0 +1,40 @@
+---
+description: >-
+  Stored vectors must always be used together with embedding metadata (same shape as bot.records
+  metadata); never treat raw float arrays as self-describing.
+alwaysApply: true
+---
+
+# Vectors + metadata (strict pairing)
+
+## Rule
+
+**Any code path that reads, compares, indexes, or migrates a stored embedding must use the document’s embedding metadata as the source of truth** — the same fields as **`bot.records`** (nested under **`metadata`**) and the **`geo_atlas`** top-level mirror. **Do not** use a raw **`vector`** array alone to decide model, dimension, or search space.
+
+## Required bundle (chat turns `bot.records`)
+
+When consuming **`vector`**, require (read or validate):
+
+| Field | Role |
+|-------|------|
+| **`metadata.embed_schema`** | Provenance schema generation (**1** current). |
+| **`metadata.vector_dim`** | Must equal **`vector`** length; reject or skip on mismatch. |
+| **`metadata.embed_family`** | **`custom`** \| **`ollama`** \| **`legacy`** — defines how the vector was produced. |
+| **`metadata.model_id`** | Tag or **`m4-vector-hash-v1-384`**; must align with **`embed_family`**. |
+
+**Legacy docs** missing these fields: infer only inside **migration** code (see **`.cursor/embed_migration.md`**), then **write** the bundle; do not silently assume Ollama or a fixed dim in RAG/search.
+
+## Geo atlas
+
+Same semantics **top-level**: **`embed_schema`**, **`vector_dim`**, **`embed_family`**, **`embed_model_id`** (plus **`vector`**). Pair **`vector`** with these fields for dedup / similarity / re-embed.
+
+## Implementation expectations
+
+- **RAG / Redis KNN / cosine:** query vector must match stored **`vector_dim`**; if families differ (**custom** vs **ollama**), **do not** compare or merge into one index without an explicit migration.
+- **New features:** thread **`m4_embed_options_t`** or stored metadata through the stack; do not add parallel “guess dim from buffer size” shortcuts for persisted data.
+
+## References
+
+- **`.cursor/mongo.md` §0** — canonical **`metadata`** JSON.
+- **`.cursor/embed_migration.md`** — provenance backfill and async worker.
+- **`include/embed.h`** / **`src/embed.c`** — runtime embed policy (must stay consistent with stored **`model_id`** / **`embed_family`**).

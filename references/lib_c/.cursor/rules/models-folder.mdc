@@ -1,0 +1,23 @@
+---
+description: Resolve per-Ollama model behavior from .cursor/models/*.rule.md when editing prompts, RAG, or inference wiring.
+alwaysApply: false
+---
+
+# Model-specific rules folder
+
+**Compile-time default tags** (`OLLAMA_DEFAULT_MODEL` / `OLLAMA_DEFAULT_EMBED_MODEL`): change only in `include/ollama.h` and follow **`.cursor/default_models.md`** (and **`python_ai/m4_default_models.py`**). See **`.cursor/rules/default-models.mdc`**.
+
+When the task involves **per-model behavior** (prompt quirks, risk), **read the matching rule file** under `.cursor/models/`:
+
+1. Run `python3 scripts/model_rule_slug.py "<model_id>"` to get the slug.
+2. Open `.cursor/models/{slug}.rule.md` if it exists; otherwise use `.cursor/models/default.rule.md`.
+3. Respect YAML **frontmatter** (`supports`, `risk`, `prompt`) as capability hints; body markdown has examples and anti-patterns.
+
+Do not assume Cursor auto-loads these files — **open them explicitly** when changing model-dependent behavior.
+
+See `.cursor/models/README.md` for naming and resolution order. Runtime lane → model resolution is **`.cursor/model_switch.md`** (`model_switch.c` / `api_options_t.default_model_lane`).
+
+**Hosted chat (future):** Same **`models/*.rule.md`** slug idea applies to **cloud model ids** when you add a router. How **`model_switch`** combines with **empty config → cloud pool** is specified in **`.cursor/models/ai_agent.md`** §5; full doc map: **`.cursor/model_routing_index.md`**.
+
+
+

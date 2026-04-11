@@ -1,0 +1,13 @@
+{
+  "name": "m4engine",
+  "version": "1.0.0",
+  "description": "M4 AI Engine — Node.js bindings (prebuilt native library)",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node install.js"
+  },
+  "dependencies": {
+    "ffi-napi": "^4.0.0",
+    "ref-napi": "^3.0.0"
+  }
+}

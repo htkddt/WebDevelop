@@ -1,0 +1,33 @@
+---
+description: >-
+  Changing default Ollama model tags — use include/ollama.h as the single C source of truth and
+  follow .cursor/default_models.md so Python and docs never drift.
+alwaysApply: true
+---
+
+# Default Ollama models (no drift)
+
+## Single source of truth (C)
+
+- **`c-lib/include/ollama.h`** — `OLLAMA_DEFAULT_MODEL`, `OLLAMA_DEFAULT_EMBED_MODEL`, host/port macros.
+- **Never** scatter the same literal model string in new C code; use the macros or `ollama_resolve_embed_model` / `model_switch_resolve`.
+
+## Python sibling (`python_ai/`)
+
+- **No duplicate literals:** read compile-time defaults from the built library via **`api_build_ollama_default_chat_model`** / **`api_build_ollama_default_embed_model`** (see **`python_ai/engine_ctypes.py`**). **`python_ai/m4_default_models.py`** exposes **`OLLAMA_DEFAULT_MODEL`** / **`OLLAMA_DEFAULT_EMBED_MODEL`** as lazy accessors over those symbols (rebuild c-lib after changing **`ollama.h`**).
+- Prefer **`engine_ctypes.c_build_ollama_default_*`** or **`m4_default_models`** for host scripts — **do not** add a second string copy of the tag in Python.
+
+## Checklist when changing defaults
+
+Open and follow **`c-lib/.cursor/default_models.md`** step-by-step (docs, examples, rebuild, optional `.cursor/models/` rules). That file also has the **“config not set → fallback”** matrix for chat, embed, lanes, and Python. **Doc filenames / env prefixes / grep:** **`c-lib/.cursor/naming_conventions.md`**.
+
+## `.cursor/*.md` docs
+
+Do **not** hardcode a production Ollama tag in general architecture docs; reference **`OLLAMA_DEFAULT_MODEL`** / **`default_models.md`**. Hardcoded names belong in **`.cursor/models/{slug}.rule.md`** (`model_id` / aliases) only.
+
+## Related rules
+
+- **Lane / intent models:** `.cursor/rules/models-folder.mdc`, `.cursor/model_switch.md`
+- **Embed vs chat policy:** `.cursor/geo_learning.md` (Ollama model policy banner)
+- **Vectors + metadata:** `.cursor/rules/embed-vector-metadata.mdc` — always pair stored **`vector`** with **`metadata`** (or geo top-level) fields; never raw-array-only semantics
+- **AI Agent / LLM routing:** **`.cursor/models/ai_agent.md`**. Keep **`OLLAMA_DEFAULT_MODEL`** as **local** last resort (tier 4 fallback).

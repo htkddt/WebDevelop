@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -l \"public api\\\\|api\\\\.h\\\\|api_\\\\|public API\" /Users/lamvy/Desktop/Projects/c-lib/docs/*.md)",
+      "Bash(make)",
+      "Bash(nm -g lib/libm4engine.dylib)",
+      "Bash(find /Users/lamvy/Desktop/Projects/c-lib/.cursor -type f \\\\\\( -name \"*.md\" -o -name \"*.mdc\" \\\\\\) -exec wc -l {} \\\\;)",
+      "Bash(sort -k2)",
+      "Bash(find:*)",
+      "Bash(ls -la /Users/lamvy/Desktop/Projects/c-lib/.cursor/*.md)",
+      "Bash(ls /Users/lamvy/Desktop/Projects/c-lib/.cursor/*.md)",
+      "Bash(mv:*)",
+      "Bash(make clean:*)",
+      "Bash(make test-api-source-redis:*)",
+      "Bash(grep -roh '\\\\[[A-Z_a-z]*\\\\]' /Users/lamvy/Desktop/Projects/c-lib/src/*.c)",
+      "Bash(grep -roh 'fprintf\\(stderr, \"\\\\[[A-Z_a-z]*\\\\]' /Users/lamvy/Desktop/Projects/c-lib/src/*.c)",
+      "Bash(git remote:*)",
+      "Bash(chmod +x:*)",
+      "Bash(make test-vector-generate:*)",
+      "WebFetch(domain:www.elastic.co)",
+      "Bash(xxd)",
+      "Bash(curl -s \"http://127.0.0.1:9200/_cat/indices?v\")",
+      "Bash(curl -s \"http://127.0.0.1:9200/idx_products/_mapping\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s -X POST \"http://127.0.0.1:9200/idx_products/_doc/test1\" -H \"Content-Type: application/json\" -d '{\"name\":\"MacBook\",\"category\":\"computer\",\"price\":25000000}')",
+      "Bash(curl -s -X DELETE \"http://127.0.0.1:9200/idx_products\")",
+      "Bash(curl -s -X DELETE \"http://127.0.0.1:9200/idx_carts\")",
+      "Bash(curl -s -X DELETE \"http://127.0.0.1:9200/idx_product_categories\")",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(make USE_MONGOC=1)",
+      "Bash(git checkout:*)",
+      "Bash(curl -s \"http://127.0.0.1:9200/idx_products/_count\")",
+      "Bash(curl -s \"http://127.0.0.1:9200/idx_carts/_count\")",
+      "Bash(curl -s \"http://127.0.0.1:9200/idx_product_categories/_count\")",
+      "Bash(ls build/*.o)",
+      "Bash(ls:*)",
+      "Bash(clang:*)",
+      "Bash(./build/test_intent_route:*)"
+    ]
+  }
+}
