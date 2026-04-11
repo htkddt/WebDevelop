@@ -16,6 +16,33 @@
   flex-direction: column;
   margin-bottom: 15px;
   overflow: hidden;
+  position: fixed;
+  bottom: 90px;
+  /* Nằm trên cái nút FAB */
+  right: 20px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Hiệu ứng bung ra hơi nảy nhẹ */
+  transform-origin: bottom right;
+  /* Để nó mở ra từ phía nút chat */
+  pointer-events: none;
+  /* Khi đóng thì không cho click vào */
+  opacity: 0;
+  transform: scale(0) translateY(40px);
+  /* Thu nhỏ và ẩn xuống dưới */
+}
+
+/* Khi có class active (Mở chat) */
+.chat-window.active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+  /* Cho phép click bình thường */
+}
+
+/* Khi có class inactive (Đóng chat) */
+.chat-window.inactive {
+  opacity: 0;
+  transform: scale(0) translateY(40px);
 }
 
 .chat-header {
@@ -123,6 +150,13 @@
   box-shadow: 0 4px 15px rgba(255, 82, 82, 0.4);
   position: relative;
   float: right;
+  animation: pulse-animation 2s infinite;
+}
+
+.chat-fab:hover {
+  animation: bounce 0.5s ease;
+  background-color: #e04141;
+  /* Đổi màu đậm hơn tí khi hover */
 }
 
 .chat-notification-dot {
@@ -135,4 +169,33 @@
   border: 2px solid white;
   border-radius: 50%;
   display: block;
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 82, 82, 0.4);
+  }
+
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 8px 25px rgba(255, 82, 82, 0.6);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 82, 82, 0.4);
+  }
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }

@@ -41,38 +41,36 @@ const ChatWidget = () => {
   };
 
   return (
-    <div className={`chat-widget-wrapper ${isOpen ? 'open' : ''}`}>
-      {isOpen && (
-        <div className="chat-window">
-          <div className="chat-header">
-            <h4>Chat with me</h4>
-          </div>
-
-          <div className="chat-body" ref={chatBodyRef}>
-            {chatLog.map((msg) => (
-              <div key={msg.id} className={`chat-message-row ${msg.sender}`}>
-                <div className="bubble">
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="chat-footer">
-            <form className="chat-input-area" onSubmit={handleSendMessage}>
-              <input
-                type="text"
-                placeholder="Ask Klose"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-              <button type="submit" className="chat-send-btn">
-                <Send size={18} />
-              </button>
-            </form>
-          </div>
+    <div className="chat-widget-wrapper">
+      <div className={`chat-window ${isOpen ? 'active' : 'inactive'}`}>
+        <div className="chat-header">
+          <h4>Chat with me</h4>
         </div>
-      )}
+
+        <div className="chat-body" ref={chatBodyRef}>
+          {chatLog.map((msg) => (
+            <div key={msg.id} className={`chat-message-row ${msg.sender}`}>
+              <div className="bubble">
+                {msg.text}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="chat-footer">
+          <form className="chat-input-area" onSubmit={handleSendMessage}>
+            <input
+              type="text"
+              placeholder="Ask Klose"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button type="submit" className="chat-send-btn">
+              <Send size={18} />
+            </button>
+          </form>
+        </div>
+      </div>
 
       <button className="chat-fab" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
