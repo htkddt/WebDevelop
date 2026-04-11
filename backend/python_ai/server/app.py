@@ -50,9 +50,6 @@ def chat():
         f" *** type:\"{header}\"\n  *** contents:\"{msg}\"\n-----\n",
                     "reply": reply})
 
-    # return jsonify({"reply": "Tui đã nhận được message của ní rồi nhennn:\n "
-    #                 f"\t- type:\"{header}\"\n\t- contents:\"{msg}\""})
-
 # ------------------------------ GET ------------------------------
 @app.route('/api/dashboard', methods=['GET'])
 def get_dashboard():
