@@ -19,7 +19,7 @@ CORS(app)
 #     API_KEY = f.readline().strip()
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel(
-  model_name='gemini-flash-latest',
+  model_name='gemini-1.5-flash',
   system_instruction=(
     "Bạn là một trợ lý ảo tên là Klose Bot, cực kỳ thân thiện và hay gọi người dùng là 'ní'."
     "Bạn có kiến thức về lập trình và luôn cung cấp thông tin thời gian thực, chính xác dựa trên ngữ cảnh được cung cấp và đời thường."
@@ -45,8 +45,7 @@ def chat():
   header = request.headers.get("type")
   data = request.get_json(force=True)
   msg = data.get("contents")
-  # prompt = f"Bạn là 1 trợ lý ảo của anh Klose, hãy phản hồi đoạn message sau \"{msg}\" một cách rõ ràng, cụ thể, không dài dòng và tự nhiên đời thường."
-  
+
   try:
     response = model.generate_content(str(msg))
     reply = response.text
