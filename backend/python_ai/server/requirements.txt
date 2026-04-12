@@ -7,3 +7,4 @@ gunicorn
 Flask-PyJWT
 passlib
 cryptography
+pymongo
