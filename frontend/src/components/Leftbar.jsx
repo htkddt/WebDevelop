@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, Users, HelpCircle, ShieldCheck, CalendarOff, FileChartColumn, Menu, X } from 'lucide-react';
 import './../styles/Leftbar.css';
@@ -11,8 +11,17 @@ const menuData = [
 ];
 
 export const Leftbar = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  // const [hasToken, setHasToken] = useState(!!localStorage.getItem('token'));
+  // useEffect(() => {
+  //   const checkToken = () => {
+  //     setHasToken(!!localStorage.getItem('token'));
+  //   };
+  //   // Listen triggred from LoginPage
+  //   window.addEventListener('storage', checkToken);
+  // }, []);
+  // if (!hasToken) return null;
 
+  const [isExpanded, setIsExpanded] = useState(false);
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
   };

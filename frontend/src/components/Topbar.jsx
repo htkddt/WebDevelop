@@ -11,6 +11,17 @@ const Topbar = () => {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    // Triggered to Leftbar for checking token and show if login is successful
+    //window.dispatchEvent(new Event("storage"));
+
+    navigate('/login');
+    setShowProfile(false);
+  };
+
   // Close pop-up when user clicks anywhere
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -85,7 +96,7 @@ const Topbar = () => {
 
                 <div className="user-popup-divider" />
 
-                <div className="user-popup-item logout" onClick={() => navigate('/login')}>
+                <div className="user-popup-item logout" onClick={handleLogout}>
                   <LogOut size={18} /> <span>Logout</span>
                 </div>
               </div>

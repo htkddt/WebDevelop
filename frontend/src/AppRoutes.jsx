@@ -9,18 +9,44 @@ import AssetsPage from './pages/AssetsPage';
 import SettingsPage from './pages/SettingsPage';
 import LoginPage from './pages/LoginPage';
 
+import ProtectedRoute from './components/ProtectedRoutes';
+
 const AppRoutes = () => {
   return (
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/employees" element={<EmployeesPage />} />
-        <Route path="/leave" element={<LeavePage />} />
-        <Route path="/report" element={<ReportPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/assets" element={<AssetsPage />} />
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/employees" element={
+          <ProtectedRoute>
+            <EmployeesPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/leave" element={
+          <ProtectedRoute>
+            <LeavePage />
+          </ProtectedRoute>
+        } />
+        <Route path="/report" element={
+          <ProtectedRoute>
+            <ReportPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        } />
+        <Route path="/assets" element={
+          <ProtectedRoute>
+            <AssetsPage />
+          </ProtectedRoute>
+        } />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Route>

@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+from routes.auth import auth_bp
 from routes.users import users_bp
 from routes.dashboard import dashboard_bp
 
@@ -11,7 +12,7 @@ from routes.dashboard import dashboard_bp
 app = Flask(__name__)
 CORS(app)
 
-# app.register_blueprint(auth_bp, url_prefix='/api/auth')
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(users_bp, url_prefix='/api/users')
 app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
 # app.register_blueprint(chat_bp, url_prefix='/api/chat')

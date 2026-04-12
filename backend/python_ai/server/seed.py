@@ -1,10 +1,18 @@
+import os
+from dotenv import load_dotenv
+
 from pymongo import MongoClient
 from passlib.hash import pbkdf2_sha256
 from datetime import datetime
 
+load_dotenv()
+MONGO_URL=os.getenv("MONGO_URL")
+if MONGO_URL is None:
+    MONGO_URL = "mongodb://localhost:27017"
+
 def seed_data():
     # 1. Connect to MongoDB
-    client = MongoClient("mongodb://localhost:27017/")
+    client = MongoClient(MONGO_URL)
     db = client["179FC"]
     users_col = db["users"]
 
@@ -17,9 +25,19 @@ def seed_data():
 
     # 4. The list of ten user pattern
     sample_users = [
-        # --- 1 ADMIN ---
+        # --- 2 ADMIN ---
         {
-            "username": "admin_boss",
+            "username": "klose",
+            "email": "klose@klose.dev",
+            "password": default_password,
+            "role": "admin",
+            "dept": "Management",
+            "permissions": "all",
+            "status": "active"
+        },
+
+        {
+            "username": "admin",
             "email": "admin@klose.dev",
             "password": default_password,
             "role": "admin",
@@ -111,6 +129,33 @@ def seed_data():
             "dept": "IT",
             "permissions": "view",
             "status": "inactive"
+        },
+        {
+            "username": "vuong_staff",
+            "email": "vuong.nguyen@klose.dev",
+            "password": default_password,
+            "role": "staff",
+            "dept": "IT",
+            "permissions": "view",
+            "status": "active"
+        },
+        {
+            "username": "bin_staff",
+            "email": "bin.le@klose.dev",
+            "password": default_password,
+            "role": "staff",
+            "dept": "Sales",
+            "permissions": "view",
+            "status": "active"
+        },
+        {
+            "username": "kiet_staff",
+            "email": "kiet.tran@klose.dev",
+            "password": default_password,
+            "role": "staff",
+            "dept": "HR",
+            "permissions": "view",
+            "status": "leave"
         }
     ]
 
@@ -125,3 +170,11 @@ def seed_data():
 
 if __name__ == "__main__":
     seed_data()
+    # try:
+    #     client = MongoClient(MONGO_URL)
+    #     client.admin.command('ping')
+    #     print("Successfull")
+    #     print("DBs:", client.list_database_names())
+        
+    # except Exception as e:
+    #     print(f"ERROR: {e}")

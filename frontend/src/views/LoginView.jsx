@@ -8,17 +8,22 @@ const EyeIcon = ({ show }) => (
   </span>
 );
 
-export const LoginView = () => {
+export const LoginView = ({ onLogin, loading, errorMessage }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Chặn load lại trang
+    onLogin({ email, password });
+  };
 
   return (
     <div className="login-page-wrapper">
       <div className="login-card">
         <h2 className="login-title">Login to your account</h2>
 
-        <form className="login-form">
+        <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -44,7 +49,8 @@ export const LoginView = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="form-input password-input"
+                className={`form-input password-input ${errorMessage ? 'input-error' : ''}`}
+                style={errorMessage ? { borderColor: '#ef4444' } : {}}
                 required
               />
               <button
@@ -55,10 +61,22 @@ export const LoginView = () => {
                 <EyeIcon show={showPassword} />
               </button>
             </div>
+            {errorMessage && (
+              <p style={{
+                color: '#ef4444',
+                fontSize: '0.85rem',
+                marginTop: '8px',
+                textAlign: 'left',
+                fontWeight: '500'
+              }}>
+                {/* Dùng thẻ u gạch chân cái lỗi cho đúng ý ní */}
+                <u>{errorMessage}</u>. Please try again!
+              </p>
+            )}
           </div>
 
-          <button type="submit" className="login-submit-btn">
-            Login now
+          <button type="submit" className="login-submit-btn" disabled={loading}>
+            {loading ? "Checking..." : "Login now"}
           </button>
         </form>
 

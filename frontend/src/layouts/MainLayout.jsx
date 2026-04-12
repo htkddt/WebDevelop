@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Leftbar from '../components/Leftbar';
 import Topbar from '../components/Topbar';
 import ChatWidget from '../components/ChatWidget';
-import './../styles/Frames.css';
+import './../styles/Layout.css';
 
 export const MainLayout = () => {
   return (
