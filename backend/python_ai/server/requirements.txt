@@ -4,3 +4,6 @@ protobuf
 python-dotenv
 google-generativeai
 gunicorn
+Flask-PyJWT
+passlib
+cryptography

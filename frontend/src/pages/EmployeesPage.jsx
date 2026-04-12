@@ -12,8 +12,8 @@ const EmployeesPage = () => {
   ];
 
   const API_URL = window.location.hostname === "localhost"
-    ? "http://localhost:5000/api/employees"
-    : "https://webdevelop-gnyi.onrender.com/api/employees";
+    ? "http://localhost:5000/api/users/employees"
+    : "https://webdevelop-gnyi.onrender.com/api/users/employees";
 
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);

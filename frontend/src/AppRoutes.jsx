@@ -3,7 +3,6 @@ import MainLayout from './layouts/MainLayout';
 import DashboardPage from './pages/DashboardPage';
 import EmployeesPage from './pages/EmployeesPage';
 import LeavePage from './pages/LeavePage';
-import PermissionsPage from './pages/PermissionsPage';
 import ReportPage from './pages/ReportPage';
 import ProfilePage from './pages/ProfilePage';
 import AssetsPage from './pages/AssetsPage';
@@ -12,13 +11,12 @@ import LoginPage from './pages/LoginPage';
 
 const AppRoutes = () => {
   return (
-    <Routes>      
+    <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/employees" element={<EmployeesPage />} />
-        <Route path="/permissions" element={<PermissionsPage />} />
         <Route path="/leave" element={<LeavePage />} />
         <Route path="/report" element={<ReportPage />} />
         <Route path="/profile" element={<ProfilePage />} />

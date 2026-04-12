@@ -8,15 +8,15 @@
   gap: 15px;
 }
 
-.dashboard-header h1 {
+.dashboard-header h2 {
   color: #ccc;
   font-size: 5rem;
   margin: 0;
 }
 
-.dashboard-header h2 {
+.dashboard-header h6 {
   color: #ccc;
-  font-size: 2rem;
+  font-size: 1rem;
   margin: 0;
 }
 
@@ -41,10 +41,22 @@
   margin: 10px 0;
 }
 
-.dashboard-color-warning {
-  color: #f39c12;
+.dashboard-color-dept {
+  color: #673AB7;
 }
 
-.dashboard-color-success {
+.dashboard-color-total {
+  color: #2196F3;
+}
+
+.dashboard-color-active {
   color: #27ae60;
+}
+
+.dashboard-color-inactive {
+  color: #607D8B;
+}
+
+.dashboard-color-leave {
+  color: #f39c12;
 }

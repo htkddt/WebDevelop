@@ -13,25 +13,33 @@ export const DashboardView = ({ stats, loading, connected }) => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1>
-          System overview |
-        </h1>
         <h2>
-          Server status: {serverStatus}
+          System overview
         </h2>
+        <h6>
+          {serverStatus}
+        </h6>
       </div>
       <div className="dashboard-stats-grid">
         <div className="dashboard-stat-card">
-          <h3>Total staff</h3>
-          <p className="dashboard-stat-number">{stats.totalEmployees}</p>
+          <h3>Total departments</h3>
+          <p className="dashboard-stat-number dashboard-color-dept">{stats.dept}</p>
         </div>
         <div className="dashboard-stat-card">
-          <h3>Leave application awaiting approval</h3>
-          <p className="dashboard-stat-number dashboard-color-warning">{stats.pendingLeave}</p>
+          <h3>Total staffs</h3>
+          <p className="dashboard-stat-number dashboard-color-total">{stats.total}</p>
         </div>
         <div className="dashboard-stat-card">
-          <h3>Project is running</h3>
-          <p className="dashboard-stat-number dashboard-color-success">{stats.activeProjects}</p>
+          <h3>On boarding</h3>
+          <p className="dashboard-stat-number dashboard-color-active">{stats.active}</p>
+        </div>
+        <div className="dashboard-stat-card">
+          <h3>Off boarding</h3>
+          <p className="dashboard-stat-number dashboard-color-inactive">{stats.inactive}</p>
+        </div>
+        <div className="dashboard-stat-card">
+          <h3>On leave</h3>
+          <p className="dashboard-stat-number dashboard-color-leave">{stats.leave}</p>
         </div>
       </div>
     </div >

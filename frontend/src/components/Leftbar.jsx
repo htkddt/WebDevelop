@@ -6,7 +6,6 @@ import './../styles/Leftbar.css';
 const menuData = [
   { id: 'Dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
   { id: 'Employees', label: 'Employees', icon: <Users size={20} />, path: '/employees' },
-  { id: 'Permission', label: 'Permissions', icon: <ShieldCheck size={20} />, path: '/permissions' },
   { id: 'Leave', label: 'Leave', icon: <CalendarOff size={20} />, path: '/leave' },
   { id: 'Report', label: 'Report', icon: <FileChartColumn size={20} />, path: '/report' },
 ];

@@ -12,33 +12,48 @@
   gap: 15px;
 }
 
-.employee-header h1 {
+.employee-header h2 {
   color: #ccc;
   font-size: 5rem;
   margin: 0;
 }
 
-.employee-header h2 {
+.employee-header h6 {
   color: #ccc;
-  font-size: 2rem;
+  font-size: 1rem;
   margin: 0;
 }
 
 .employee-table-th {
   background-color: #f8f9fa;
   padding: 12px;
-  text-align: left;
+  text-align: center;
   border-bottom: 2px solid #eee;
 }
 
 .employee-table-td {
   padding: 12px;
   border-bottom: 1px solid #eee;
+  text-align: center;
 }
 
 .employee-status-badge.active {
-  color: green;
-  background: #e6ffed;
+  color: rgb(0, 106, 0);
+  background: #d9f6e1;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.employee-status-badge.inactive {
+  color: black;
+  background: #c6d5dc;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.employee-status-badge.leave {
+  color: #ba790fdc;
+  background: #faebd2;
   padding: 4px 8px;
   border-radius: 4px;
 }
