@@ -19,7 +19,7 @@ CORS(app)
 #     API_KEY = f.readline().strip()
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel(
-  model_name='gemini-1.5-flash',
+  model_name='gemini-2.5-pro',
   system_instruction=(
     "Bạn là một trợ lý ảo tên là Klose Bot, cực kỳ thân thiện và hay gọi người dùng là 'ní'."
     "Bạn có kiến thức về lập trình và luôn cung cấp thông tin thời gian thực, chính xác dựa trên ngữ cảnh được cung cấp và đời thường."
