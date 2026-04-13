@@ -1,0 +1,103 @@
+.register-page-wrapper {
+  padding: 1rem;
+}
+
+.register-card {
+  background-color: #ffffff;
+  padding: 2.5rem 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08),
+    0 5px 10px rgba(0, 0, 0, 0.03);
+  width: 100%;
+  max-width: 420px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+  transform: translateY(-5px);
+}
+
+.register-title {
+  font-size: 1.875rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.025em;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.5);
+}
+
+.email-input-wrapper {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.email-suffix {
+  color: #888;
+  padding: 0 15px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  user-select: none;
+}
+
+.register-submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background-color: #1d4ed8;
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1rem;
+}
+
+.register-submit-btn:hover {
+  background-color: #059669;
+}
+
+.login-link-text {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.login-link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 700;
+  cursor: pointer;
+}

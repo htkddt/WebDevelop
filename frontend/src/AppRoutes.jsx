@@ -8,6 +8,7 @@ import ProfilePage from './pages/ProfilePage';
 import AssetsPage from './pages/AssetsPage';
 import SettingsPage from './pages/SettingsPage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 import ProtectedRoute from './components/ProtectedRoutes';
 
@@ -49,6 +50,7 @@ const AppRoutes = () => {
         } />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
     </Routes>
   );

@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import '../styles/Login.css';
 import { Eye, EyeOff } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import '../styles/Login.css';
 
 const EyeIcon = ({ show }) => (
   <span style={{ fontSize: '1.2rem', color: '#9ca3af', cursor: 'pointer' }}>
@@ -14,8 +15,8 @@ export const LoginView = ({ onLogin, loading, errorMessage }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Chặn load lại trang
-    onLogin({ email, password });
+    e.preventDefault();
+    onLogin({ email: `${email}@klose.dev`, password });
   };
 
   return (
@@ -26,15 +27,21 @@ export const LoginView = ({ onLogin, loading, errorMessage }) => {
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Your email address"
-              className="form-input"
-              required
-            />
+            <div className="email-input-wrapper">
+              <input
+                id="email"
+                tabIndex={1}
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email address"
+                className={`form-input email-input ${errorMessage ? 'input-error' : ''}`}
+                style={errorMessage ? { borderColor: '#ef4444' } : {}}
+                autoComplete="one-time-code"
+                required
+              />
+              <span className="email-suffix">@klose.dev</span>
+            </div>
           </div>
 
           <div className="form-group">
@@ -45,12 +52,14 @@ export const LoginView = ({ onLogin, loading, errorMessage }) => {
             <div className="password-input-wrapper">
               <input
                 id="password"
+                tabIndex={2}
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 className={`form-input password-input ${errorMessage ? 'input-error' : ''}`}
                 style={errorMessage ? { borderColor: '#ef4444' } : {}}
+                autoComplete="one-time-code"
                 required
               />
               <button
@@ -69,19 +78,18 @@ export const LoginView = ({ onLogin, loading, errorMessage }) => {
                 textAlign: 'left',
                 fontWeight: '500'
               }}>
-                {/* Dùng thẻ u gạch chân cái lỗi cho đúng ý ní */}
-                <u>{errorMessage}</u>. Please try again!
+                {errorMessage}. Please try again!
               </p>
             )}
           </div>
 
           <button type="submit" className="login-submit-btn" disabled={loading}>
-            {loading ? "Checking..." : "Login now"}
+            {loading ? "Checking ..." : "Login now"}
           </button>
         </form>
 
         <p className="signup-text">
-          Don't Have An Account ? <a href="#" className="signup-link">Sign Up</a>
+          Don't Have An Account ? <Link to="/register" className="signup-link">Sign Up</Link>
         </p>
       </div>
     </div>

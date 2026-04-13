@@ -50,30 +50,6 @@ body {
   gap: 1.5rem;
 }
 
-.login-submit-btn {
-  width: 100%;
-  padding: 1rem 1.5rem;
-  background-color: #1d4ed8;
-  color: #ffffff;
-  font-size: 1.125rem;
-  font-weight: 700;
-  border: 2px solid transparent;
-  border-radius: 0.75rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.login-submit-btn:hover {
-  background-color: #1e40af;
-}
-
-.login-submit-btn:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.5);
-}
-
 .form-group label {
   display: block;
   font-size: 0.875rem;
@@ -102,15 +78,25 @@ body {
   box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.5);
 }
 
-.forgot-link {
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  color: #3b82f6;
+.email-input-wrapper {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
-.forgot-link:hover {
-  color: #2563eb;
+.email-input {
+  padding-right: 3rem;
+}
+
+.email-suffix {
+  color: #888;
+  padding: 0 15px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  user-select: none;
 }
 
 .password-input-wrapper {
@@ -135,6 +121,41 @@ body {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.forgot-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #3b82f6;
+}
+
+.forgot-link:hover {
+  color: #2563eb;
+}
+
+.login-submit-btn {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background-color: #1d4ed8;
+  color: #ffffff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: 2px solid transparent;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.login-submit-btn:hover {
+  background-color: #1e40af;
+}
+
+.login-submit-btn:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(147, 197, 253, 0.5);
 }
 
 input::-ms-reveal {

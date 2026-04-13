@@ -18,21 +18,21 @@ app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
 # app.register_blueprint(chat_bp, url_prefix='/api/chat')
 
 load_dotenv()
-GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
+# GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 
 # Create gemini model
 # _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # _API_KEY_FILE_PATH = os.path.join(_BASE_DIR, "API_KEY_LOCAL.txt")
 # with open(_API_KEY_FILE_PATH, "r", encoding="utf-8") as f:
 #     API_KEY = f.readline().strip()
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel(
-  model_name='gemini-2.5-flash',
-  system_instruction=(
-    "Bạn là một trợ lý ảo tên là Klose Bot, cực kỳ thân thiện và hay gọi người dùng là 'ní'."
-    "Bạn có kiến thức về lập trình và luôn cung cấp thông tin thời gian thực, chính xác dựa trên ngữ cảnh được cung cấp và đời thường."
-  )
-)
+# genai.configure(api_key=GEMINI_API_KEY)
+# model = genai.GenerativeModel(
+#   model_name='gemini-2.5-flash',
+#   system_instruction=(
+#     "Bạn là một trợ lý ảo tên là Klose Bot, cực kỳ thân thiện và hay gọi người dùng là 'ní'."
+#     "Bạn có kiến thức về lập trình và luôn cung cấp thông tin thời gian thực, chính xác dựa trên ngữ cảnh được cung cấp và đời thường."
+#   )
+# )
 
 # --- Mock Data ---
 employees_data = [
@@ -53,12 +53,13 @@ def chat():
   header = request.headers.get("type")
   data = request.get_json(force=True)
   msg = data.get("contents")
+  reply = "Lêu lêu ní bị anh Klose dụ rồi, tui chưa có data ní ơi >..<"
 
-  try:
-    response = model.generate_content(str(msg))
-    reply = response.text
-  except Exception as e:
-    reply = f"Gemini model error: {e}"
+  # try:
+  #   response = model.generate_content(str(msg))
+  #   reply = response.text
+  # except Exception as e:
+  #   reply = f"Gemini model error: {e}"
       
   return jsonify({"header": "-----\nTui đã nhận được message của ní rồi nhennn:\n "
     f" *** type:\"{header}\"\n  *** contents:\"{msg}\"\n-----\n",
