@@ -223,15 +223,93 @@ https://.../repo_name/#/...
 
 ---
 
-## Backend
+## Backend Deployment (Render)
 
-* Deploy using Render
+### Connect to GitHub
+
+* Go to [https://render.com](https://render.com)
+* Click New + → Web Service
+* Choose Build and deploy from a Git repository
+* Connect and select the repository containing your backend code
+
+### Configuration
+
+* Name
+
+```
+<your-service-name>
+```
+
+* Root Directory (Repos name is default):
+
+```
+./backend/python_ai/server/
+```
+
+* Build Command:
+
+```bash
+pip install -r requirements.txt
+```
+
+* Start Command (The requirements.txt file must include "gunicorn"):
+
+```bash
+gunicorn <script_name>:app # Ex: python app.py -> gunicorn app:app
+```
+
+* Add Environment Variables (Advanced -> Add Environment Variable):
+
+  * MONGODB_URL
+  * GEMINI_API_KEY
+
+* Modify Environment Variables (At left bar -> Environment)
+
+  * MONGODB_URL
+  * GEMINI_API_KEY
 
 ---
 
-## Database
+## Database Deployment (MongoDB Atlas)
 
-* Use MongoDB Atlas
+### Create Cluster
+
+* Go to [https://mongodb.com/cloud/atlas](https://mongodb.com/cloud/atlas)
+* Login by Google account
+* Choose Create a deployment -> Choose M0 Free tier
+* Select provider (AWS recommended)
+* Select region (Singapore recommended)
+* Click Create
+
+### Setup Access
+
+* Create user name and password
+* IP Access List -> Choose "Allow Access from Anywhere" or typing:
+
+```
+0.0.0.0/0
+```
+
+### Connection String
+
+* At Database tab -> Connect
+* Select drivers (Node.js / Python / ...)
+
+```
+mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+```
+
+* Change password
+  
+  * At left bar -> Database access
+  * Edit -> Edit password -> Update user
+  * Re-update Connection string
+
+### How to push data directly to MongoDB Atlas?
+
+```
+python ./backend/python_ai/server/seed.py
+```
 
 ---
 
