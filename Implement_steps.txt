@@ -85,8 +85,35 @@ cd fe
 	+ Thêm phần xử lý trả mock data khi backend không có hoặc mất kết nối trong catch((err) => {...}) của mỗi useEffect(() => {...})
 	
 # Deployment Backend by Render
+  1. Connect to Github: 
+	- Truy cập render.com, đăng ký bằng tài khoản GitHub của bạn
+	- New + -> Web Service
+	- Build and deploy from a Git repository
+	- Kết nối và chọn đúng Repository chứa code Backend.
+  2. Cấu hình Web Service
+	- Name:
+	- Root Directory: ./backend/python_ai/server/ (Không tính tên repository)
+	- Build Command: pip install -r requirements.txt (Install dependencies)
+	- Start Command: gunicorn (Cần có gunicorn trong requirements.txt) app:app (Với app đầu tiên là file mà dùng để run server. Ex: python app.py)
+	- Advanced -> Add Environment Variable (MONGODB_URL, GEMINI_API_KEY, ...)
+	- Click Create Web Service
+	- Add Environment Variable: At left bar -> Click Environment
 
 # Deployment Database by Mongo Atlas
+  1. Access mongodb.com/cloud/atlas -> Login by Google account
+  2. Choose Create a deployment -> Choose M0 (Free)
+  3. Chọn nhà cung cấp (AWS/Google Cloud/Azure) và khu vực (Region) gần bạn nhất (thường là Singapore để tối ưu tốc độ).
+  4. Click Create
+  5. Tạo username và password
+  6. IP Access List -> Choose "Allow Access from Anywhere" or typing "0.0.0.0/0"
+  7. Tại tab Database, nhấn nút Connect
+  8. Chọn Drivers (Node.js / Python / ...)
+  9. Copy đoạn mã có dạng: mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority (Username và password lấy ở bước 5)
+  10. Change password:
+	- Vào mục Database Access ở menu bên trái
+	- Edit -> Edit Password -> Update User
+	- Cập nhật lại URL ở bước 9
+  11. Ghi dữ liệu lên mongodb atlas bằng python script (Xem file seed.py)
 
 # Create API_KEY for gemini model
   - Access: aistudio.google.com
