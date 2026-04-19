@@ -311,6 +311,11 @@ mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true
 python ./backend/python_ai/server/seed.py
 ```
 
+### How to view live data in MongoDB Atlas?
+
+* At left bar -> Data Explorer
+* At Clusters tab -> Browse Collections
+
 ---
 
 ## Gemini API Key
