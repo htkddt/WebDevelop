@@ -10,18 +10,17 @@ def get_dashboard_stats():
         total = users_col.count_documents({})
         active = users_col.count_documents({"status": "active"})
         inactive = users_col.count_documents({"status": "inactive"})
-        leave = users_col.count_documents({"status": "leave"})
         
         # Statistics by departments
         pipeline = [{"$group": {"_id": "$dept", "count": {"$sum": 1}}}]
         dept = list(users_col.aggregate(pipeline)) # The number of employees by departments
+        # all_depts = list(users_col.distinct("dept")) # Another way to retrieve all departments
 
         return jsonify({
             "dept": len(dept),
             "total": total,
             "active": active,
-            "inactive": inactive,
-            "leave": leave,
+            "inactive": inactive
         }), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

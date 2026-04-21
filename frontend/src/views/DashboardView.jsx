@@ -37,10 +37,6 @@ export const DashboardView = ({ stats, loading, connected }) => {
           <h3>Off boarding</h3>
           <p className="dashboard-stat-number dashboard-color-inactive">{stats.inactive}</p>
         </div>
-        <div className="dashboard-stat-card">
-          <h3>On leave</h3>
-          <p className="dashboard-stat-number dashboard-color-leave">{stats.leave}</p>
-        </div>
       </div>
     </div >
   );

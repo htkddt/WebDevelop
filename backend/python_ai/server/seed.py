@@ -5,10 +5,13 @@ from pymongo import MongoClient
 from passlib.hash import pbkdf2_sha256
 from datetime import datetime
 
-load_dotenv()
-MONGO_URL=os.getenv("MONGO_URL")
-if MONGO_URL is None:
-    MONGO_URL = "mongodb://localhost:27017"
+# load_dotenv()
+# MONGO_URL=os.getenv("MONGO_URL")
+# if MONGO_URL is None:
+#     MONGO_URL = "mongodb://localhost:27017"
+
+MONGO_URL = "mongodb+srv://htkddt:klose123@cluster.ig79etu.mongodb.net/"
+#MONGO_URL = "mongodb://localhost:27017"
 
 def seed_data():
     # 1. Connect to MongoDB
@@ -21,14 +24,14 @@ def seed_data():
     users_col.delete_many({})
 
     # 3. Hashed Password with default password
-    default_password = pbkdf2_sha256.hash("klose123")
+    default_password = pbkdf2_sha256.hash("webdevelop2026")
 
     # 4. The list of ten user pattern
     sample_users = [
-        # --- 2 ADMIN ---
+                # --- ADMIN ---
         {
-            "username": "klose",
-            "email": "klose@klose.dev",
+            "username": "Admin User Test 1",
+            "email": "admin1@klose.dev",
             "password": default_password,
             "role": "admin",
             "dept": "Management",
@@ -37,8 +40,8 @@ def seed_data():
         },
 
         {
-            "username": "admin",
-            "email": "admin@klose.dev",
+            "username": "Admin User Test 2",
+            "email": "admin2@klose.dev",
             "password": default_password,
             "role": "admin",
             "dept": "Management",
@@ -46,10 +49,10 @@ def seed_data():
             "status": "active"
         },
         
-        # --- 3 MANAGERS ---
+                # --- MANAGERS ---
         {
-            "username": "hoang_manager",
-            "email": "hoang.sales@klose.dev",
+            "username": "Manager User Test 1",
+            "email": "manager1@klose.dev",
             "password": default_password,
             "role": "manager",
             "dept": "Sales",
@@ -57,17 +60,17 @@ def seed_data():
             "status": "active"
         },
         {
-            "username": "lan_manager",
-            "email": "lan.hr@klose.dev",
+            "username": "Manager User Test 2",
+            "email": "manager2@klose.dev",
             "password": default_password,
             "role": "manager",
             "dept": "HR",
             "permissions": "dept",
-            "status": "active"
+            "status": "inactive"
         },
         {
-            "username": "minh_manager",
-            "email": "minh.it@klose.dev",
+            "username": "Manager User Test 3",
+            "email": "manager3@klose.dev",
             "password": default_password,
             "role": "manager",
             "dept": "IT",
@@ -75,55 +78,10 @@ def seed_data():
             "status": "active"
         },
 
-        # --- 6 STAFFS ---
+                # --- STAFFS ---
         {
-            "username": "an_staff",
-            "email": "an.nguyen@klose.dev",
-            "password": default_password,
-            "role": "staff",
-            "dept": "Sales",
-            "permissions": "view",
-            "status": "active"
-        },
-        {
-            "username": "binh_staff",
-            "email": "binh.le@klose.dev",
-            "password": default_password,
-            "role": "staff",
-            "dept": "Sales",
-            "permissions": "view",
-            "status": "active"
-        },
-        {
-            "username": "chi_staff",
-            "email": "chi.tran@klose.dev",
-            "password": default_password,
-            "role": "staff",
-            "dept": "HR",
-            "permissions": "view",
-            "status": "leave"
-        },
-        {
-            "username": "dung_staff",
-            "email": "dung.pham@klose.dev",
-            "password": default_password,
-            "role": "staff",
-            "dept": "Marketing",
-            "permissions": "view",
-            "status": "active"
-        },
-        {
-            "username": "en_staff",
-            "email": "en.vo@klose.dev",
-            "password": default_password,
-            "role": "staff",
-            "dept": "Marketing",
-            "permissions": "view",
-            "status": "active"
-        },
-        {
-            "username": "phi_staff",
-            "email": "phi.hoang@klose.dev",
+            "username": "Staff User Test 1",
+            "email": "staff1@klose.dev",
             "password": default_password,
             "role": "staff",
             "dept": "IT",
@@ -131,17 +89,8 @@ def seed_data():
             "status": "inactive"
         },
         {
-            "username": "vuong_staff",
-            "email": "vuong.nguyen@klose.dev",
-            "password": default_password,
-            "role": "staff",
-            "dept": "IT",
-            "permissions": "view",
-            "status": "active"
-        },
-        {
-            "username": "bin_staff",
-            "email": "bin.le@klose.dev",
+            "username": "Staff User Test 2",
+            "email": "staff2@klose.dev",
             "password": default_password,
             "role": "staff",
             "dept": "Sales",
@@ -149,13 +98,40 @@ def seed_data():
             "status": "active"
         },
         {
-            "username": "kiet_staff",
-            "email": "kiet.tran@klose.dev",
+            "username": "Staff User Test 3",
+            "email": "staff3@klose.dev",
             "password": default_password,
             "role": "staff",
             "dept": "HR",
             "permissions": "view",
-            "status": "leave"
+            "status": "active"
+        },
+        {
+            "username": "Staff User Test 4",
+            "email": "staff4@klose.dev",
+            "password": default_password,
+            "role": "staff",
+            "dept": "HR",
+            "permissions": "view",
+            "status": "active"
+        },
+        {
+            "username": "Staff User Test 5",
+            "email": "staff5@klose.dev",
+            "password": default_password,
+            "role": "staff",
+            "dept": "Marketing",
+            "permissions": "view",
+            "status": "inactive"
+        },
+        {
+            "username": "Staff User Test 6",
+            "email": "staff6@klose.dev",
+            "password": default_password,
+            "role": "staff",
+            "dept": "Marketing",
+            "permissions": "view",
+            "status": "active"
         }
     ]
 

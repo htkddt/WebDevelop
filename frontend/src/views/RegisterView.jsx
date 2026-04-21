@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import '../styles/Register.css';
+import '../styles/Login.css';
 
-const RegisterView = ({ onRegister, onSwitchLogin, loading }) => {
+const EyeIcon = ({ show }) => (
+  <span style={{ fontSize: '1.2rem', color: '#9ca3af', cursor: 'pointer' }}>
+    {show ? <EyeOff size={20} /> : <Eye size={20} />}
+  </span>
+);
+
+const RegisterView = ({ onRegister, loading }) => {
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    role: '',
-    department: '',
+    role: "staff",
+    dept: '',
     permission: "view",
     status: "active"
   });
@@ -20,12 +29,12 @@ const RegisterView = ({ onRegister, onSwitchLogin, loading }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password.length < 6) {
-      alert("Mật khẩu phải ít nhất 6 ký tự nhe ní!");
+      alert("The password must be at least 6 characters long.");
       return;
     }
     onRegister({
       ...formData,
-      email: `${formData.username}@klose.dev`
+      email: `${formData.email}@klose.dev`
     });
   };
 
@@ -37,7 +46,13 @@ const RegisterView = ({ onRegister, onSwitchLogin, loading }) => {
 
           <div className="form-group">
             <label>Full Name</label>
-            <input name="username" type="text" className="form-input" onChange={handleChange}
+            <input
+              tabIndex={1}
+              name="username"
+              type="text"
+              className="form-input"
+              onChange={handleChange}
+              placeholder="Enter your fullname"
               autoComplete="one-time-code"
               required
             />
@@ -46,7 +61,13 @@ const RegisterView = ({ onRegister, onSwitchLogin, loading }) => {
           <div className="form-group">
             <label>Email</label>
             <div className="email-input-wrapper">
-              <input name="email" type="text" className="form-input" onChange={handleChange}
+              <input
+                tabIndex={2}
+                name="email"
+                type="text"
+                className="form-input"
+                onChange={handleChange}
+                placeholder="[Last_name].[First_name]"
                 autoComplete="one-time-code"
                 required
               />
@@ -55,16 +76,38 @@ const RegisterView = ({ onRegister, onSwitchLogin, loading }) => {
           </div>
 
           <div className="form-group">
-            <label>Password</label>
-            <input name="password" type="password" className="form-input" onChange={handleChange}
-              autoComplete="one-time-code"
-              required
-            />
+            <div className="password-label-wrapper">
+              <label>Password</label>
+            </div>
+            <div className="password-input-wrapper">
+              <input
+                tabIndex={3}
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                className="form-input" onChange={handleChange}
+                placeholder="Enter your password"
+                autoComplete="one-time-code"
+                required
+              />
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <EyeIcon show={showPassword} />
+              </button>
+            </div>
           </div>
 
           <div className="form-group">
             <label>Department</label>
-            <input name="dept" type="text" className="form-input" onChange={handleChange}
+            <input
+              tabIndex={4}
+              name="dept"
+              type="text"
+              className="form-input"
+              onChange={handleChange}
+              placeholder="Enter your department"
               autoComplete="one-time-code"
               required
             />
