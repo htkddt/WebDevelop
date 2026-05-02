@@ -1,8 +1,12 @@
 import '../styles/Contents.css';
-// import '../styles/Settings.css';
+import '../styles/Settings.css';
 
 export const SettingsView = () => {
-  return <h1 style={{ fontSize: '5rem', color: '#ccc' }}>Settings</h1>
+  return (
+    <div className="settings-container">
+      <h1 className="settings-title">Settings</h1>
+    </div>
+  );
 };
 
 export default SettingsView;
