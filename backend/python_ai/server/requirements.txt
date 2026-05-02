@@ -2,9 +2,10 @@ Flask
 flask_cors
 protobuf
 python-dotenv
-google-generativeai
+requests
 gunicorn
 Flask-PyJWT
 passlib
 cryptography
 pymongo
+pytest

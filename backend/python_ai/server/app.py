@@ -7,6 +7,7 @@ from flask_cors import CORS
 from routes.auth import auth_bp
 from routes.users import users_bp
 from routes.dashboard import dashboard_bp
+from routes.chat import chat_bp
 
 # Allow Frontend (port 3000) call data from Backend (port 5000)
 app = Flask(__name__)
@@ -15,24 +16,10 @@ CORS(app)
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(users_bp, url_prefix='/api/users')
 app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
-# app.register_blueprint(chat_bp, url_prefix='/api/chat')
+app.register_blueprint(chat_bp, url_prefix='/api/chat')
 
 load_dotenv()
-# GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
-
-# Create gemini model
-# _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# _API_KEY_FILE_PATH = os.path.join(_BASE_DIR, "API_KEY_LOCAL.txt")
-# with open(_API_KEY_FILE_PATH, "r", encoding="utf-8") as f:
-#     API_KEY = f.readline().strip()
-# genai.configure(api_key=GEMINI_API_KEY)
-# model = genai.GenerativeModel(
-#   model_name='gemini-2.5-flash',
-#   system_instruction=(
-#     "Bạn là một trợ lý ảo tên là Klose Bot, cực kỳ thân thiện và hay gọi người dùng là 'ní'."
-#     "Bạn có kiến thức về lập trình và luôn cung cấp thông tin thời gian thực, chính xác dựa trên ngữ cảnh được cung cấp và đời thường."
-#   )
-# )
+GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 
 # --- Mock Data ---
 employees_data = [
@@ -48,22 +35,6 @@ dashboard_stats = {
 }
 
 # ------------------------------ POST ------------------------------
-@app.route('/api/chat', methods=['POST'])
-def chat():
-  header = request.headers.get("type")
-  data = request.get_json(force=True)
-  msg = data.get("contents")
-  reply = "Lêu lêu ní bị anh Klose dụ rồi, tui chưa có data ní ơi >..<"
-
-  # try:
-  #   response = model.generate_content(str(msg))
-  #   reply = response.text
-  # except Exception as e:
-  #   reply = f"Gemini model error: {e}"
-      
-  return jsonify({"header": "-----\nTui đã nhận được message của ní rồi nhennn:\n "
-    f" *** type:\"{header}\"\n  *** contents:\"{msg}\"\n-----\n",
-                "reply": reply})
 
 # ------------------------------ GET ------------------------------
 # @app.route('/api/dashboard', methods=['GET'])
