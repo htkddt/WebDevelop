@@ -4,7 +4,7 @@ on:
   push:
     branches: [main, master]
     tags: ['v*']
-    paths: ['frontend/**', 'backend/**', '.github/workflows/frontend.yml']
+    paths: ['frontend/**', '.github/workflows/frontend.yml']
   # pull_request:
   #   paths: ['frontend/**', 'backend/**', '.github/workflows/frontend.yml']
 
