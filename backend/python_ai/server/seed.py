@@ -5,11 +5,6 @@ from pymongo import MongoClient
 from passlib.hash import pbkdf2_sha256
 from datetime import datetime
 
-# load_dotenv()
-# MONGO_URL=os.getenv("MONGO_URL")
-# if MONGO_URL is None:
-#     MONGO_URL = "mongodb://localhost:27017"
-
 MONGO_URL = "mongodb+srv://htkddt:klose123@cluster.ig79etu.mongodb.net/"
 #MONGO_URL = "mongodb://localhost:27017"
 

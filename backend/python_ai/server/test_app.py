@@ -18,7 +18,7 @@ def test_chat_without_ollama(client, monkeypatch):
     assert response.status_code == 200
     data = response.get_json()
     assert 'reply' in data
-    assert 'Lỗi khi gọi Ollama' in data['reply']
+    assert 'error' in data['reply']
 
 def test_chat_with_ollama(client, monkeypatch):
     # Mock requests.post to return a fake Ollama response
@@ -26,7 +26,7 @@ def test_chat_with_ollama(client, monkeypatch):
         class MockResponse:
             status_code = 200
             def json(self):
-                return {"response": "Xin chào từ Ollama!"}
+                return {"response": "Ollama connected!"}
         return MockResponse()
     
     monkeypatch.setattr('requests.post', mock_post)
@@ -34,4 +34,4 @@ def test_chat_with_ollama(client, monkeypatch):
     assert response.status_code == 200
     data = response.get_json()
     assert 'reply' in data
-    assert 'Xin chào từ Ollama!' in data['reply']
+    assert 'Ollama connected!' in data['reply']
