@@ -17,14 +17,14 @@ const ChatWidget = () => {
     ? "http://localhost:5000/api/chat"
     : "https://webdevelop-gnyi.onrender.com/api/chat";
 
-  // Hàm tự động điều chỉnh chiều cao
+  // Automatic height adjustment function
   const handleTextareaChange = (e) => {
     const textarea = e.target;
     setMessage(textarea.value);
 
-    // Reset height về auto để tính toán lại chính xác
+    // Reset the height to auto to recalculate accurately.
     textarea.style.height = 'auto';
-    // Gán chiều cao mới dựa trên scrollHeight (tối đa do CSS quy định)
+    // Set the new height based on scrollHeight (maximum determined by CSS)
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
@@ -49,7 +49,7 @@ const ChatWidget = () => {
     setMessage('');
     setIsTyping(true);
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'; // Reset chiều cao về ban đầu
+      textareaRef.current.style.height = 'auto';
     }
 
     try {
