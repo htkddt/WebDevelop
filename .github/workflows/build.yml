@@ -4,49 +4,48 @@ on:
   workflow_call:
 
 jobs:
-  build:
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     include:
-    #       - os: ubuntu-latest
-    #         label: linux-amd64
-    #       - os: ubuntu-24.04-arm
-    #         label: linux-arm64
-    #       - os: macos-14
-    #         label: darwin-arm64
-    # runs-on: ${{ matrix.os }}
+  # strategy:
+  #   fail-fast: false
+  #   matrix:
+  #     include:
+  #       - os: ubuntu-latest
+  #         label: linux-amd64
+  #       - os: ubuntu-24.04-arm
+  #         label: linux-arm64
+  #       - os: macos-14
+  #         label: darwin-arm64
+  # runs-on: ${{ matrix.os }}
 
-    # 🔥 Chỉ chạy khi push branch (git push origin <branch_name>)
-    # if: github.ref_type == 'branch'
+  # 🔥 Chỉ chạy khi push branch (git push origin <branch_name>)
+  # if: github.ref_type == 'branch'
 
-    # Nếu không set default thì cần cd frontend kèm với các comment setup environment (cd frontend && npm ci)
-    # defaults:
-    #   run:
-    #     working-directory: frontend
+  # Nếu không set default thì cần cd frontend kèm với các comment setup environment (cd frontend && npm ci)
+  # defaults:
+  #   run:
+  #     working-directory: frontend
 
-    runs-on: ubuntu-latest
+  runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 14
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 14
+        cache: npm
+        cache-dependency-path: frontend/package-lock.json
 
-      - name: Install dependencies
-        run: cd frontend && npm ci
+    - name: Install dependencies
+      run: cd frontend && npm ci
 
-      - name: Build
-        run: cd frontend && npm run build
+    - name: Build
+      run: cd frontend && npm run build
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-build-${{ github.run_id }}
-          path: frontend/dist/*
-          retention-days: 30
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-build-${{ github.run_id }}
+        path: frontend/dist/*
+        retention-days: 30

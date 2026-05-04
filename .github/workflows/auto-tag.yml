@@ -4,68 +4,67 @@ on:
   workflow_call:
 
 jobs:
-  auto-tag:
-    runs-on: ubuntu-latest
+  runs-on: ubuntu-latest
 
-    # 🔥 Chỉ chạy khi push branch
-    # if: github.ref_type == 'branch' && github.event_name == 'push'
+  # 🔥 Chỉ chạy khi push branch
+  # if: github.ref_type == 'branch' && github.event_name == 'push'
 
-    outputs:
-      tag: ${{ steps.tag.outputs.tag }}
-      created: ${{ steps.tag.outputs.created }}
+  outputs:
+    tag: ${{ steps.tag.outputs.tag }}
+    created: ${{ steps.tag.outputs.created }}
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      - name: Create or Increment Beta Tag
-        id: tag
-        run: |
-          echo "🔍 Detecting version..."
-          git fetch --tags
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Create or Increment Beta Tag
+      id: tag
+      run: |
+        echo "🔍 Detecting version..."
+        git fetch --tags
 
-          # 🔥 Nếu dev push tag v1.1.0 → convert thành beta
-          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-            BASE="${GITHUB_REF#refs/tags/v}"
-            echo "→ Push tag detected: v${BASE} → will create beta"
+        # 🔥 Nếu dev push tag v1.1.0 → convert thành beta
+        if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+          BASE="${GITHUB_REF#refs/tags/v}"
+          echo "→ Push tag detected: v${BASE} → will create beta"
+        else
+          # Lấy tag gần nhất
+          LAST=$(git tag -l "v*" | sort -V | tail -1)
+          echo "→ Push branch detected → finding latest beta tag"
+          if [[ -z "$LAST" ]]; then
+            BASE="1.0.0"
           else
-            # Lấy tag gần nhất
-            LAST=$(git tag -l "v*" | sort -V | tail -1)
-            echo "→ Push branch detected → finding latest beta tag"
-            if [[ -z "$LAST" ]]; then
-              BASE="1.0.0"
-            else
-              BASE="${LAST#v}"
-            fi
+            BASE="${LAST#v}"
           fi
+        fi
 
-          # 🔥 Strip beta nếu có
-          if [[ "$BASE" == *-beta.* ]]; then
-            PREFIX="${BASE%-beta.*}"
-          else
-            PREFIX="$BASE"
-          fi
+        # 🔥 Strip beta nếu có
+        if [[ "$BASE" == *-beta.* ]]; then
+          PREFIX="${BASE%-beta.*}"
+        else
+          PREFIX="$BASE"
+        fi
 
-          PREFIX="${PREFIX}-beta"
+        PREFIX="${PREFIX}-beta"
 
-          # 🔥 Tìm số beta lớn nhất
-          HIGHEST=$(git tag -l "v${PREFIX}.*" | sed "s/^v${PREFIX}\.//" | sort -n | tail -1)
+        # 🔥 Tìm số beta lớn nhất
+        HIGHEST=$(git tag -l "v${PREFIX}.*" | sed "s/^v${PREFIX}\.//" | sort -n | tail -1)
 
-          if [[ -z "$HIGHEST" ]]; then
-            NEXT=1
-          else
-            NEXT=$((HIGHEST + 1))
-          fi
+        if [[ -z "$HIGHEST" ]]; then
+          NEXT=1
+        else
+          NEXT=$((HIGHEST + 1))
+        fi
 
-          TAG="v${PREFIX}.${NEXT}"
+        TAG="v${PREFIX}.${NEXT}"
 
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git tag "$TAG"
-          git push origin "$TAG"
+        git tag "$TAG"
+        git push origin "$TAG"
 
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          echo "created=true" >> $GITHUB_OUTPUT
+        echo "tag=$TAG" >> $GITHUB_OUTPUT
+        echo "created=true" >> $GITHUB_OUTPUT
