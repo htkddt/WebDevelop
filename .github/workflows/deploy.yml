@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  deploy:
+  sub_deploy:
     runs-on: ubuntu-latest
 
     if: success()
