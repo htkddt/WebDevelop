@@ -15,9 +15,6 @@ jobs:
     # auto-tag done
     if: startsWith(github.ref, 'refs/tags/v') || needs.auto-tag.outputs.created == 'true'
 
-    permissions:
-      contents: write
-
     # Không cần set default và không cần kèm cd frontend command vì release work trên artifact được tạo ra từ job build
     # defaults:
     #   run:

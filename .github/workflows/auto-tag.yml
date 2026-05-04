@@ -10,9 +10,6 @@ jobs:
     # 🔥 Chỉ chạy khi push branch
     # if: github.ref_type == 'branch' && github.event_name == 'push'
 
-    permissions:
-      contents: write
-
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
       created: ${{ steps.tag.outputs.created }}

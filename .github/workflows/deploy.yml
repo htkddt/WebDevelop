@@ -8,11 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     if: success()
-
-    permissions:
-      pages: write
-      id-token: write
-      contents: read
     
     environment:
       name: github-pages 
