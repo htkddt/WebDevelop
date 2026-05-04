@@ -9,7 +9,7 @@ on:
   #   paths: ['frontend/**', '.github/workflows/**']
 
 permissions: 
-  contents: read
+  contents: write
 
 concurrency: 
   group: frontend-${{ github.ref }} 
