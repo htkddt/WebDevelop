@@ -52,7 +52,7 @@ No screens or components were removed and no UI feature was introduced by the re
 
 | Priority | Item | Recommendation |
 | --- | --- | --- |
-| High | Production API configuration | Production already fails fast without `VITE_API_BASE_URL`; set it to the public NestJS `/api` URL. |
+| High | Production API configuration | Set `VITE_API_BASE_URL` to the public HTTPS NestJS URL ending in `/api`; GitHub Pages deployment is skipped until this is configured. |
 | High | JWT storage in `localStorage` | For higher-security production requirements, move to HttpOnly/Secure/SameSite cookies with CSRF protection and a refresh-token flow. |
 | Medium | Temporary compatibility fields | Remove the old `dept/permission` fallback once MongoDB and NestJS responses are stable. |
 | Medium | Duplicate/unused assets | Confirm `main.css` and `src/public/Logo.png` are unused, then remove them in a dedicated cleanup commit. |

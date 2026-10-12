@@ -76,7 +76,7 @@ An empty `AI_SERVICE_TOKEN` is for local development only. In staging and produc
 2. **Migrate passwords.** Flask used `pbkdf2_sha256` and NestJS uses `bcrypt`; legacy hashes cannot be verified by bcrypt. Force password resets or use a time-limited migration strategy.
 3. **Review MongoDB documents.** Existing `permissions` documents fit the normalized model; verify the unique email index and backfill required fields before deployment.
 4. **Cut over JWTs.** Flask JWTs are invalid in NestJS, so users must sign in again.
-5. **Configure the frontend.** Set `VITE_API_BASE_URL` to the public NestJS `/api` URL. The production workflow fails fast without it.
+5. **Configure the frontend.** Set `VITE_API_BASE_URL` to the public HTTPS NestJS `/api` URL. Until it is set, the production workflow runs checks but skips the GitHub Pages deployment.
 6. **Deploy in order.** Deploy FastAPI, verify `/healthz` from the NestJS network, deploy NestJS with the matching service token, and then switch the frontend URL. Do not expose FastAPI publicly.
 
 ## Chatbot roadmap
