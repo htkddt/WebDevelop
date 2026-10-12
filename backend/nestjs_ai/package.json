@@ -6,7 +6,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "build": "nest build",
-    "lint": "eslint '{src,test}/**/*.{ts,tsx}' --fix",
+    "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
     "test": "jest"
   },
   "dependencies": {
@@ -19,6 +19,8 @@
     "@nestjs/platform-express": "^10.0.0",
     "axios": "^1.6.0",
     "bcrypt": "^5.1.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "mongoose": "^7.5.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
@@ -41,7 +43,7 @@
     "prettier": "^3.0.0",
     "ts-jest": "^29.0.0",
     "ts-loader": "^9.4.0",
-    "ts-node": "^11.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.0"
   }
 }

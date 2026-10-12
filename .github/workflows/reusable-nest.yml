@@ -1,0 +1,31 @@
+name: Reusable - NestJS API
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  nest-build:
+    name: nest-build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/nestjs_ai
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/nestjs_ai/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile NestJS API
+        run: npm run build

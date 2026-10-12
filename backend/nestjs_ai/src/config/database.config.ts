@@ -7,7 +7,7 @@ export class DatabaseConfig {
 
   createMongooseOptions() {
     return {
-      uri: this.configService.get<string>('MONGO_URL', 'mongodb://localhost:27017/179FC'),
+      uri: this.configService.getOrThrow<string>('MONGO_URL'),
     };
   }
 }

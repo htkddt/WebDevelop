@@ -5,6 +5,7 @@ import './../styles/Topbar.css';
 import './../styles/Users.css';
 import './../styles/Search.css';
 import LogoImg from './../assets/Logo.png';
+import { authStorage } from '../services/authStorage';
 
 const Topbar = () => {
   const [showProfile, setShowProfile] = useState(false);
@@ -12,8 +13,7 @@ const Topbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    authStorage.clear();
 
     // Triggered to Leftbar for checking token and show if login is successful
     //window.dispatchEvent(new Event("storage"));
@@ -62,13 +62,19 @@ const Topbar = () => {
         </div>
 
         <div className="user-profile-container" ref={dropdownRef}>
-          <div className="user-profile-trigger" onClick={() => setShowProfile(!showProfile)}>
+          <button
+            type="button"
+            className="user-profile-trigger"
+            aria-label="Open user menu"
+            aria-expanded={showProfile}
+            onClick={() => setShowProfile(!showProfile)}
+          >
             <img src={LogoImg} alt="179FC" className="user-trigger-custom-logo" />
             <div className="user-avatar-wrapper">
               <User size={20} />
               <span className="user-profile-online-status"></span>
             </div>
-          </div>
+          </button>
           {showProfile && (
             <div className="user-profile-popup">
               <div className="user-profile-popup-header">
@@ -84,21 +90,21 @@ const Topbar = () => {
               <div className="user-popup-divider" />
 
               <div className="popup-menu">
-                <div className="user-popup-item" onClick={() => navigate('/profile')}>
+                <button type="button" className="user-popup-item" onClick={() => navigate('/profile')}>
                   <User size={18} /> <span>My Profile</span>
-                </div>
-                <div className="user-popup-item" onClick={() => navigate('/assets')}>
+                </button>
+                <button type="button" className="user-popup-item" onClick={() => navigate('/assets')}>
                   <FileText size={18} /> <span>My Assets</span>
-                </div>
-                <div className="user-popup-item" onClick={() => navigate('/settings')}>
+                </button>
+                <button type="button" className="user-popup-item" onClick={() => navigate('/settings')}>
                   <Settings size={18} /> <span>Settings</span>
-                </div>
+                </button>
 
                 <div className="user-popup-divider" />
 
-                <div className="user-popup-item logout" onClick={handleLogout}>
+                <button type="button" className="user-popup-item logout" onClick={handleLogout}>
                   <LogOut size={18} /> <span>Logout</span>
-                </div>
+                </button>
               </div>
             </div>
           )}

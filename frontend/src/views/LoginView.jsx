@@ -37,7 +37,7 @@ export const LoginView = ({ onLogin, loading, errorMessage }) => {
                 placeholder="Your email address"
                 className={`form-input email-input ${errorMessage ? 'input-error' : ''}`}
                 style={errorMessage ? { borderColor: '#ef4444' } : {}}
-                autoComplete="one-time-code"
+                autoComplete="username"
                 required
               />
               <span className="email-suffix">@klose.dev</span>
@@ -59,12 +59,13 @@ export const LoginView = ({ onLogin, loading, errorMessage }) => {
                 placeholder="Enter your password"
                 className={`form-input password-input ${errorMessage ? 'input-error' : ''}`}
                 style={errorMessage ? { borderColor: '#ef4444' } : {}}
-                autoComplete="one-time-code"
+                autoComplete="current-password"
                 required
               />
               <button
                 type="button"
                 className="password-toggle-btn"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
                 onClick={() => setShowPassword(!showPassword)}
               >
                 <EyeIcon show={showPassword} />

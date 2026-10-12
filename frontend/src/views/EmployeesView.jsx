@@ -10,7 +10,10 @@ export const EmployeesView = ({ data, loading, connected }) => {
     return <div className="empty-state">No staff</div>;
   }
 
-  let numberOrder = 0
+  const formatValue = (value) => {
+    if (!value) return '—';
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  };
 
   const serverStatus = connected
     ? "🟢"
@@ -39,18 +42,18 @@ export const EmployeesView = ({ data, loading, connected }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((emp) => (
-            <tr key={emp.id}>
-              <td className="employee-table-td">{++numberOrder}</td>
+          {data.map((emp, index) => (
+            <tr key={emp._id || emp.id}>
+              <td className="employee-table-td">{index + 1}</td>
               <td className="employee-table-td"><b>{emp.username}</b></td>
               <td className="employee-table-td"><u>{emp.email}</u></td>
               <td className="employee-table-td">{emp.dept}</td>
-              <td className="employee-table-td">{emp.role.charAt(0).toUpperCase() + emp.role.slice(1)}</td>
-              <td className="employee-table-td">{emp.permissions.charAt(0).toUpperCase() + emp.permissions.slice(1)}</td>
+              <td className="employee-table-td">{formatValue(emp.role)}</td>
+              <td className="employee-table-td">{formatValue(emp.permissions || emp.permission)}</td>
 
               <td className="employee-table-td">
-                <span className={`employee-status-badge ${emp?.status?.toLowerCase() || "Null"}`}>
-                  {emp.status.charAt(0).toUpperCase() + emp.status.slice(1)}
+                <span className={`employee-status-badge ${emp.status?.toLowerCase() || 'unknown'}`}>
+                  {formatValue(emp.status)}
                 </span>
               </td>
             </tr>

@@ -1,51 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import PageContent from '../components/PageContent';
+import useApiResource from '../hooks/useApiResource';
+import { dashboardApi } from '../services/api';
 import DashboardView from '../views/DashboardView';
 
+const FALLBACK_STATS = { dept: -1, total: -1, active: -1, inactive: -1 };
+
 const DashboardPage = () => {
-  // Proccessing API logic
-  // const handleLoginSubmit = (data) => {
-  //   console.log("Login data:", data);
-  // };
-
-  const MOCK_DATA = [
-    {
-      "totalEmployees": -1,
-      "pendingLeave": -1,
-      "activeProjects": -1
-    }
-  ];
-
-  const API_URL = window.location.hostname === "localhost"
-    ? "http://localhost:5000/api/dashboard"
-    : "https://webdevelop-gnyi.onrender.com/api/dashboard";
-
-  const [stats, setStats] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [connected, setConnected] = useState(true);
-
-  useEffect(() => {
-    // Call API
-    fetch(API_URL)
-      .then(res => {
-        if (!res.ok) throw new Error("Connection error Backend");
-        return res.json();
-      })
-      .then(data => {
-        setStats(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Connection error Backend:", err);
-        setStats(MOCK_DATA);
-        setLoading(false);
-        setConnected(false);
-      });
-  }, []);
+  const { data: stats, loading, connected } = useApiResource(
+    dashboardApi.getStats,
+    FALLBACK_STATS,
+  );
 
   return (
-    <div className="app-content">
-      <DashboardView stats={stats} loading={loading} connected={connected} />;
-    </div>
+    <PageContent>
+      <DashboardView stats={stats} loading={loading} connected={connected} />
+    </PageContent>
   );
 };
 

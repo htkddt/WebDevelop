@@ -1,38 +1,21 @@
-# NestJS AI Backend
+# NestJS public API
 
-This is the NestJS backend replacement for the employee management application.
-It preserves the existing Python backend features: auth, users, dashboard, and chat.
+NestJS là public backend duy nhất của 179FC. API được namespace dưới `/api`; browser không gọi FastAPI/Ollama trực tiếp.
 
-## Setup
+## Run
 
-1. Copy `.env.example` to `.env` and fill values.
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start local server:
-   ```bash
-   npm run start:dev
-   ```
-4. Build production bundle:
-   ```bash
-   npm run build
-   ```
+```powershell
+copy .env.example .env
+npm ci
+npm run start:dev
+```
 
-## API Endpoints
+Required `.env`: `MONGO_URL`, `JWT_SECRET`, `FRONTEND_ORIGIN`, `AI_SERVICE_URL`, `AI_SERVICE_TOKEN`. Xem [Backend.md](../../Backend.md) để biết contract, migration password từ Flask và checklist cutover.
+
+## Endpoints
 
 - `POST /api/auth/login`
 - `POST /api/auth/register`
-- `GET /api/users/employees`
-- `GET /api/dashboard`
-- `POST /api/chat`
-
-## Chat Service
-
-This backend calls a local Ollama instance by default. Set `OLLAMA_URL` and `OLLAMA_MODEL` in `.env`.
-
-## Notes
-
-- JWT is used for authentication.
-- MongoDB is accessed through Mongoose.
-- Routes are namespaced under `/api` to match the existing frontend.
+- `GET /api/users/employees` (Bearer JWT)
+- `GET /api/dashboard` (Bearer JWT)
+- `POST /api/chat` (Bearer JWT; gateway đến FastAPI AI service)

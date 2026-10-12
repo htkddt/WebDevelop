@@ -22,6 +22,8 @@
 }
 
 .leftbar-toggle-btn {
+  background: transparent;
+  border: 0;
   cursor: pointer;
   margin-bottom: 30px;
   display: flex;
@@ -69,4 +71,10 @@
 .leftbar-item.active {
   background-color: rgb(255, 120, 120);
   color: black;
+}
+
+.leftbar-toggle-btn:focus-visible,
+.leftbar-item:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
