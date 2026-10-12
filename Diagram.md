@@ -1,6 +1,6 @@
-# Diagram
+# Architecture Diagrams
 
-Sơ đồ phản ánh architecture hiện tại: NestJS là public API duy nhất; FastAPI chỉ là private service của chatbot.
+The diagrams reflect the current architecture: NestJS is the only public API and FastAPI is the chatbot's private service.
 
 ## Folder ownership
 
@@ -12,6 +12,7 @@ flowchart TB
   Backend[backend/\nREADME: cross-service operations]
   Nest[backend/nestjs_ai/\nREADME: public API]
   AI[backend/ai_service/\nREADME: private AI service]
+  Tests[tests/\nREADME: isolated regression suites]
   Github[.github/\nworkflows + branch-protection.md]
   Docs[Frontend.md / Backend.md / Diagram.md / Yaml.md]
 
@@ -19,13 +20,14 @@ flowchart TB
   Root --> Backend
   Backend --> Nest
   Backend --> AI
+  Root --> Tests
   Root --> Github
   Root --> Docs
 ```
 
-Hai legacy runtime folders `backend/nodejs_ai/` và `backend/python_ai/` không còn tồn tại.
+The legacy runtime folders `backend/nodejs_ai/` and `backend/python_ai/` are not part of the current application flow.
 
-## Block diagram: frontend, API và AI service
+## Frontend, API, and AI service
 
 ```mermaid
 flowchart LR
@@ -79,7 +81,7 @@ flowchart LR
   Gateway -->|private HTTP + service token| Chat
 ```
 
-## Block diagram: composition trong khu vực đã đăng nhập
+## Authenticated-area composition
 
 ```mermaid
 flowchart TB
@@ -103,7 +105,7 @@ flowchart TB
   Layout --> Chat
 ```
 
-## Sequence diagram: login và tải dashboard
+## Login and dashboard sequence
 
 ```mermaid
 sequenceDiagram
@@ -135,7 +137,7 @@ sequenceDiagram
   Nest-->>DP: departments, total, active, inactive
 ```
 
-## Sequence diagram: chatbot
+## Chat sequence
 
 ```mermaid
 sequenceDiagram
@@ -161,4 +163,4 @@ sequenceDiagram
   Widget->>Widget: Append bot response and hide typing
 ```
 
-FastAPI là boundary để thêm RAG, memory, streaming, queue và provider routing mà không thay đổi public frontend contract.
+FastAPI provides the boundary for adding RAG, memory, streaming, queues, and provider routing without changing the frontend's public contract.

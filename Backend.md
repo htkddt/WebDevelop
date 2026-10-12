@@ -1,15 +1,15 @@
-# Backend architecture and refactor
+# Backend Architecture and Refactor
 
-## Kết quả thực hiện
+## Current outcome
 
-Project hiện có một public API và một private AI service:
+The project has one public API and one private AI service:
 
 ```text
 React frontend
     │ HTTPS + Bearer JWT
     ▼
 NestJS API (`backend/nestjs_ai`)
-    ├── MongoDB: auth, users, dashboard
+    ├── MongoDB: authentication, users, dashboard
     └── private HTTP + service token
             ▼
        FastAPI AI service (`backend/ai_service`)
@@ -17,25 +17,24 @@ NestJS API (`backend/nestjs_ai`)
           Ollama / future model provider
 ```
 
-Express mock (`backend/nodejs_ai`) và Flask implementation (`backend/python_ai`) đã được loại khỏi source runtime. Chúng không còn cùng phục vụ auth/users/dashboard/chat contract. NestJS là endpoint duy nhất mà browser được phép gọi; FastAPI là service nội bộ, không có CORS/browser auth hoặc MongoDB CRUD.
+The former Express mock (`backend/nodejs_ai`) and Flask implementation (`backend/python_ai`) are not part of the active runtime. NestJS is the only endpoint the browser may call. FastAPI is an internal service: it has no browser CORS, user authentication, or MongoDB CRUD responsibility.
 
-Cấu trúc backend hiện tại chỉ còn `backend/nestjs_ai/` và `backend/ai_service/`. Xem [backend/README.md](backend/README.md) để vận hành liên-service, [backend/nestjs_ai/README.md](backend/nestjs_ai/README.md) cho public API và [backend/ai_service/README.md](backend/ai_service/README.md) cho AI service.
+See [backend/README.md](backend/README.md) for cross-service operations, [backend/nestjs_ai/README.md](backend/nestjs_ai/README.md) for the public API, and [backend/ai_service/README.md](backend/ai_service/README.md) for the AI service.
 
-## Thay đổi NestJS API
+## NestJS API changes
 
-| Khu vực | Thay đổi |
+| Area | Current design |
 | --- | --- |
-| Runtime boundary | `ChatService` không gọi Ollama trực tiếp nữa; gọi FastAPI qua `AI_SERVICE_URL`. |
-| Internal auth | NestJS gửi `X-Internal-Service-Token`; FastAPI kiểm tra token khi `AI_SERVICE_TOKEN` được cấu hình. |
-| DTO validation | Thêm `ChatRequestDto` (`contents`, optional `conversationId`, max 8,000 ký tự); thêm dependency `class-validator` và `class-transformer`. |
-| JWT/config | Bỏ JWT secret fallback cố định; `JWT_SECRET`, `MONGO_URL`, `AI_SERVICE_URL`, `AI_SERVICE_TOKEN` là required config và fail-fast khi thiếu. |
-| CORS | Chỉ cho origin trong `FRONTEND_ORIGIN` thay vì allow-all. |
-| User contract | Chuẩn hoá field thành `permissions` (số nhiều), login trả `id` string và `permissions`. |
-| Chat contract | Frontend vẫn `POST /api/chat` với `contents`; NestJS trả `header`, `reply`, `conversationId` để không phá UI hiện tại. |
+| Runtime boundary | `ChatService` calls FastAPI through `AI_SERVICE_URL`; it does not call Ollama directly. |
+| Internal authentication | NestJS sends `X-Internal-Service-Token`; FastAPI verifies it when `AI_SERVICE_TOKEN` is configured. |
+| DTO validation | `ChatRequestDto` accepts `contents`, optional `conversationId`, and a maximum of 8,000 characters. |
+| JWT and configuration | `JWT_SECRET`, `MONGO_URL`, `AI_SERVICE_URL`, and `AI_SERVICE_TOKEN` are required and fail fast when absent. |
+| CORS | Only the configured `FRONTEND_ORIGIN` is allowed. |
+| User contract | The normalized field is `permissions`; login returns a string `id` and `permissions`. |
+| Chat contract | The browser still posts `contents` to `/api/chat`; NestJS returns `header`, `reply`, and `conversationId`. |
+| Tests | `npm test` runs isolated Jest tests from `tests/nestjs/` with mocked service boundaries. |
 
-### NestJS environment
-
-Copy `backend/nestjs_ai/.env.example` thành `.env` và điền giá trị thật:
+Copy `backend/nestjs_ai/.env.example` to `.env` and supply real values:
 
 ```dotenv
 PORT=5000
@@ -46,19 +45,19 @@ AI_SERVICE_URL=http://localhost:8000
 AI_SERVICE_TOKEN=<same-value-as-ai-service>
 ```
 
-## FastAPI AI service scaffold
+## FastAPI AI-service boundary
 
-`backend/ai_service` là nền tảng để chatbot phát triển mà không lẫn với CRUD web:
+`backend/ai_service` isolates chatbot/model work from web CRUD:
 
-| Thành phần | Vai trò |
+| Component | Responsibility |
 | --- | --- |
-| `app/main.py` | FastAPI app, `GET /healthz`, private `POST /v1/chat/completions`. |
-| `app/schemas.py` | Pydantic request/response schema và giới hạn input. |
-| `app/service.py` | Application boundary để sau này thêm RAG, conversation memory, provider routing hoặc queue. |
-| `app/providers/ollama.py` | Adapter Ollama bất đồng bộ, timeout và error boundary. |
-| `tests/test_main.py` | Test health và chat orchestration không cần Ollama thật. |
+| `app/main.py` | FastAPI application, `GET /healthz`, private `POST /v1/chat/completions`. |
+| `app/schemas.py` | Pydantic request/response schemas and input limits. |
+| `app/service.py` | Application boundary for future RAG, conversation memory, provider routing, or queues. |
+| `app/providers/ollama.py` | Async Ollama adapter, timeout handling, and provider-error boundary. |
+| `tests/ai_service/test_main.py` | Isolated route, authentication, validation, and orchestration tests. |
 
-Chạy local:
+Run it locally:
 
 ```powershell
 cd backend/ai_service
@@ -66,41 +65,41 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
-pytest
+.\.venv\Scripts\python.exe -m pytest ../../tests/ai_service -q
 ```
 
-Không set `AI_SERVICE_TOKEN` chỉ phù hợp local development. Ở staging/production, FastAPI phải ở private network và token này phải khác JWT secret, lưu ở secret manager.
+An empty `AI_SERVICE_TOKEN` is for local development only. In staging and production, FastAPI must run on a private network and use a secret that differs from the JWT secret.
 
-## Migration và compatibility cần làm trước cutover
+## Cutover and compatibility work
 
-1. **Credential rotation:** Flask seed cũ có Mongo credential hard-code. Credential đó phải rotate ngay; không khôi phục script/secret này.
-2. **Password migration:** Flask cũ dùng `pbkdf2_sha256`, NestJS dùng `bcrypt`. Hash cũ không thể login qua bcrypt; thực hiện forced password reset hoặc thêm strategy migration có thời hạn, rồi bỏ nó sau cutover.
-3. **Mongo schema:** document cũ có `permissions`, phù hợp model NestJS sau refactor. Kiểm tra index email unique và backfill các field thiếu trước deploy.
-4. **JWT cutover:** token Flask cũ không dùng được với NestJS. Buộc người dùng login lại khi chuyển API.
-5. **Frontend:** đặt repository variable `VITE_API_BASE_URL` trỏ public NestJS `/api`; production workflow fail-fast khi thiếu. Frontend đã tự gửi Bearer token và Register form đã đổi field thành `permissions`.
-6. **Deployment:** deploy NestJS và AI service trước, kiểm tra `/healthz`, sau đó chuyển frontend URL. Không expose FastAPI ra public internet.
+1. **Rotate credentials.** A legacy Flask seed script contained a MongoDB credential; rotate it and do not restore the script or secret.
+2. **Migrate passwords.** Flask used `pbkdf2_sha256` and NestJS uses `bcrypt`; legacy hashes cannot be verified by bcrypt. Force password resets or use a time-limited migration strategy.
+3. **Review MongoDB documents.** Existing `permissions` documents fit the normalized model; verify the unique email index and backfill required fields before deployment.
+4. **Cut over JWTs.** Flask JWTs are invalid in NestJS, so users must sign in again.
+5. **Configure the frontend.** Set `VITE_API_BASE_URL` to the public NestJS `/api` URL. The production workflow fails fast without it.
+6. **Deploy in order.** Deploy FastAPI, verify `/healthz` from the NestJS network, deploy NestJS with the matching service token, and then switch the frontend URL. Do not expose FastAPI publicly.
 
-## Định hướng chatbot tiếp theo
+## Chatbot roadmap
 
-FastAPI được tách khi chatbot bắt đầu có các tín hiệu: RAG/embeddings, document ingestion, model evaluation, background worker dài hạn hoặc team AI cần lifecycle riêng. Bổ sung theo thứ tự:
+The FastAPI boundary is ready for future RAG/embeddings, document ingestion, model evaluation, long-running workers, and an independently operated AI team. Add capabilities in this order:
 
-1. Lưu conversation metadata/history theo `conversation_id` ở database chuyên dụng; đặt retention policy.
-2. Thêm provider abstraction cho hosted model/Ollama fallback, streaming SSE và circuit breaker.
-3. Thêm RAG ingestion worker, vector store, document authorization từ NestJS và evaluation dataset.
-4. Thêm quota/rate limit ở NestJS theo user, audit event, prompt/output limits, observability và tracing correlation ID.
-5. Dùng queue khi document processing hoặc generation kéo dài; HTTP request không nên giữ worker lâu.
+1. Persist conversation metadata/history by `conversation_id` with a retention policy.
+2. Add provider abstraction, a hosted-model/Ollama fallback, SSE streaming, and circuit breaking.
+3. Add RAG ingestion workers, a vector store, NestJS-provided document authorization, and evaluation datasets.
+4. Add per-user quotas/rate limits in NestJS, audit events, prompt/output limits, observability, and correlation IDs.
+5. Use a queue for long document processing or generation rather than holding an HTTP worker open.
 
-## API contract hiện tại
+## Current API contract
 
-| Public endpoint (NestJS) | Input | Output chính | Auth |
+| Public NestJS endpoint | Input | Main output | Authentication |
 | --- | --- | --- | --- |
-| `POST /api/auth/register` | user + `permissions` | success message | Public |
-| `POST /api/auth/login` | email/password | token + user | Public |
-| `GET /api/users/employees` | — | employee list, không password | Bearer JWT |
+| `POST /api/auth/register` | User plus `permissions` | Success message | Public |
+| `POST /api/auth/login` | Email and password | Token plus user | Public |
+| `GET /api/users/employees` | — | Employee list without passwords | Bearer JWT |
 | `GET /api/dashboard` | — | `departments`, `total`, `active`, `inactive` | Bearer JWT |
 | `POST /api/chat` | `contents`, optional `conversationId` | `reply`, `conversationId` | Bearer JWT |
 
-FastAPI internal endpoint: `POST /v1/chat/completions` nhận `{ message, conversation_id?, user_id? }`. Endpoint này không phải public contract và có thể thay đổi cùng NestJS adapter.
+The internal FastAPI endpoint is `POST /v1/chat/completions`, accepting `{ message, conversation_id?, user_id? }`. It is not a public contract and can evolve with the NestJS adapter.
 
 ## Verification
 
@@ -109,11 +108,12 @@ FastAPI internal endpoint: `POST /v1/chat/completions` nhận `{ message, conver
 cd backend/nestjs_ai
 npm ci
 npm run build
+npm test
 
 # FastAPI
 cd ../ai_service
 pip install -r requirements.txt
-pytest
+.\.venv\Scripts\python.exe -m pytest ../../tests/ai_service -q
 ```
 
-CI chạy các lệnh tương đương qua reusable workflow. Xem `Yaml.md` để biết dependency/branch policy và `.github/branch-protection.md` để bật PR-only merge.
+CI runs equivalent commands through reusable workflows. See [Yaml.md](Yaml.md) for workflow dependencies and branch policy, and [.github/branch-protection.md](.github/branch-protection.md) for pull-request-only merge enforcement.

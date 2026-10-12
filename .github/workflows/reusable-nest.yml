@@ -29,3 +29,6 @@ jobs:
 
       - name: Compile NestJS API
         run: npm run build
+
+      - name: Run NestJS unit tests
+        run: npm test

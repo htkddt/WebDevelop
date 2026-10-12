@@ -1,19 +1,20 @@
 # 179FC WebDevelop
 
-Ứng dụng quản lý nhân sự gồm React frontend, NestJS public API, MongoDB và FastAPI private AI service cho chatbot. Mỗi trách nhiệm chỉ có một owner runtime; browser không gọi database, Ollama hoặc AI service trực tiếp.
+179FC WebDevelop is an employee-management application with a React frontend, a NestJS public API, MongoDB, and a private FastAPI AI service for the chatbot. Each responsibility has one runtime owner: the browser never calls MongoDB, Ollama, or the AI service directly.
 
-## Tài liệu
+## Documentation
 
-- [Frontend.md](Frontend.md): thống kê, coding rules và refactor frontend.
-- [Backend.md](Backend.md): architecture NestJS/FastAPI, contract, migration và security.
-- [Diagram.md](Diagram.md): component, block và sequence diagram.
-- [Yaml.md](Yaml.md): GitHub Actions YAML, CI/CD dependency, branch policy và troubleshooting.
-- [.github/branch-protection.md](.github/branch-protection.md): cấu hình Ruleset bắt buộc để chỉ merge qua pull request.
-- [frontend/README.md](frontend/README.md): vận hành, build và lưu ý của toàn frontend.
-- [frontend/src/README.md](frontend/src/README.md): cấu trúc React source và quy ước `.jsx`/`.js`.
-- [backend/README.md](backend/README.md): vận hành và thay đổi liên-service của backend.
+- [Frontend.md](Frontend.md): frontend architecture, coding standards, and refactoring notes.
+- [Backend.md](Backend.md): NestJS/FastAPI architecture, contracts, migration, and security.
+- [Diagram.md](Diagram.md): component, block, and sequence diagrams.
+- [Yaml.md](Yaml.md): GitHub Actions YAML, CI/CD dependencies, branch policy, and troubleshooting.
+- [.github/branch-protection.md](.github/branch-protection.md): required GitHub Ruleset configuration for pull-request-only merges.
+- [frontend/README.md](frontend/README.md): frontend setup, build, test, and deployment notes.
+- [frontend/src/README.md](frontend/src/README.md): React source layout and `.jsx`/`.js` conventions.
+- [backend/README.md](backend/README.md): backend operations and cross-service changes.
+- [tests/README.md](tests/README.md): shared regression-test layout and commands.
 
-## Coding design hiện tại
+## Current architecture and request flow
 
 ```text
 Browser
@@ -28,36 +29,36 @@ Browser
         └── Chat gateway → FastAPI private AI service → Ollama/provider
 ```
 
-### Thay đổi design đã áp dụng
+- Endpoint configuration, the JSON HTTP client, session storage, API modules, and reusable data hooks are separated from frontend pages.
+- Login and registration are public routes; every application route, including Settings, requires a session.
+- NestJS is the only public API. The former Express mock and Flask CRUD/chat runtimes are not part of the active application flow.
+- FastAPI is a private model-orchestration boundary with a health check, input validation, timeout/error handling, an internal service token, and tests that do not require Ollama.
+- Regression tests are centralized in `tests/`: React/Jest tests, NestJS/Jest tests, and FastAPI/pytest tests use mocks rather than live infrastructure.
+- Reusable GitHub Actions workflows build and test all three layers. Production deploys only after a push to protected `main` or `master` (normally the result of a merged pull request).
 
-- Frontend tách endpoint config, HTTP client, auth storage, API services và hook dữ liệu chung; không lặp `fetch`/base URL/localStorage key trong page.
-- Public login/register tách khỏi protected `MainLayout`; toàn bộ app area, bao gồm Settings, cần session.
-- Dashboard/employees có fallback đúng schema; form/menu có semantic element và accessibility cơ bản.
-- NestJS là public API duy nhất. Express mock và Flask CRUD/chat legacy đã bị loại khỏi runtime source.
-- FastAPI AI service là private boundary cho model orchestration, có health check, input schema, timeout/error adapter, internal service token và test không cần Ollama.
-- CI/CD dùng reusable workflow cho frontend/NestJS/AI service; production deploy chỉ sau push vào protected `main/master` (tức sau merge PR khi Ruleset được bật).
+The frontend chat payload remains `contents`. NestJS adapts it to FastAPI and returns `header`, `reply`, and `conversationId`, so the browser contract remains stable.
 
-Không có feature UI mới được thêm trong refactor frontend. Backend chat vẫn giữ payload frontend `contents`, nhưng NestJS giờ gateway sang FastAPI thay vì gọi Ollama trực tiếp.
-
-## Cấu trúc
+## Repository layout
 
 ```text
 .
 ├── frontend/
-│   ├── README.md             # Vận hành/cấu hình frontend
+│   ├── README.md             # frontend setup, test, build, deployment
 │   └── src/
 │       ├── components/ config/ hooks/ layouts/
 │       ├── pages/ services/ styles/ views/
-│       ├── README.md         # Quy ước React và JavaScript source
+│       ├── README.md         # React and JavaScript conventions
 │       └── AppRoutes.jsx
 ├── backend/
-│   ├── README.md             # Tổng quan vận hành hai backend service
-│   ├── nestjs_ai/            # Public API: JWT, MongoDB, chat gateway
-│   ├── ai_service/           # Private FastAPI chatbot/model service
-│   └── nodejs_ai/
-│       └── Document.pdf      # Tài liệu tham khảo đã khôi phục; không thuộc runtime/code flow
+│   ├── README.md             # two-service backend operations
+│   ├── nestjs_ai/            # public API: JWT, MongoDB, chat gateway
+│   └── ai_service/           # private FastAPI chatbot/model service
+├── tests/
+│   ├── frontend/             # React component, route, hook, and client tests
+│   ├── nestjs/               # NestJS service and controller tests
+│   └── ai_service/           # FastAPI route/provider tests
 ├── .github/
-│   ├── workflows/            # CI, preview, production, reusable workflow
+│   ├── workflows/            # CI, preview, production, reusable workflows
 │   └── branch-protection.md
 ├── Frontend.md
 ├── Backend.md
@@ -67,12 +68,14 @@ Không có feature UI mới được thêm trong refactor frontend. Backend chat
 
 ## Prerequisites
 
-- Node.js 20 (CI standard; frontend Vite 2 should be upgrade-tested before a future Vite upgrade).
-- Python 3.11.
-- MongoDB local/Atlas.
-- Ollama or another provider reachable from FastAPI if chatbot responses are required.
+- Node.js 20 (the CI standard; test Vite 2 before any future Vite upgrade).
+- Python 3.11 or newer.
+- MongoDB, locally or through Atlas.
+- Ollama or another provider reachable by FastAPI when chatbot responses are needed.
 
 ## Local development
+
+Start the dependencies in this order: MongoDB, FastAPI (and Ollama when using chat), NestJS, then the frontend.
 
 ### 1. FastAPI AI service
 
@@ -85,7 +88,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-For local-only development, an empty `AI_SERVICE_TOKEN` is permitted. Set it to a non-empty secret outside local development.
+An empty `AI_SERVICE_TOKEN` is acceptable only for local development. Use a non-empty secret outside local development.
 
 ### 2. NestJS API
 
@@ -96,7 +99,7 @@ npm ci
 npm run start:dev
 ```
 
-Set values in `.env`:
+Set these values in `.env`:
 
 ```dotenv
 MONGO_URL=mongodb://localhost:27017/179FC
@@ -106,7 +109,7 @@ AI_SERVICE_URL=http://localhost:8000
 AI_SERVICE_TOKEN=<same-private-token-as-ai-service>
 ```
 
-NestJS listens at `http://localhost:5000/api` by default.
+NestJS listens on `http://localhost:5000/api` by default.
 
 ### 3. Frontend
 
@@ -122,69 +125,65 @@ Create `frontend/.env.local` when the API host differs:
 VITE_API_BASE_URL=http://localhost:5000/api
 ```
 
-Open `http://localhost:3000/#/login`.
+Because Vite is configured with `base: '/WebDevelop/'`, use `http://localhost:3000/WebDevelop/index.html#/login` for the local dev server.
 
-## API public và cấu hình
+## Public API and configuration
 
-Browser chỉ gọi các endpoint NestJS dưới `VITE_API_BASE_URL` (mặc định local là `http://localhost:5000/api`). Endpoint FastAPI là private implementation detail, không gọi từ browser.
+The browser calls only NestJS endpoints under `VITE_API_BASE_URL` (locally, `http://localhost:5000/api`). FastAPI is a private implementation detail.
 
-| Endpoint NestJS | Mục đích | Xác thực |
+| NestJS endpoint | Purpose | Authentication |
 | --- | --- | --- |
-| `POST /api/auth/register` | Tạo người dùng với `permissions`. | Không |
-| `POST /api/auth/login` | Đăng nhập, trả JWT và user. | Không |
-| `GET /api/dashboard` | Số liệu dashboard. | Bearer JWT |
-| `GET /api/users/employees` | Danh sách nhân sự không gồm password. | Bearer JWT |
-| `POST /api/chat` | Chat gateway tới FastAPI, nhận `contents`. | Bearer JWT |
+| `POST /api/auth/register` | Create a user with `permissions`. | None |
+| `POST /api/auth/login` | Sign in and return a JWT plus the user. | None |
+| `GET /api/dashboard` | Return dashboard statistics. | Bearer JWT |
+| `GET /api/users/employees` | Return employees without passwords. | Bearer JWT |
+| `POST /api/chat` | Send `contents` through the FastAPI chat gateway. | Bearer JWT |
 
-| Cấu hình | Nơi đặt | Ý nghĩa |
+| Setting | Location | Purpose |
 | --- | --- | --- |
-| `VITE_API_BASE_URL` | `frontend/.env.local`; repository variable khi production | Public NestJS URL, kết thúc bằng `/api`. |
-| `MONGO_URL`, `JWT_SECRET`, `FRONTEND_ORIGIN` | `backend/nestjs_ai/.env` hoặc hosting secrets | Database, JWT và CORS của public API. |
-| `AI_SERVICE_URL`, `AI_SERVICE_TOKEN` | Cả hai backend service | Địa chỉ private và token xác thực NestJS → FastAPI. |
-| `PREVIEW_DEPLOY_HOOK`, `BACKEND_DEPLOY_HOOK` | GitHub repository secrets (tùy chọn) | Kích hoạt host preview/backend sau pipeline hợp lệ. |
+| `VITE_API_BASE_URL` | `frontend/.env.local`; repository variable in production | Public NestJS URL ending in `/api`. |
+| `MONGO_URL`, `JWT_SECRET`, `FRONTEND_ORIGIN` | `backend/nestjs_ai/.env` or hosting secrets | Database, JWT, and public-API CORS configuration. |
+| `AI_SERVICE_URL`, `AI_SERVICE_TOKEN` | Both backend services | Private address and NestJS-to-FastAPI authentication token. |
+| `PREVIEW_DEPLOY_HOOK`, `BACKEND_DEPLOY_HOOK` | Optional GitHub repository secrets | Trigger a configured preview or backend host after a valid pipeline. |
 
-Không commit `.env`, database URI, password, JWT secret hoặc service token. Mẫu biến môi trường ở README của từng backend service.
+Never commit `.env` files, database URIs, passwords, JWT secrets, or service tokens.
 
 ## Verification
 
+Run the complete regression suite from the repository root after installing the relevant dependencies:
+
 ```powershell
-# frontend
-cd frontend
-npm run build
-
-# NestJS API
-cd ../backend/nestjs_ai
-npm run build
-
-# AI service
-cd ../ai_service
-pytest
+npm --prefix frontend test
+npm --prefix backend/nestjs_ai test
+Push-Location backend/ai_service; .\.venv\Scripts\python.exe -m pytest ../../tests/ai_service -q; Pop-Location
 ```
+
+Build the deployable applications as well:
+
+```powershell
+npm --prefix frontend run build
+npm --prefix backend/nestjs_ai run build
+```
+
+Tests are isolated and do not require MongoDB, Ollama, service credentials, or a running browser.
 
 ## CI/CD and merge policy
 
-- Every feature/sub-branch push runs CI and creates a frontend preview artifact.
-- A configured `PREVIEW_DEPLOY_HOOK` can publish branch previews to a chosen host without overwriting GitHub Pages.
-- Pull requests into `main/master` run the same three checks: `frontend-build`, `nest-build`, `ai-test`.
-- After PR merge, `deploy-production.yml` requires repository variable `VITE_API_BASE_URL` (the public NestJS `/api` URL), runs all checks again, deploys frontend to GitHub Pages and optionally triggers backend hosting through `BACKEND_DEPLOY_HOOK`.
-- Direct-push prevention is a GitHub repository Ruleset/branch-protection setting, not YAML alone. Apply the settings in `.github/branch-protection.md` before relying on this policy.
+- Every feature-branch push runs frontend build/tests, NestJS build/tests, FastAPI tests, and produces a frontend preview artifact.
+- `PREVIEW_DEPLOY_HOOK`, when configured, can publish a branch preview without overwriting GitHub Pages.
+- Pull requests into `main` or `master` run the same checks.
+- A push to `main` or `master` validates all layers again, deploys the frontend to GitHub Pages, and can trigger backend deployment through `BACKEND_DEPLOY_HOOK`.
+- YAML cannot prevent direct pushes by itself. Apply the Ruleset described in [.github/branch-protection.md](.github/branch-protection.md) before relying on the policy.
 
-See [Yaml.md](Yaml.md) for syntax, job dependencies, workflow composition and common failures.
+See [Yaml.md](Yaml.md) for workflow composition, dependencies, and troubleshooting.
 
-## Security and cutover requirements
+## Security and deployment order
 
-1. Rotate any credential previously committed in a legacy seed script; use only secret manager/environment variables thereafter.
-2. Existing Flask PBKDF2 password hashes do not work with NestJS bcrypt. Force a password reset or implement a time-limited legacy migration strategy before cutover.
-3. Existing Flask JWTs become invalid when NestJS is activated; require login again.
-4. Do not expose FastAPI AI service publicly. Keep it on a private network and protect NestJS-to-AI calls with a distinct service token.
-5. Restrict CORS (`FRONTEND_ORIGIN`), add production rate limits for login/chat and do not log passwords or raw secrets.
+1. Rotate any credential that appeared in an old seed script; use environment variables or a secret manager going forward.
+2. Flask PBKDF2 hashes cannot be verified by NestJS bcrypt. Force a password reset or implement a time-limited migration before cutover.
+3. Flask JWTs become invalid once NestJS is activated; require users to sign in again.
+4. Keep FastAPI private and protect NestJS-to-AI calls with a service token distinct from `JWT_SECRET`.
+5. Restrict CORS with `FRONTEND_ORIGIN`, add production rate limits for login/chat, and do not log passwords or raw secrets.
+6. Provision MongoDB, secrets, and private networking; deploy FastAPI and verify `/healthz`; deploy NestJS; then set `VITE_API_BASE_URL` and deploy the frontend.
 
-## Deployment order
-
-1. Provision MongoDB, secrets and private networking.
-2. Deploy FastAPI AI service; verify `GET /healthz` from NestJS network.
-3. Deploy NestJS with `AI_SERVICE_URL` and matching `AI_SERVICE_TOKEN`.
-4. Update `VITE_API_BASE_URL`, build/deploy frontend and verify login/dashboard/chat.
-5. Enable GitHub Ruleset required checks and deploy hooks/host Git integration.
-
-Detailed backend migration and chatbot roadmap are maintained in [Backend.md](Backend.md).
+For migration detail and the chatbot roadmap, see [Backend.md](Backend.md).
