@@ -1,8 +1,10 @@
 name: CI
 
 on:
-  push:
   pull_request:
+    branches: [main, master]
+  push:
+    branches-ignore: [main, master]
   workflow_dispatch:
 
 permissions:
@@ -15,9 +17,6 @@ concurrency:
 jobs:
   frontend:
     uses: ./.github/workflows/reusable-frontend.yml
-    with:
-      # CI builds against the frontend's local API contract; it never deploys this artifact.
-      api_base_url: http://localhost:5000/api
 
   nestjs-api:
     uses: ./.github/workflows/reusable-nest.yml

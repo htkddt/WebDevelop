@@ -169,8 +169,10 @@ Tests are isolated and do not require MongoDB, Ollama, service credentials, or a
 
 ## CI/CD and merge policy
 
-- Every push and pull request runs frontend build/tests, NestJS build/tests, and FastAPI tests in local mode. The frontend build uses `http://localhost:5000/api` and is never deployed by CI.
-- `preview-deploy.yml` and `deploy-production.yml` are manual-only (`workflow_dispatch`) while the project is running locally. Invoke them later only after configuring the corresponding API URL and deploy hooks.
+- Every feature-branch push runs frontend build/tests, NestJS build/tests, FastAPI tests, and produces a frontend preview artifact.
+- `PREVIEW_DEPLOY_HOOK`, when configured, can publish a branch preview without overwriting GitHub Pages.
+- Pull requests into `main` or `master` run the same checks.
+- A push to `main` or `master` validates all layers again, deploys the frontend to GitHub Pages, and can trigger backend deployment through `BACKEND_DEPLOY_HOOK`.
 - YAML cannot prevent direct pushes by itself. Apply the Ruleset described in [.github/branch-protection.md](.github/branch-protection.md) before relying on the policy.
 
 See [Yaml.md](Yaml.md) for workflow composition, dependencies, and troubleshooting.
