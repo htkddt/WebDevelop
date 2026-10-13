@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
-import { chatApi } from '../services/api';
 import './../styles/ChatWidget.css';
 
 const ChatWidget = () => {
@@ -13,6 +12,10 @@ const ChatWidget = () => {
 
   const textareaRef = useRef(null);
   const chatBodyRef = useRef(null);
+
+  const API_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000/api/chat"
+    : "https://webdevelop-gnyi.onrender.com/api/chat";
 
   // Automatic height adjustment function
   const handleTextareaChange = (e) => {
@@ -50,7 +53,13 @@ const ChatWidget = () => {
     }
 
     try {
-      const data = await chatApi.sendMessage(message);
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'type': 'json' },
+        body: JSON.stringify({ contents: message }),
+      });
+      if (!response.ok) throw new Error("Connection error Backend");
+      const data = await response.json();
       const botReply = {
         id: Date.now() + 1,
         text: data.header + data.reply,
@@ -121,13 +130,7 @@ const ChatWidget = () => {
         </div>
       </div>
 
-      <button
-        type="button"
-        className="chat-fab"
-        aria-label={isOpen ? 'Close chat' : 'Open chat'}
-        aria-expanded={isOpen}
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <button className="chat-fab" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
         {!isOpen && <span className="chat-notification-dot"></span>}
       </button>

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, HelpCircle, CalendarOff, FileChartColumn, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, HelpCircle, ShieldCheck, CalendarOff, FileChartColumn, Menu, X } from 'lucide-react';
 import './../styles/Leftbar.css';
 
 const menuData = [
@@ -28,15 +28,9 @@ export const Leftbar = () => {
 
   return (
     <aside className={`leftbar ${isExpanded ? 'expanded' : 'collapsed'}`}>
-      <button
-        type="button"
-        className="leftbar-toggle-btn"
-        aria-label={isExpanded ? 'Collapse navigation' : 'Expand navigation'}
-        aria-expanded={isExpanded}
-        onClick={toggleSidebar}
-      >
+      <div className="leftbar-toggle-btn" onClick={toggleSidebar}>
         {isExpanded ? <X size={24} /> : <Menu size={24} />}
-      </button>
+      </div>
       <nav style={{ flex: 1 }}>
         {menuData.map(item => (
           <NavLink

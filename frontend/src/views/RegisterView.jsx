@@ -18,7 +18,7 @@ const RegisterView = ({ onRegister, loading }) => {
     password: '',
     role: "staff",
     dept: '',
-    permissions: "view",
+    permission: "view",
     status: "active"
   });
 
@@ -45,32 +45,30 @@ const RegisterView = ({ onRegister, loading }) => {
         <form className="register-form" onSubmit={handleSubmit}>
 
           <div className="form-group">
-            <label htmlFor="username">Full Name</label>
+            <label>Full Name</label>
             <input
               tabIndex={1}
-              id="username"
               name="username"
               type="text"
               className="form-input"
               onChange={handleChange}
               placeholder="Enter your fullname"
-              autoComplete="name"
+              autoComplete="one-time-code"
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label>Email</label>
             <div className="email-input-wrapper">
               <input
                 tabIndex={2}
-                id="email"
                 name="email"
                 type="text"
                 className="form-input"
                 onChange={handleChange}
                 placeholder="[Last_name].[First_name]"
-                autoComplete="username"
+                autoComplete="one-time-code"
                 required
               />
               <span className="email-suffix">@klose.dev</span>
@@ -84,18 +82,16 @@ const RegisterView = ({ onRegister, loading }) => {
             <div className="password-input-wrapper">
               <input
                 tabIndex={3}
-                id="password"
                 name="password"
                 type={showPassword ? 'text' : 'password'}
                 className="form-input" onChange={handleChange}
                 placeholder="Enter your password"
-                autoComplete="new-password"
+                autoComplete="one-time-code"
                 required
               />
               <button
                 type="button"
                 className="password-toggle-btn"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
                 onClick={() => setShowPassword(!showPassword)}
               >
                 <EyeIcon show={showPassword} />
@@ -104,16 +100,15 @@ const RegisterView = ({ onRegister, loading }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="department">Department</label>
+            <label>Department</label>
             <input
               tabIndex={4}
-              id="department"
               name="dept"
               type="text"
               className="form-input"
               onChange={handleChange}
               placeholder="Enter your department"
-              autoComplete="organization"
+              autoComplete="one-time-code"
               required
             />
           </div>

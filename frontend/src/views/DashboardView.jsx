@@ -23,7 +23,7 @@ export const DashboardView = ({ stats, loading, connected }) => {
       <div className="dashboard-stats-grid">
         <div className="dashboard-stat-card">
           <h3>Total departments</h3>
-          <p className="dashboard-stat-number dashboard-color-dept">{stats.departments ?? stats.dept}</p>
+          <p className="dashboard-stat-number dashboard-color-dept">{stats.dept}</p>
         </div>
         <div className="dashboard-stat-card">
           <h3>Total staffs</h3>

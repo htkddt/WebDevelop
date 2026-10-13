@@ -31,12 +31,11 @@ export class AuthService {
     return {
       token,
       user: {
-        id: user._id.toString(),
         username: user.username,
         email: user.email,
         role: user.role,
         dept: user.dept,
-        permissions: user.permissions,
+        permission: user.permission,
         status: user.status,
       },
     };

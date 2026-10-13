@@ -1,0 +1,11 @@
+Flask
+flask_cors
+protobuf
+python-dotenv
+requests
+gunicorn
+Flask-PyJWT
+passlib
+cryptography
+pymongo
+pytest

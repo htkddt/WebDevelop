@@ -6,25 +6,25 @@ export type UserDocument = User & Document;
 @Schema({ timestamps: true })
 export class User {
   @Prop({ required: true })
-  username!: string;
+  username: string;
 
   @Prop({ required: true, unique: true })
-  email!: string;
+  email: string;
 
   @Prop({ required: true })
-  password!: string;
+  password: string;
 
   @Prop({ required: true })
-  role!: string;
+  role: string;
 
   @Prop({ required: true })
-  dept!: string;
+  dept: string;
 
   @Prop({ required: true })
-  permissions!: string;
+  permission: string;
 
   @Prop({ required: true })
-  status!: string;
+  status: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

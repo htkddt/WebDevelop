@@ -1,46 +1,40 @@
-import { BadGatewayException, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { ChatRequestDto } from './dto/chat-request.dto';
-
-interface AiServiceResponse {
-  reply: string;
-  conversation_id: string;
-}
 
 @Injectable()
 export class ChatService {
-  private readonly aiServiceUrl: string;
-  private readonly aiServiceToken: string;
+  private readonly ollamaUrl: string;
+  private readonly ollamaModel: string;
 
-  constructor(configService: ConfigService) {
-    this.aiServiceUrl = configService.getOrThrow<string>('AI_SERVICE_URL');
-    this.aiServiceToken = configService.getOrThrow<string>('AI_SERVICE_TOKEN');
+  constructor() {
+    this.ollamaUrl = process.env.OLLAMA_URL || 'http://localhost:11434/api/generate';
+    this.ollamaModel = process.env.OLLAMA_MODEL || 'llama2';
   }
 
-  async chat(request: ChatRequestDto, userId: string) {
+  async chat(contents: string) {
+    const systemInstruction =
+      "Bạn là một trợ lý ảo tên là Klose Bot, cực kỳ thân thiện và hay gọi người dùng là 'ní'. " +
+      "Bạn có kiến thức về lập trình và luôn cung cấp thông tin thời gian thực, chính xác dựa trên ngữ cảnh được cung cấp và đời thường.";
+    const prompt = `${systemInstruction}\n\nUser: ${contents}\nAssistant:`;
+
     try {
-      const response = await axios.post<AiServiceResponse>(
-        `${this.aiServiceUrl}/v1/chat/completions`,
+      const response = await axios.post(
+        this.ollamaUrl,
         {
-          message: request.contents,
-          conversation_id: request.conversationId,
-          user_id: userId,
+          model: this.ollamaModel,
+          prompt,
+          stream: false,
         },
-        {
-          headers: { 'X-Internal-Service-Token': this.aiServiceToken },
-          timeout: 30_000,
-        },
+        { timeout: 30000 },
       );
 
-      // `header` remains for the current frontend chat payload contract.
+      const reply = response.data?.response ?? 'Không có phản hồi từ Ollama.';
       return {
-        header: '',
-        reply: response.data.reply,
-        conversationId: response.data.conversation_id,
+        header: `-----\nTui đã nhận được message của ní rồi nhennn:\n *** contents:"${contents}"\n-----\n`,
+        reply,
       };
-    } catch {
-      throw new BadGatewayException('The AI service is unavailable.');
+    } catch (error) {
+      throw new HttpException(`Lỗi khi gọi Ollama: ${error.message || 'unknown'}`, HttpStatus.BAD_GATEWAY);
     }
   }
 }

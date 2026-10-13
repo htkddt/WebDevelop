@@ -5,7 +5,6 @@ import './../styles/Topbar.css';
 import './../styles/Users.css';
 import './../styles/Search.css';
 import LogoImg from './../assets/Logo.png';
-import { authStorage } from '../services/authStorage';
 
 const Topbar = () => {
   const [showProfile, setShowProfile] = useState(false);
@@ -13,7 +12,8 @@ const Topbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    authStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
 
     // Triggered to Leftbar for checking token and show if login is successful
     //window.dispatchEvent(new Event("storage"));
@@ -62,19 +62,13 @@ const Topbar = () => {
         </div>
 
         <div className="user-profile-container" ref={dropdownRef}>
-          <button
-            type="button"
-            className="user-profile-trigger"
-            aria-label="Open user menu"
-            aria-expanded={showProfile}
-            onClick={() => setShowProfile(!showProfile)}
-          >
+          <div className="user-profile-trigger" onClick={() => setShowProfile(!showProfile)}>
             <img src={LogoImg} alt="179FC" className="user-trigger-custom-logo" />
             <div className="user-avatar-wrapper">
               <User size={20} />
               <span className="user-profile-online-status"></span>
             </div>
-          </button>
+          </div>
           {showProfile && (
             <div className="user-profile-popup">
               <div className="user-profile-popup-header">
@@ -90,21 +84,21 @@ const Topbar = () => {
               <div className="user-popup-divider" />
 
               <div className="popup-menu">
-                <button type="button" className="user-popup-item" onClick={() => navigate('/profile')}>
+                <div className="user-popup-item" onClick={() => navigate('/profile')}>
                   <User size={18} /> <span>My Profile</span>
-                </button>
-                <button type="button" className="user-popup-item" onClick={() => navigate('/assets')}>
+                </div>
+                <div className="user-popup-item" onClick={() => navigate('/assets')}>
                   <FileText size={18} /> <span>My Assets</span>
-                </button>
-                <button type="button" className="user-popup-item" onClick={() => navigate('/settings')}>
+                </div>
+                <div className="user-popup-item" onClick={() => navigate('/settings')}>
                   <Settings size={18} /> <span>Settings</span>
-                </button>
+                </div>
 
                 <div className="user-popup-divider" />
 
-                <button type="button" className="user-popup-item logout" onClick={handleLogout}>
+                <div className="user-popup-item logout" onClick={handleLogout}>
                   <LogOut size={18} /> <span>Logout</span>
-                </button>
+                </div>
               </div>
             </div>
           )}
