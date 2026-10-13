@@ -7,8 +7,7 @@
     "start:dev": "nest start --watch",
     "build": "nest build",
     "lint": "eslint '{src,test}/**/*.{ts,tsx}'",
-    "test": "jest --config jest.config.cjs --runInBand",
-    "test:watch": "jest --config jest.config.cjs --watch"
+    "test": "jest"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

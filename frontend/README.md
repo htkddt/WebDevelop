@@ -1,18 +1,18 @@
 # Frontend
 
-The frontend is a React and Vite application. It renders the user interface and calls only the NestJS public API; it never connects directly to MongoDB, the FastAPI AI service, or Ollama.
+Frontend là ứng dụng React + Vite, chịu trách nhiệm hiển thị giao diện và gọi **duy nhất** NestJS public API. Frontend không kết nối trực tiếp MongoDB, FastAPI AI service hoặc Ollama.
 
-## Structure and responsibilities
+## Cấu trúc và trách nhiệm
 
-| Location | Responsibility |
+| Vị trí | Trách nhiệm |
 | --- | --- |
-| `src/` | React source; see [src/README.md](src/README.md) for structure and conventions. |
-| `index.html` | Vite HTML entry point. |
-| `vite.config.js` | Vite configuration and GitHub Pages base path. |
-| `package.json` | Frontend scripts and dependencies. |
-| `dist/` | Local build output; do not edit it as source. |
+| `src/` | Source React, cấu trúc và quy ước chi tiết ở [src/README.md](src/README.md). |
+| `index.html` | HTML entry point của Vite. |
+| `vite.config.js` | Cấu hình Vite và base path GitHub Pages. |
+| `package.json` | Scripts và dependency của frontend. |
+| `dist/` | Kết quả build cục bộ, không phải source để chỉnh sửa. |
 
-## Run locally
+## Chạy cục bộ
 
 ```powershell
 cd frontend
@@ -20,31 +20,28 @@ npm ci
 npm run dev
 ```
 
-The local API default is `http://localhost:5000/api`. As `vite.config.js` uses `base: '/WebDevelop/'`, open `http://localhost:3000/WebDevelop/index.html#/login`.
+Mặc định ứng dụng mở tại `http://localhost:3000/#/login` và gọi `http://localhost:5000/api`.
 
-Create `frontend/.env.local` if the API has a different host:
+Khi API nằm ở host khác, tạo `frontend/.env.local`:
 
 ```dotenv
 VITE_API_BASE_URL=http://localhost:5000/api
 ```
 
-Only variables prefixed with `VITE_` are exposed in the client bundle. Never put a token, password, MongoDB URI, or service secret in one.
+Chỉ biến bắt đầu bằng `VITE_` mới được Vite đưa vào client bundle. Không đặt token, mật khẩu, MongoDB URI hoặc service secret trong biến `VITE_*`.
 
-## Build and test
+## Build và kiểm tra
 
 ```powershell
 npm run build
-npm test
-npm run test:watch
 npm run preview
 ```
 
-`npm run build` and `npm test` are required CI checks. Jest runs the React suite in `../tests/frontend`; the suite uses mocks and needs neither a running API nor a browser. In production, the `VITE_API_BASE_URL` repository variable must be the public NestJS URL ending in `/api`.
+`npm run build` là kiểm tra bắt buộc trong CI. Với production, repository variable `VITE_API_BASE_URL` phải là public URL của NestJS và kết thúc bằng `/api`.
 
-## Change guidelines
+## Lưu ý cập nhật
 
-- Keep `HashRouter`, because the frontend deploys to GitHub Pages.
-- Route API URLs, HTTP headers, and session storage through `src/config/` and `src/services/`; pages and views must not hard-code endpoints.
-- Update `src/config/api.js`, root [README.md](../README.md), and [Backend.md](../Backend.md) whenever the public API changes.
-- Add or update a regression test in `tests/frontend/` for each bug fix or user-visible state.
-- Do not add a feature or change a public contract solely as part of a coding-design refactor.
+- Giữ `HashRouter` vì frontend đang deploy được trên GitHub Pages.
+- API URL, HTTP header và session storage phải đi qua `src/config/` và `src/services/`; page/view không hard-code endpoint.
+- Mọi thay đổi public API phải được cập nhật đồng thời trong `src/config/api.js`, tài liệu root `README.md` và `Backend.md`.
+- Không thêm feature hoặc thay đổi contract chỉ vì chỉnh coding design.

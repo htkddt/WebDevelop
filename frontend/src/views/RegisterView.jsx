@@ -79,7 +79,7 @@ const RegisterView = ({ onRegister, loading }) => {
 
           <div className="form-group">
             <div className="password-label-wrapper">
-              <label htmlFor="password">Password</label>
+              <label>Password</label>
             </div>
             <div className="password-input-wrapper">
               <input

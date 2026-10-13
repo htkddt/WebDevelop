@@ -1,48 +1,48 @@
-# React Source
+# React source
 
-`src/` contains the user-interface source. These conventions keep React modules that render JSX distinct from plain JavaScript and maintain a clear dependency direction.
+`src/` chứa source code giao diện. Quy ước này giữ phần React có JSX tách rõ khỏi JavaScript thuần và giới hạn hướng phụ thuộc của code.
 
-## Source map
+## Bản đồ source
 
 ```text
 src/
-├── assets/       # assets bundled by Vite
-├── components/   # reusable UI: navigation, chat, guard, wrapper
-├── config/       # environment configuration and API endpoints
-├── hooks/        # reusable React hooks
-├── layouts/      # shared layout for the authenticated area
-├── pages/        # state, navigation, and use-case orchestration
-├── services/     # HTTP client, API modules, session storage
-├── styles/       # global and component/feature CSS
-├── views/        # presentation components that receive page props
-├── App.jsx       # application root
-├── AppRoutes.jsx # public and protected route declarations
+├── assets/       # asset được Vite bundle
+├── components/   # UI tái sử dụng: navigation, chat, guard, wrapper
+├── config/       # cấu hình môi trường và endpoint API
+├── hooks/        # React hook tái sử dụng
+├── layouts/      # bố cục dùng chung của vùng đã đăng nhập
+├── pages/        # điều phối state, navigation và use case
+├── services/     # HTTP client, API module, session storage
+├── styles/       # CSS global và CSS theo khu vực/component
+├── views/        # presentation component nhận props từ page
+├── App.jsx       # app root
+├── AppRoutes.jsx # khai báo public/protected routes
 └── main.jsx      # React entry point
 ```
 
-`src/public/` contains existing project assets. Prefer `assets/` for new assets that should be managed and URL-hashed by Vite.
+`public/` trong `src/` là asset hiện có của project; asset mới nên ưu tiên `assets/` khi cần Vite quản lý và hash URL lúc build.
 
-## Why both `.jsx` and `.js`?
+## Vì sao dùng cả `.jsx` và `.js`?
 
-Vite can transform JSX in either extension, but this project uses the extension to communicate intent:
+Vite có thể transpile JSX trong cả hai phần mở rộng, nhưng project dùng phần mở rộng để biểu lộ mục đích:
 
-- **`.jsx`**: React modules that render JSX, including `AppRoutes.jsx`, pages, views, layouts, and components.
-- **`.js`**: JavaScript modules that do not render JSX, including `config/api.js`, `services/apiClient.js`, `services/authStorage.js`, and helpers.
+- **`.jsx`**: module React có JSX/render UI, ví dụ `AppRoutes.jsx`, page, view, layout và component. Phần mở rộng giúp người đọc và tooling nhận ra file có markup React.
+- **`.js`**: JavaScript không render JSX, ví dụ `config/api.js`, `services/apiClient.js`, `services/authStorage.js` và các helper. Các file này có thể được tái sử dụng, kiểm thử mà không phụ thuộc UI.
 
-Do not rename every module merely to make extensions uniform. If a `.js` module begins returning JSX, rename it to `.jsx`; if a `.jsx` module no longer renders JSX, rename it to `.js` in the same change and update its imports.
+Không đổi toàn bộ `.js` thành `.jsx` hoặc ngược lại chỉ để đồng nhất tên file: điều đó che mất ranh giới UI và logic. Nếu một module `.js` bắt đầu trả JSX, đổi nó thành `.jsx`; nếu module `.jsx` không còn render JSX, đổi lại `.js` trong cùng thay đổi có cập nhật import.
 
-## Dependency rules
+## Quy ước phụ thuộc
 
 ```text
-views/components → props and callbacks from pages/layouts
+views/components → props và callback từ pages/layouts
 pages/layouts     → hooks, services, views/components
 hooks             → services
 services          → config
 config            → environment variables (VITE_*)
 ```
 
-- `views/` only present UI; they do not call `fetch`, read `localStorage`, or hard-code URLs.
-- `pages/` own loading, error, and fallback states before passing data to views.
-- Only `services/apiClient.js` sends HTTP requests; it obtains the token from `authStorage.js`.
-- `config/api.js` owns endpoint and base-URL definitions.
-- Interactive components use semantic elements such as `button`, `label`, and `NavLink`, with accessible labels where appropriate.
+- `views/` chỉ trình bày UI; không gọi `fetch`, đọc `localStorage` hay hard-code URL.
+- `pages/` quản lý loading/error/fallback và chuyển dữ liệu cho view.
+- Chỉ `services/apiClient.js` gửi HTTP request; token được lấy từ `authStorage.js`.
+- Endpoint và base URL đặt tại `config/api.js`.
+- Component tương tác dùng phần tử semantic (`button`, `label`, `NavLink`) và có nhãn truy cập phù hợp.

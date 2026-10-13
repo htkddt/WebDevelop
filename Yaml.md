@@ -1,40 +1,42 @@
-# GitHub Actions YAML and CI/CD
+# GitHub Actions YAML và CI/CD
 
-## Pipeline goals
+## Mục tiêu pipeline của project
 
 ```text
-feature-branch push
-  ├─ CI: frontend build/test, NestJS build/test, FastAPI test
-  └─ Preview deployment: artifact, then optional preview-host hook
+feature branch push
+  ├─ CI: frontend-build, nest-build, ai-test
+  └─ Preview deployment: artifact, sau đó gọi preview host nếu có hook
 
-pull request → main/master
-  └─ the same CI checks must pass before merge
+pull request -> main/master
+  └─ CI bắt buộc pass trước khi merge
 
-pull-request merge → main/master
-  ├─ run all checks again
-  ├─ deploy the frontend to GitHub Pages
-  └─ trigger backend hosting through an optional deployment hook
+merge pull request -> main/master
+  ├─ chạy lại ba kiểm tra
+  ├─ deploy frontend lên GitHub Pages
+  └─ trigger backend host bằng deploy hook (nếu đã cấu hình)
 ```
 
-The workflows in `.github/workflows/` use reusable workflows so the frontend, NestJS, and FastAPI can be built/tested independently while still participating in shared pipelines. GitHub recognizes workflow files only when they are placed directly in this folder.
+Workflow ở `.github/workflows/` đã được tách thành reusable workflow để frontend, NestJS và FastAPI có thể được build/test độc lập nhưng vẫn được gọi trong pipeline tổng. GitHub chỉ nhận workflow đặt trực tiếp trong thư mục này; không đặt reusable workflow ở thư mục con.
+
+Kiến trúc hiện tại của `.github/`:
 
 ```text
 .github/
-├── branch-protection.md          # Ruleset/PR-only merge setup in GitHub
+├── branch-protection.md          # thao tác Ruleset/PR-only merge thực hiện trên GitHub
 └── workflows/
-    ├── ci.yml                    # branch and pull-request checks
-    ├── preview-deploy.yml        # feature-branch artifact/preview
-    ├── deploy-production.yml     # deployment after a main/master push
-    ├── reusable-frontend.yml     # npm ci + Vite build + Jest tests
-    ├── reusable-nest.yml         # npm ci + NestJS build + Jest tests
-    └── reusable-ai.yml           # Python dependencies + pytest suite
+    ├── ci.yml                    # checks cho branch và pull request
+    ├── preview-deploy.yml        # artifact/preview cho sub-branch
+    ├── deploy-production.yml     # deploy sau merge vào main/master
+    ├── reusable-frontend.yml     # npm ci + Vite build
+    ├── reusable-nest.yml         # npm ci + NestJS build
+    └── reusable-ai.yml           # Python dependency + FastAPI tests
 ```
 
-All workflows target the active backend runtime folders, `backend/nestjs_ai` and `backend/ai_service`; there are no Express or Flask legacy workflow jobs.
+Các workflow trỏ đúng hai backend runtime folders `backend/nestjs_ai` và `backend/ai_service`; không còn workflow cho Express hoặc Flask legacy.
 
-## GitHub Actions YAML basics
+## Cú pháp YAML cơ bản cho GitHub Actions
 
-YAML uses indentation to express structure. Use two spaces consistently, never tabs. Use `:` for key/value pairs, `-` for lists, and quote strings containing special characters when needed.
+YAML dùng indentation để biểu diễn cấu trúc. Dùng 2 spaces nhất quán, không dùng tab. Key-value dùng `:`, danh sách dùng `-`, string chứa ký tự đặc biệt nên được quote.
 
 ```yaml
 name: CI
@@ -55,20 +57,24 @@ jobs:
         run: npm ci
 ```
 
-| Key | Purpose |
+Các key quan trọng:
+
+| Key | Mục đích |
 | --- | --- |
-| `name` | Displayed workflow/check name. |
-| `on` | Trigger event: `push`, `pull_request`, `workflow_dispatch`, or `workflow_call`. |
-| `permissions` | Minimum permissions for `GITHUB_TOKEN`. |
-| `env` | Non-sensitive environment variables or a secret mapped into a job/step environment. |
-| `jobs` | Work groups, each with its own runner. |
-| `runs-on` | Runner image, such as `ubuntu-latest`. |
-| `steps` | Commands/actions run sequentially inside a job. |
-| `uses` | Use an action or reusable workflow. |
-| `run` | Run a shell command. |
-| `needs` | Declare job dependencies. |
-| `if` | Conditionally run work; prefer an `env` value over reading a secret directly. |
-| `concurrency` | Cancel an obsolete run when a newer commit reaches the same branch/environment. |
+| `name` | Tên workflow/check hiển thị trên GitHub. |
+| `on` | Event khởi chạy: `push`, `pull_request`, `workflow_dispatch`, `workflow_call`. |
+| `permissions` | Cấp quyền tối thiểu cho `GITHUB_TOKEN`. |
+| `env` | Environment variable không nhạy cảm hoặc map secret vào môi trường step/job. |
+| `jobs` | Nhóm công việc có runner riêng. |
+| `runs-on` | Runner, ví dụ `ubuntu-latest`. |
+| `steps` | Các action/command chạy tuần tự trong một job. |
+| `uses` | Dùng action hoặc gọi reusable workflow. |
+| `run` | Chạy shell command. |
+| `needs` | Dependency giữa các job. |
+| `if` | Điều kiện chạy; dùng `env.SECRET_NAME` thay vì tham chiếu secret trực tiếp. |
+| `concurrency` | Hủy run cũ khi commit mới đến cùng branch/environment. |
+
+Ví dụ biến và expression:
 
 ```yaml
 env:
@@ -80,13 +86,13 @@ steps:
     run: curl --fail --request POST "$DEPLOY_HOOK"
 ```
 
-Never print `secrets.*`, `.env` content, tokens, MongoDB URIs, or request bodies containing passwords to logs.
+Không in `secrets.*`, `.env`, token, MongoDB URI hoặc request body có password ra log.
 
-## Job ordering and dependencies
+## Ràng buộc: step/job nào chạy trước
 
-Within one job, steps are sequential: a failed step fails the job and normally prevents later steps from running. Use `if: ${{ always() }}` only for cleanup or diagnostic uploads that must run after a failure.
+Trong **một job**, các `steps` chạy tuần tự. Một step thất bại sẽ làm job thất bại và step sau mặc định không chạy. `if: ${{ always() }}` chỉ dùng cho việc cleanup/upload log vì nó chạy dù step trước thất bại.
 
-Jobs run in parallel unless they declare `needs`. Use dependencies to deploy only after successful validation:
+Các **job** chạy song song nếu không có `needs`. Khai báo `needs` để tạo dependency và chỉ triển khai sau khi build/test thành công:
 
 ```yaml
 jobs:
@@ -106,28 +112,30 @@ jobs:
     steps: []
 ```
 
-In this repository, `deploy-frontend` depends on `frontend`, `nestjs-api`, and `ai-service`, so a frontend deployment cannot occur if any build or test fails. Workflow artifacts are scoped to their run and must use the same upload/download name.
+Trong repository này, `deploy-frontend` cần `frontend`, `nestjs-api` và `ai-service`. Như vậy frontend không được deploy nếu API hoặc AI service không build/test được. Artifact chỉ tồn tại trong workflow run, nên bước deploy phải tải artifact bằng đúng tên đã upload.
 
-## Branch, pull request, and deployment policy
+## Branch, pull request và deploy policy
 
-| File | Trigger | Responsibility |
+Các workflow hiện tại:
+
+| File | Trigger | Trách nhiệm |
 | --- | --- | --- |
-| `ci.yml` | Any non-`main`/`master` push; pull request into `main`/`master` | Calls all three reusable validation workflows. |
-| `preview-deploy.yml` | Any non-`main`/`master` push | Builds/tests the frontend, publishes `frontend-dist`, and calls `PREVIEW_DEPLOY_HOOK` when configured. |
-| `deploy-production.yml` | Push to `main`/`master` after merge | Validates all layers, deploys GitHub Pages, and calls `BACKEND_DEPLOY_HOOK` when configured. |
-| `reusable-frontend.yml` | `workflow_call` | `npm ci`, Vite build, Jest tests, upload `frontend-dist`. |
-| `reusable-nest.yml` | `workflow_call` | `npm ci`, NestJS compilation, Jest tests. |
-| `reusable-ai.yml` | `workflow_call` | Install Python dependencies and run `pytest ../../tests/ai_service -q`. |
+| `ci.yml` | Mọi push vào branch không phải `main/master`, PR vào `main/master` | Gọi ba reusable build/test job. |
+| `preview-deploy.yml` | Mọi push branch không phải `main/master` | Build frontend và cung cấp preview artifact; gọi `PREVIEW_DEPLOY_HOOK` khi host preview đã được cấu hình. |
+| `deploy-production.yml` | Push vào `main/master` sau merge | Kiểm tra lại toàn bộ, deploy GitHub Pages, gọi `BACKEND_DEPLOY_HOOK` nếu có. |
+| `reusable-frontend.yml` | `workflow_call` | `npm ci`, build Vite, upload `frontend-dist`. |
+| `reusable-nest.yml` | `workflow_call` | `npm ci`, compile NestJS. |
+| `reusable-ai.yml` | `workflow_call` | Cài Python dependency, chạy FastAPI tests. |
 
-YAML alone cannot prevent direct pushes to `main` or `master`. Apply a GitHub Ruleset or branch-protection rule as described in [.github/branch-protection.md](.github/branch-protection.md): require pull requests and approval, require `frontend-build`, `nest-build`, and `ai-test`, require an up-to-date branch, block force pushes, and restrict direct pushes.
+Không thể ngăn direct push vào `main/master` chỉ bằng YAML. Bắt buộc cấu hình GitHub **Ruleset** hoặc branch protection theo [`.github/branch-protection.md`](.github/branch-protection.md): require pull request, approval, check `frontend-build`/`nest-build`/`ai-test`, branch up-to-date, block force push và restrict push. GitHub branch rules mới là nơi thực thi yêu cầu “không commit thẳng master”.
 
-GitHub Pages has a single production deployment, so feature branches use the `frontend-dist` artifact and may publish a separate preview through `PREVIEW_DEPLOY_HOOK`. Likewise, configure `BACKEND_DEPLOY_HOOK` or a hosting provider's Git integration to deploy NestJS/FastAPI after merge.
+GitHub Pages chỉ có một deployment production; không an toàn nếu mỗi feature branch ghi đè site đó. Vì vậy feature branch có `frontend-dist` artifact và hỗ trợ deploy preview thật khi thêm repository secret `PREVIEW_DEPLOY_HOOK` của Vercel, Netlify, Render hoặc host đã chọn. Tương tự, set `BACKEND_DEPLOY_HOOK` hoặc bật Git integration trên host để deploy NestJS/FastAPI sau merge.
 
-The production workflow fails fast unless the repository variable `VITE_API_BASE_URL` is set to the public NestJS URL ending in `/api`. Vite injects it at build time.
+Production workflow cũng fail-fast nếu repository variable `VITE_API_BASE_URL` chưa được đặt. Giá trị này phải là public NestJS URL có hậu tố `/api`; Vite nhúng nó vào frontend tại build time.
 
-## Reusable workflow pattern
+## Tách workflow nhỏ và gọi từ workflow tổng
 
-A reusable workflow declares `on: workflow_call`:
+Một reusable workflow phải có `on: workflow_call`:
 
 ```yaml
 # .github/workflows/reusable-example.yml
@@ -143,7 +151,7 @@ jobs:
       - run: echo "reusable job"
 ```
 
-A caller job uses `uses`, not `runs-on`/`steps`:
+Workflow caller không dùng `runs-on`/`steps` trong job gọi; nó dùng `uses`:
 
 ```yaml
 jobs:
@@ -151,22 +159,21 @@ jobs:
     uses: ./.github/workflows/reusable-example.yml
 ```
 
-This centralizes Node/Python setup and caching, keeps job names stable for branch protection, and ensures production, pull-request, and preview pipelines use the same commands. Pass only the secrets a reusable workflow needs; do not default to `secrets: inherit`.
+Lợi ích: setup Node/Python/cache chỉ viết một lần, job name cố định để branch protection chọn được, và production/PR/preview dùng cùng lệnh build. Chỉ truyền secret cho reusable workflow khi thật sự cần; không dùng `secrets: inherit` mặc định nếu không cần thiết.
 
-## Common failures
+## Lỗi thường gặp và cách tránh
 
-| Problem | Cause / resolution |
+| Vấn đề | Nguyên nhân / cách xử lý |
 | --- | --- |
-| `mapping values are not allowed` | Check indentation, remove tabs, and quote a string containing `:` where appropriate. |
-| Workflow does not appear | Ensure the file is in `.github/workflows/*.yml`, the trigger is correct, and YAML is valid. |
-| Deployment runs before tests | Add the appropriate `needs` and `if: success()`. |
-| Required check remains pending | The workflow may be skipped by `paths`, a branch filter, or `[skip ci]`; avoid those exclusions for required checks. |
-| `npm ci` fails | Keep `package.json` and the lockfile synchronized. |
-| Jest cannot find tests | Verify each package's Jest configuration still points to the shared `tests/frontend` or `tests/nestjs` directory. |
-| Artifact is missing | Match upload/download names and ensure the upload runs after a successful build. |
-| Secret is empty in a fork pull request | GitHub does not expose repository secrets to fork PRs; tests must not need them and deployment runs after merge/internal pushes. |
-| `403 Resource not accessible` | Grant the smallest required permission scope. |
-| Pages deployment is overwritten | Do not deploy GitHub Pages from every branch; use a preview artifact/host instead. |
-| Direct push still succeeds | A Ruleset/branch-protection rule is missing or an administrator can bypass it. |
+| `mapping values are not allowed` | Sai indentation, dùng tab, hoặc quên quote string có `:`. Kiểm tra bằng YAML linter. |
+| Workflow không xuất hiện | File không ở `.github/workflows/*.yml`, sai `on`, hoặc YAML invalid. |
+| Job deploy chạy trước test | Thiếu `needs` hoặc `if: success()`. |
+| Required check bị Pending mãi | Workflow bị bỏ qua bởi `paths`, branch filter hoặc `[skip ci]`; tránh path filter cho check bắt buộc. |
+| `npm ci` fail | `package.json` và `package-lock.json` không đồng bộ; cập nhật lockfile cùng dependency. |
+| Artifact không tìm thấy | Tên upload/download khác nhau, artifact upload sau step fail, hoặc dùng sai run. |
+| Secret rỗng ở PR từ fork | GitHub không đưa repository secret vào fork PR; test không cần secret và deploy chỉ chạy sau merge/internal branch. |
+| `403 Resource not accessible` | `permissions` chưa đủ; cấp đúng scope tối thiểu cho workflow/job. |
+| Pages deploy bị ghi đè | Không deploy GitHub Pages từ mọi branch; dùng preview host/hook riêng. |
+| Direct push vẫn thành công | Chưa tạo Ruleset/branch protection, hoặc admin có quyền bypass. |
 
-Official references: [workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax), [reusable workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows), and [protected branches/rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
+Tham khảo chính thức: [workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax), [reusable workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows), và [protected branches/rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
