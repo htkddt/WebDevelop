@@ -4,15 +4,15 @@
 
 ## Documentation
 
-- [Frontend.md](Frontend.md): Frontend architecture, coding standards, and refactoring notes.
+- [Frontend.md](Frontend.md): frontend architecture, coding standards, and refactoring notes.
 - [Backend.md](Backend.md): NestJS/FastAPI architecture, contracts, migration, and security.
-- [Diagram.md](Diagram.md): Component, block, and sequence diagrams.
+- [Diagram.md](Diagram.md): component, block, and sequence diagrams.
 - [Yaml.md](Yaml.md): GitHub Actions YAML, CI/CD dependencies, branch policy, and troubleshooting.
-- [.github/branch-protection.md](.github/branch-protection.md): Required GitHub Ruleset configuration for pull-request-only merges.
-- [frontend/README.md](frontend/README.md): Frontend setup, build, test, and deployment notes.
+- [.github/branch-protection.md](.github/branch-protection.md): required GitHub Ruleset configuration for pull-request-only merges.
+- [frontend/README.md](frontend/README.md): frontend setup, build, test, and deployment notes.
 - [frontend/src/README.md](frontend/src/README.md): React source layout and `.jsx`/`.js` conventions.
-- [backend/README.md](backend/README.md): Backend operations and cross-service changes.
-- [tests/README.md](tests/README.md): Shared regression-test layout and commands.
+- [backend/README.md](backend/README.md): backend operations and cross-service changes.
+- [tests/README.md](tests/README.md): shared regression-test layout and commands.
 
 ## Current architecture and request flow
 
@@ -30,7 +30,7 @@ Browser
 ```
 
 - Endpoint configuration, the JSON HTTP client, session storage, API modules, and reusable data hooks are separated from frontend pages.
-- Login and registration are public routes; Every application route, including Settings, requires a session.
+- Login and registration are public routes; every application route, including Settings, requires a session.
 - NestJS is the only public API. The former Express mock and Flask CRUD/chat runtimes are not part of the active application flow.
 - FastAPI is a private model-orchestration boundary with a health check, input validation, timeout/error handling, an internal service token, and tests that do not require Ollama.
 - Regression tests are centralized in `tests/`: React/Jest tests, NestJS/Jest tests, and FastAPI/pytest tests use mocks rather than live infrastructure.
@@ -43,16 +43,16 @@ The frontend chat payload remains `contents`. NestJS adapts it to FastAPI and re
 ```text
 .
 ├── frontend/
-│   ├── README.md             # Frontend setup, test, build, deployment
+│   ├── README.md             # frontend setup, test, build, deployment
 │   └── src/
 │       ├── components/ config/ hooks/ layouts/
 │       ├── pages/ services/ styles/ views/
 │       ├── README.md         # React and JavaScript conventions
 │       └── AppRoutes.jsx
 ├── backend/
-│   ├── README.md             # Two-service backend operations
-│   ├── nestjs_ai/            # Public API: JWT, MongoDB, chat gateway
-│   └── ai_service/           # Private FastAPI chatbot/model service
+│   ├── README.md             # two-service backend operations
+│   ├── nestjs_ai/            # public API: JWT, MongoDB, chat gateway
+│   └── ai_service/           # private FastAPI chatbot/model service
 ├── tests/
 │   ├── frontend/             # React component, route, hook, and client tests
 │   ├── nestjs/               # NestJS service and controller tests
@@ -68,7 +68,7 @@ The frontend chat payload remains `contents`. NestJS adapts it to FastAPI and re
 
 ## Prerequisites
 
-- Node.js 20 (The CI standard; Test Vite 2 before any future Vite upgrade).
+- Node.js 20 (the CI standard; test Vite 2 before any future Vite upgrade).
 - Python 3.11 or newer.
 - MongoDB, locally or through Atlas.
 - Ollama or another provider reachable by FastAPI when chatbot responses are needed.

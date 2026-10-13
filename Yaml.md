@@ -123,7 +123,7 @@ YAML alone cannot prevent direct pushes to `main` or `master`. Apply a GitHub Ru
 
 GitHub Pages has a single production deployment, so feature branches use the `frontend-dist` artifact and may publish a separate preview through `PREVIEW_DEPLOY_HOOK`. Likewise, configure `BACKEND_DEPLOY_HOOK` or a hosting provider's Git integration to deploy NestJS/FastAPI after merge.
 
-The production workflow runs all checks when `VITE_API_BASE_URL` is absent, but skips GitHub Pages deployment. Set that repository variable to the public HTTPS NestJS URL ending in `/api` to enable frontend deployment; Vite injects it at build time.
+The production workflow fails fast unless the repository variable `VITE_API_BASE_URL` is set to the public NestJS URL ending in `/api`. Vite injects it at build time.
 
 ## Reusable workflow pattern
 
