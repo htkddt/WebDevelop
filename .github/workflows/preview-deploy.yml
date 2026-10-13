@@ -1,8 +1,8 @@
 name: Preview deployment
 
 on:
-  push:
-    branches-ignore: [main, master]
+  # Deployment is opt-in while the project is being run locally.
+  workflow_dispatch:
 
 permissions:
   contents: read

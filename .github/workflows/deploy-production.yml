@@ -1,8 +1,8 @@
 name: Production deployment
 
 on:
-  push:
-    branches: [main, master]
+  # Keep production deployment opt-in until a public environment is configured.
+  workflow_dispatch:
 
 permissions:
   contents: read

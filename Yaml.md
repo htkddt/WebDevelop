@@ -112,9 +112,9 @@ In this repository, `deploy-frontend` depends on `frontend`, `nestjs-api`, and `
 
 | File | Trigger | Responsibility |
 | --- | --- | --- |
-| `ci.yml` | Any non-`main`/`master` push; pull request into `main`/`master` | Calls all three reusable validation workflows. |
-| `preview-deploy.yml` | Any non-`main`/`master` push | Builds/tests the frontend, publishes `frontend-dist`, and calls `PREVIEW_DEPLOY_HOOK` when configured. |
-| `deploy-production.yml` | Push to `main`/`master` after merge | Validates all layers, deploys GitHub Pages, and calls `BACKEND_DEPLOY_HOOK` when configured. |
+| `ci.yml` | Any push and pull request | Calls all three reusable validation workflows in local mode; frontend uses `http://localhost:5000/api`. |
+| `preview-deploy.yml` | Manual (`workflow_dispatch`) | Builds/tests the frontend and calls `PREVIEW_DEPLOY_HOOK` only when manually invoked. |
+| `deploy-production.yml` | Manual (`workflow_dispatch`) | Validates all layers and deploys GitHub Pages/calls `BACKEND_DEPLOY_HOOK` only when manually invoked. |
 | `reusable-frontend.yml` | `workflow_call` | `npm ci`, Vite build, Jest tests, upload `frontend-dist`. |
 | `reusable-nest.yml` | `workflow_call` | `npm ci`, NestJS compilation, Jest tests. |
 | `reusable-ai.yml` | `workflow_call` | Install Python dependencies and run `pytest ../../tests/ai_service -q`. |
